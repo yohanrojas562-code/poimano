@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
@@ -23,12 +24,17 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
     Route::get('/', function () {
-        $tenant = tenant();
-        return response()->json([
-            'message' => '¡Bienvenido a ' . $tenant->church_name . '!',
-            'tenant_id' => $tenant->id,
-            'church_name' => $tenant->church_name,
-            'status' => $tenant->status,
+        return redirect('/dashboard');
+    });
+
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard', [
+            'stats' => [
+                'total_members' => 0,
+                'active_groups' => 0,
+                'upcoming_events' => 0,
+                'monthly_income' => 0,
+            ],
         ]);
     });
 });
