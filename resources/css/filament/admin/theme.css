@@ -1,0 +1,66 @@
+/*
+ * Poimano Admin - Filament Custom Theme
+ * Colores: Fondo blanco, títulos #00105E, acentos #00E1FF, texto #000000
+ */
+
+/* Forzar fondo blanco predominante */
+.fi-body {
+    --gray-50: 249, 250, 251;
+    --gray-100: 243, 244, 246;
+    --gray-200: 229, 231, 235;
+    --gray-300: 209, 213, 219;
+    --gray-400: 156, 163, 175;
+    --gray-500: 107, 114, 128;
+    --gray-600: 75, 85, 99;
+    --gray-700: 55, 65, 81;
+    --gray-800: 31, 41, 55;
+    --gray-900: 17, 24, 39;
+    --gray-950: 3, 7, 18;
+}
+
+/* Sidebar con fondo blanco limpio */
+.fi-sidebar {
+    background-color: #ffffff !important;
+    border-right: 1px solid #e5e7eb !important;
+}
+
+/* Sidebar header */
+.fi-sidebar-header {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Brand name en navy */
+.fi-sidebar-header span {
+    color: #00105E !important;
+    font-weight: 700;
+}
+
+/* Sidebar nav items */
+.fi-sidebar-item a {
+    color: #374151 !important;
+}
+
+.fi-sidebar-item a:hover {
+    background-color: #f3f4f6 !important;
+    color: #00105E !important;
+}
+
+.fi-sidebar-item-active a {
+    background-color: #E6E8F2 !important;
+    color: #00105E !important;
+}
+
+/* Iconos activos con cyan */
+.fi-sidebar-item-active .fi-sidebar-item-icon {
+    color: #00E1FF !important;
+}
+
+/* Dashboard heading */
+.fi-header-heading {
+    color: #00105E !important;
+}
+
+/* Stats widget icons */
+.fi-wi-stats-overview-stat-icon {
+    color: #00E1FF !important;
+}

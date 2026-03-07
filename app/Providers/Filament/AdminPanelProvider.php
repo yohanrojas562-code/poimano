@@ -11,6 +11,7 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -30,9 +31,33 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->brandName('Poimano Admin')
             ->colors([
-                'primary' => Color::Indigo,
+                'primary' => [
+                    50 => '#E6E8F2',
+                    100 => '#CCD1E5',
+                    200 => '#99A3CB',
+                    300 => '#6675B1',
+                    400 => '#334797',
+                    500 => '#00105E',
+                    600 => '#000D4B',
+                    700 => '#000A38',
+                    800 => '#000725',
+                    900 => '#000312',
+                    950 => '#000209',
+                ],
+                'info' => [
+                    50 => '#E6FCFF',
+                    100 => '#CCF9FF',
+                    200 => '#99F3FF',
+                    300 => '#66EDFF',
+                    400 => '#33E7FF',
+                    500 => '#00E1FF',
+                    600 => '#00B4CC',
+                    700 => '#008799',
+                    800 => '#005A66',
+                    900 => '#002D33',
+                    950 => '#001A1F',
+                ],
                 'danger' => Color::Rose,
-                'info' => Color::Sky,
                 'success' => Color::Emerald,
                 'warning' => Color::Amber,
             ])
@@ -60,6 +85,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth('full')
-            ->databaseNotifications();
+            ->databaseNotifications()
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
