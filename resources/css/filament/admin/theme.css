@@ -1,287 +1,465 @@
 /*
- * ═══════════════════════════════════════════════
- *  POIMANO ADMIN — Filament Custom Theme
- *  Navy: #00105E  |  Cyan: #00E1FF
- *  White: #FFFFFF |  Black: #000000
- * ═══════════════════════════════════════════════
+ * ═══════════════════════════════════════════════════════════
+ *  POIMANO — Super Admin Theme
+ *  Navy: #00105E  |  Cyan: #00E1FF  |  White  |  Black
+ * ═══════════════════════════════════════════════════════════
  */
 
-/* ── Login Page ─────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   LOGIN PAGE
+   ═══════════════════════════════════════════════ */
 .fi-simple-layout {
-    background: linear-gradient(135deg, #00105E 0%, #001a8c 50%, #00105E 100%) !important;
+    background: linear-gradient(160deg, #00105E 0%, #00195f 40%, #002080 100%) !important;
+}
+.fi-simple-layout::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(0,225,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 80%, rgba(0,225,255,0.05) 0%, transparent 50%);
+    pointer-events: none;
 }
 .fi-simple-main {
     background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    box-shadow: 0 25px 50px -12px rgba(0, 16, 94, 0.25) !important;
-    border-radius: 1rem !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.4) !important;
+    border: none !important;
 }
-.fi-simple-layout .fi-logo {
-    color: #ffffff !important;
-}
-
-/* ── Sidebar ────────────────────────────────── */
-.fi-sidebar {
-    background-color: #00105E !important;
-    border-right: none !important;
-}
-
-/* Brand / Logo */
-.fi-sidebar-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding: 1.25rem 1rem !important;
-}
-.fi-sidebar-header a,
-.fi-sidebar-header span,
-.fi-sidebar-header .fi-logo * {
+.fi-simple-layout .fi-logo,
+.fi-simple-layout .fi-logo * {
     color: #ffffff !important;
     font-weight: 800 !important;
-    font-size: 1.25rem !important;
-    letter-spacing: -0.025em !important;
 }
 
-/* Nav group labels */
-.fi-sidebar-group-label {
-    color: rgba(255, 255, 255, 0.4) !important;
+/* ═══════════════════════════════════════════════
+   SIDEBAR — Navy oscuro con textos blancos
+   ═══════════════════════════════════════════════ */
+
+/* Fondo del sidebar */
+aside.fi-sidebar,
+.fi-sidebar {
+    background: linear-gradient(180deg, #00105E 0%, #000c47 100%) !important;
+    border-right: none !important;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15) !important;
+}
+.fi-sidebar-nav {
+    background: transparent !important;
+}
+
+/* Logo / Brand */
+.fi-sidebar-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 1.5rem 1.25rem !important;
+    background: transparent !important;
+}
+.fi-sidebar-header *,
+.fi-sidebar-header a,
+.fi-sidebar-header span,
+.fi-sidebar-header div,
+.fi-logo, .fi-logo * {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+}
+
+/* Group labels (ej: "Gestión de Tenants") */
+.fi-sidebar-group > button,
+.fi-sidebar-group > button span,
+.fi-sidebar-group-label,
+.fi-sidebar-group-button {
+    color: rgba(255, 255, 255, 0.35) !important;
     font-size: 0.65rem !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.1em !important;
-    font-weight: 600 !important;
+    letter-spacing: 0.12em !important;
+    font-weight: 700 !important;
 }
-.fi-sidebar-group-button {
-    color: rgba(255, 255, 255, 0.4) !important;
+/* Group collapse chevron */
+.fi-sidebar-group > button svg {
+    color: rgba(255, 255, 255, 0.25) !important;
 }
 
-/* Nav items — default state */
-.fi-sidebar-item a {
-    color: rgba(255, 255, 255, 0.7) !important;
-    border-radius: 0.5rem !important;
-    transition: all 0.15s ease !important;
-    margin: 0.125rem 0.5rem !important;
+/* ─── Nav items: textos BLANCOS ─── */
+.fi-sidebar-item > a,
+.fi-sidebar-item > a > span,
+.fi-sidebar-item > a span,
+.fi-sidebar-item a,
+.fi-sidebar-item a span {
+    color: rgba(255, 255, 255, 0.75) !important;
 }
+/* Iconos */
+.fi-sidebar-item > a > svg,
+.fi-sidebar-item svg,
 .fi-sidebar-item-icon {
-    color: rgba(255, 255, 255, 0.5) !important;
+    color: rgba(255, 255, 255, 0.45) !important;
 }
 
-/* Nav items — hover */
-.fi-sidebar-item a:hover {
-    background-color: rgba(255, 255, 255, 0.08) !important;
+/* Hover */
+.fi-sidebar-item > a:hover,
+.fi-sidebar-item > a:hover span,
+.fi-sidebar-item a:hover,
+.fi-sidebar-item a:hover span {
     color: #ffffff !important;
+    background-color: rgba(255, 255, 255, 0.07) !important;
+    border-radius: 0.5rem !important;
 }
-.fi-sidebar-item a:hover .fi-sidebar-item-icon {
+.fi-sidebar-item > a:hover svg,
+.fi-sidebar-item a:hover svg {
     color: #00E1FF !important;
 }
 
-/* Nav items — active */
+/* Active */
 .fi-sidebar-item-active > a,
-.fi-sidebar-item-active > a:hover {
-    background-color: rgba(0, 225, 255, 0.12) !important;
+.fi-sidebar-item-active > a > span,
+.fi-sidebar-item-active > a span,
+.fi-sidebar-item-active a,
+.fi-sidebar-item-active a span {
     color: #ffffff !important;
     font-weight: 600 !important;
+    background-color: rgba(0, 225, 255, 0.1) !important;
+    border-radius: 0.5rem !important;
 }
+.fi-sidebar-item-active > a > svg,
+.fi-sidebar-item-active svg,
 .fi-sidebar-item-active .fi-sidebar-item-icon {
     color: #00E1FF !important;
 }
+/* Active left accent */
+.fi-sidebar-item-active > a::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 3px !important;
+    height: 60% !important;
+    background: #00E1FF !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+.fi-sidebar-item-active > a {
+    position: relative !important;
+}
 
-/* Sidebar footer / collapse button */
+/* Navigation badges */
+.fi-sidebar-item .fi-badge,
+.fi-sidebar-item .fi-badge * {
+    background-color: rgba(0, 225, 255, 0.15) !important;
+    color: #00E1FF !important;
+    border: 1px solid rgba(0, 225, 255, 0.3) !important;
+    font-weight: 700 !important;
+    font-size: 0.65rem !important;
+}
+
+/* Sidebar footer */
 .fi-sidebar-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: transparent !important;
+}
+.fi-sidebar-footer * {
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* ── Topbar ─────────────────────────────────── */
-.fi-topbar {
-    background-color: #ffffff !important;
-    border-bottom: 2px solid #00105E !important;
-    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.06) !important;
-}
-.fi-topbar nav {
-    background-color: #ffffff !important;
+/* User menu in sidebar */
+.fi-sidebar .fi-dropdown-trigger,
+.fi-sidebar .fi-dropdown-trigger * {
+    color: rgba(255, 255, 255, 0.7) !important;
 }
 
-/* ── Page Headers ───────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TOPBAR
+   ═══════════════════════════════════════════════ */
+.fi-topbar,
+.fi-topbar > nav {
+    background: #ffffff !important;
+    border-bottom: none !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.08), 0 1px 0 #00105E !important;
+}
+/* Topbar hamburger y botones */
+.fi-topbar .fi-icon-btn {
+    color: #00105E !important;
+}
+.fi-topbar .fi-icon-btn:hover {
+    background-color: rgba(0, 16, 94, 0.05) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   CONTENT AREA
+   ═══════════════════════════════════════════════ */
+.fi-main {
+    background-color: #f1f5f9 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   PAGE HEADERS
+   ═══════════════════════════════════════════════ */
 .fi-header-heading {
     color: #00105E !important;
     font-weight: 800 !important;
-    letter-spacing: -0.025em !important;
+    font-size: 1.5rem !important;
+    letter-spacing: -0.03em !important;
 }
 .fi-header-subheading {
     color: #64748b !important;
 }
 
-/* ── Breadcrumbs ────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   BREADCRUMBS
+   ═══════════════════════════════════════════════ */
 .fi-breadcrumbs li {
-    color: #64748b !important;
+    color: #94a3b8 !important;
 }
 .fi-breadcrumbs a {
     color: #00105E !important;
+    font-weight: 500 !important;
 }
 .fi-breadcrumbs a:hover {
     color: #00E1FF !important;
 }
 
-/* ── Cards / Sections ───────────────────────── */
+/* ═══════════════════════════════════════════════
+   CARDS / SECTIONS
+   ═══════════════════════════════════════════════ */
 .fi-section {
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 0.75rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.04) !important;
     overflow: hidden !important;
 }
 .fi-section-header {
-    background-color: #f8fafc !important;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
     border-bottom: 1px solid #e2e8f0 !important;
+    padding: 1rem 1.25rem !important;
 }
 .fi-section-header-heading {
     color: #00105E !important;
     font-weight: 700 !important;
+    font-size: 0.9rem !important;
 }
-.fi-section-header-description {
-    color: #64748b !important;
+/* Section header icon */
+.fi-section-header .fi-icon-btn,
+.fi-section-header svg {
+    color: #00E1FF !important;
 }
 
-/* ── Stats Overview Widgets ─────────────────── */
+/* ═══════════════════════════════════════════════
+   STATS OVERVIEW WIDGETS
+   ═══════════════════════════════════════════════ */
 .fi-wi-stats-overview-stat {
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 0.75rem !important;
-    transition: all 0.2s ease !important;
-    position: relative;
-    overflow: hidden;
+    border-radius: 1rem !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
 }
 .fi-wi-stats-overview-stat::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #00105E, #00E1FF);
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, #00105E, #00E1FF) !important;
 }
 .fi-wi-stats-overview-stat:hover {
     border-color: #00E1FF !important;
-    box-shadow: 0 4px 12px rgba(0, 225, 255, 0.1) !important;
-    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0, 225, 255, 0.12) !important;
+    transform: translateY(-2px) !important;
 }
 .fi-wi-stats-overview-stat-value {
     color: #00105E !important;
     font-weight: 800 !important;
-    font-size: 1.875rem !important;
+    font-size: 2rem !important;
+    line-height: 1 !important;
 }
 .fi-wi-stats-overview-stat-label {
     color: #64748b !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
-    font-size: 0.7rem !important;
-    letter-spacing: 0.05em !important;
+    font-size: 0.65rem !important;
+    letter-spacing: 0.08em !important;
 }
 .fi-wi-stats-overview-stat-description {
     color: #94a3b8 !important;
+    font-size: 0.8rem !important;
+}
+.fi-wi-stats-overview-stat-icon {
+    color: #00E1FF !important;
 }
 
-/* ── Chart Widget ───────────────────────────── */
+/* ═══════════════════════════════════════════════
+   CHART WIDGET
+   ═══════════════════════════════════════════════ */
 .fi-wi-chart {
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 0.75rem !important;
+    border-radius: 1rem !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.04) !important;
 }
 .fi-wi-chart-header {
     border-bottom: 1px solid #e2e8f0 !important;
+    padding: 1rem 1.25rem !important;
 }
 .fi-wi-chart-heading {
     color: #00105E !important;
     font-weight: 700 !important;
+    font-size: 0.95rem !important;
 }
 
-/* ── Tables ──────────────────────────────────── */
-.fi-ta-header-cell {
-    background-color: #00105E !important;
+/* ═══════════════════════════════════════════════
+   TABLES
+   ═══════════════════════════════════════════════ */
+
+/* Table container */
+.fi-ta-content {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 1rem !important;
+    overflow: hidden !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.04) !important;
+}
+
+/* Table header navy */
+.fi-ta-header-cell,
+th.fi-ta-header-cell {
+    background: linear-gradient(135deg, #00105E 0%, #001070 100%) !important;
     color: #ffffff !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
-    font-size: 0.7rem !important;
-    letter-spacing: 0.05em !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.06em !important;
     padding: 0.875rem 1rem !important;
+    border-bottom: 2px solid #00E1FF !important;
 }
+.fi-ta-header-cell *,
 .fi-ta-header-cell button,
+.fi-ta-header-cell button span,
 .fi-ta-header-cell span {
     color: #ffffff !important;
 }
-/* Sort icon in table headers */
-.fi-ta-header-cell .fi-ta-header-cell-sort-icon {
+.fi-ta-header-cell svg {
     color: #00E1FF !important;
+}
+
+/* Rows */
+.fi-ta-row {
+    transition: background-color 0.15s ease !important;
 }
 .fi-ta-row:hover td {
     background-color: rgba(0, 225, 255, 0.04) !important;
 }
 .fi-ta-row:nth-child(even) td {
-    background-color: #f8fafc;
+    background-color: #f8fafc !important;
 }
 
-/* Table container border */
-.fi-ta-content {
+/* Table toolbar */
+.fi-ta-header-toolbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 0.75rem 1rem !important;
+}
+
+/* ═══════════════════════════════════════════════
+   WIDGET TABLE (LatestTenants)
+   ═══════════════════════════════════════════════ */
+.fi-wi-table {
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 0.75rem !important;
+    border-radius: 1rem !important;
     overflow: hidden !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.04) !important;
+}
+.fi-wi-table .fi-ta-header-cell {
+    background: linear-gradient(135deg, #00105E 0%, #001070 100%) !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid #00E1FF !important;
 }
 
-/* ── Buttons ─────────────────────────────────── */
-.fi-btn-primary,
-.fi-btn[style*="--c-500:var(--primary-500)"] {
-    transition: all 0.15s ease !important;
+/* ═══════════════════════════════════════════════
+   BUTTONS
+   ═══════════════════════════════════════════════ */
+.fi-btn {
+    border-radius: 0.625rem !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
-.fi-btn-primary:hover {
-    box-shadow: 0 4px 12px rgba(0, 16, 94, 0.3) !important;
+.fi-btn:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 16, 94, 0.15) !important;
 }
 
-/* ── Badges ──────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   BADGES
+   ═══════════════════════════════════════════════ */
 .fi-badge {
     font-weight: 600 !important;
     letter-spacing: 0.02em !important;
+    border-radius: 0.5rem !important;
 }
 
-/* ── Forms ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   FORMS
+   ═══════════════════════════════════════════════ */
 .fi-fo-field-wrp label {
     color: #00105E !important;
     font-weight: 600 !important;
+    font-size: 0.82rem !important;
 }
-.fi-input:focus-within {
+.fi-input-wrp {
+    border-radius: 0.625rem !important;
+    transition: all 0.2s ease !important;
+}
+.fi-input:focus-within,
+.fi-input-wrp:focus-within {
     border-color: #00E1FF !important;
-    box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.2) !important;
+    box-shadow: 0 0 0 3px rgba(0, 225, 255, 0.15) !important;
 }
-.fi-fo-field-wrp .fi-input-wrp {
-    border-radius: 0.5rem !important;
+/* Select inputs */
+.fi-select-input:focus {
+    border-color: #00E1FF !important;
 }
 
-/* ── Global Search ───────────────────────────── */
+/* ═══════════════════════════════════════════════
+   GLOBAL SEARCH
+   ═══════════════════════════════════════════════ */
 .fi-global-search-input {
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 0.5rem !important;
+    border-radius: 0.75rem !important;
 }
 .fi-global-search-input:focus-within {
     border-color: #00E1FF !important;
-    box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.15) !important;
+    box-shadow: 0 0 0 3px rgba(0, 225, 255, 0.12) !important;
 }
 
-/* ── Notifications ───────────────────────────── */
+/* ═══════════════════════════════════════════════
+   NOTIFICATIONS
+   ═══════════════════════════════════════════════ */
 .fi-notification {
+    border-radius: 0.75rem !important;
     border-left: 4px solid #00E1FF !important;
 }
 
-/* ── Modal ────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   MODALS
+   ═══════════════════════════════════════════════ */
 .fi-modal-heading {
     color: #00105E !important;
     font-weight: 700 !important;
 }
-
-/* ── Widget table heading ────────────────────── */
-.fi-wi-table .fi-ta-header-cell {
-    background-color: #00105E !important;
-    color: #ffffff !important;
+.fi-modal-content {
+    border-radius: 1rem !important;
 }
 
-/* ── Tabs ─────────────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   TABS
+   ═══════════════════════════════════════════════ */
 .fi-tabs-tab-active {
     border-color: #00E1FF !important;
     color: #00105E !important;
+    font-weight: 600 !important;
 }
 
-/* ── Empty state ─────────────────────────────── */
+/* ═══════════════════════════════════════════════
+   EMPTY STATE
+   ═══════════════════════════════════════════════ */
 .fi-ta-empty-state-heading {
     color: #00105E !important;
     font-weight: 700 !important;
@@ -290,13 +468,34 @@
     color: #64748b !important;
 }
 
-/* ── Pagination ──────────────────────────────── */
-.fi-pagination-item-active {
+/* ═══════════════════════════════════════════════
+   PAGINATION
+   ═══════════════════════════════════════════════ */
+.fi-pagination-item-active,
+.fi-pagination-item-active * {
     background-color: #00105E !important;
     color: #ffffff !important;
 }
 
-/* ── Footer accent bar ───────────────────────── */
+/* ═══════════════════════════════════════════════
+   INFOLIST (View pages)
+   ═══════════════════════════════════════════════ */
+.fi-in-entry-wrp > dt,
+.fi-in-entry-wrp label {
+    color: #64748b !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.68rem !important;
+    letter-spacing: 0.06em !important;
+}
+.fi-in-text {
+    color: #0f172a !important;
+    font-weight: 500 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER ACCENT
+   ═══════════════════════════════════════════════ */
 .fi-body::after {
     content: '';
     position: fixed;
@@ -304,7 +503,52 @@
     left: 0;
     right: 0;
     height: 3px;
-    background: linear-gradient(90deg, #00105E, #00E1FF, #00105E);
+    background: linear-gradient(90deg, #00105E 0%, #00E1FF 50%, #00105E 100%);
     z-index: 50;
     pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR (sidebar)
+   ═══════════════════════════════════════════════ */
+.fi-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.fi-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+.fi-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+}
+.fi-sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* ═══════════════════════════════════════════════
+   DROPDOWN MENUS
+   ═══════════════════════════════════════════════ */
+.fi-dropdown-panel {
+    border-radius: 0.75rem !important;
+    box-shadow: 0 8px 30px rgba(0, 16, 94, 0.12) !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+/* ═══════════════════════════════════════════════
+   ACTION GROUPS
+   ═══════════════════════════════════════════════ */
+.fi-ac-group-btn {
+    border-radius: 0.5rem !important;
+}
+
+/* ═══════════════════════════════════════════════
+   TOPBAR: Sidebar toggle icon (hamburger)
+   ═══════════════════════════════════════════════ */
+.fi-sidebar-open-btn,
+.fi-sidebar-close-btn {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+.fi-sidebar-open-btn:hover,
+.fi-sidebar-close-btn:hover {
+    color: #00E1FF !important;
 }
