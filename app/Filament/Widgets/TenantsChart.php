@@ -4,11 +4,12 @@ namespace App\Filament\Widgets;
 
 use App\Models\Tenant;
 use Filament\Widgets\ChartWidget;
-use Illuminate\Support\Carbon;
 
 class TenantsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Iglesias Registradas';
+    protected static ?string $heading = 'Crecimiento de Iglesias';
+
+    protected static ?string $description = 'Nuevas iglesias registradas por mes';
 
     protected static ?int $sort = 2;
 
@@ -20,8 +21,10 @@ class TenantsChart extends ChartWidget
             $date = now()->subMonths($monthsAgo);
             return [
                 'month' => $date->translatedFormat('M Y'),
-                'count' => Tenant::where('created_at', '>=', $date->startOfMonth())
+                'new' => Tenant::where('created_at', '>=', $date->startOfMonth())
                     ->where('created_at', '<', $date->copy()->endOfMonth())
+                    ->count(),
+                'total' => Tenant::where('created_at', '<', $date->copy()->endOfMonth())
                     ->count(),
             ];
         });
@@ -29,11 +32,24 @@ class TenantsChart extends ChartWidget
         return [
             'datasets' => [
                 [
-                    'label' => 'Nuevas Iglesias',
-                    'data' => $months->pluck('count')->toArray(),
-                    'backgroundColor' => 'rgba(99, 102, 241, 0.2)',
-                    'borderColor' => 'rgb(99, 102, 241)',
+                    'label' => 'Acumulado',
+                    'data' => $months->pluck('total')->toArray(),
+                    'backgroundColor' => 'rgba(0, 16, 94, 0.08)',
+                    'borderColor' => '#00105E',
+                    'pointBackgroundColor' => '#00105E',
+                    'pointRadius' => 3,
                     'fill' => true,
+                    'tension' => 0.3,
+                ],
+                [
+                    'label' => 'Nuevas',
+                    'data' => $months->pluck('new')->toArray(),
+                    'backgroundColor' => 'rgba(0, 225, 255, 0.15)',
+                    'borderColor' => '#00E1FF',
+                    'pointBackgroundColor' => '#00E1FF',
+                    'pointRadius' => 4,
+                    'fill' => true,
+                    'tension' => 0.3,
                 ],
             ],
             'labels' => $months->pluck('month')->toArray(),

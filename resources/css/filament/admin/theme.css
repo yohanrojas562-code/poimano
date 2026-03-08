@@ -1,66 +1,310 @@
 /*
- * Poimano Admin - Filament Custom Theme
- * Colores: Fondo blanco, títulos #00105E, acentos #00E1FF, texto #000000
+ * ═══════════════════════════════════════════════
+ *  POIMANO ADMIN — Filament Custom Theme
+ *  Navy: #00105E  |  Cyan: #00E1FF
+ *  White: #FFFFFF |  Black: #000000
+ * ═══════════════════════════════════════════════
  */
 
-/* Forzar fondo blanco predominante */
-.fi-body {
-    --gray-50: 249, 250, 251;
-    --gray-100: 243, 244, 246;
-    --gray-200: 229, 231, 235;
-    --gray-300: 209, 213, 219;
-    --gray-400: 156, 163, 175;
-    --gray-500: 107, 114, 128;
-    --gray-600: 75, 85, 99;
-    --gray-700: 55, 65, 81;
-    --gray-800: 31, 41, 55;
-    --gray-900: 17, 24, 39;
-    --gray-950: 3, 7, 18;
+/* ── Login Page ─────────────────────────────── */
+.fi-simple-layout {
+    background: linear-gradient(135deg, #00105E 0%, #001a8c 50%, #00105E 100%) !important;
+}
+.fi-simple-main {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 16, 94, 0.25) !important;
+    border-radius: 1rem !important;
+}
+.fi-simple-layout .fi-logo {
+    color: #ffffff !important;
 }
 
-/* Sidebar con fondo blanco limpio */
+/* ── Sidebar ────────────────────────────────── */
 .fi-sidebar {
-    background-color: #ffffff !important;
-    border-right: 1px solid #e5e7eb !important;
+    background-color: #00105E !important;
+    border-right: none !important;
 }
 
-/* Sidebar header */
+/* Brand / Logo */
 .fi-sidebar-header {
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    padding: 1.25rem 1rem !important;
+}
+.fi-sidebar-header a,
+.fi-sidebar-header span,
+.fi-sidebar-header .fi-logo * {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    font-size: 1.25rem !important;
+    letter-spacing: -0.025em !important;
 }
 
-/* Brand name en navy */
-.fi-sidebar-header span {
-    color: #00105E !important;
-    font-weight: 700;
+/* Nav group labels */
+.fi-sidebar-group-label {
+    color: rgba(255, 255, 255, 0.4) !important;
+    font-size: 0.65rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    font-weight: 600 !important;
+}
+.fi-sidebar-group-button {
+    color: rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Sidebar nav items */
+/* Nav items — default state */
 .fi-sidebar-item a {
-    color: #374151 !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 0.5rem !important;
+    transition: all 0.15s ease !important;
+    margin: 0.125rem 0.5rem !important;
+}
+.fi-sidebar-item-icon {
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
+/* Nav items — hover */
 .fi-sidebar-item a:hover {
-    background-color: #f3f4f6 !important;
-    color: #00105E !important;
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+.fi-sidebar-item a:hover .fi-sidebar-item-icon {
+    color: #00E1FF !important;
 }
 
-.fi-sidebar-item-active a {
-    background-color: #E6E8F2 !important;
-    color: #00105E !important;
+/* Nav items — active */
+.fi-sidebar-item-active > a,
+.fi-sidebar-item-active > a:hover {
+    background-color: rgba(0, 225, 255, 0.12) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
 }
-
-/* Iconos activos con cyan */
 .fi-sidebar-item-active .fi-sidebar-item-icon {
     color: #00E1FF !important;
 }
 
-/* Dashboard heading */
+/* Sidebar footer / collapse button */
+.fi-sidebar-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ── Topbar ─────────────────────────────────── */
+.fi-topbar {
+    background-color: #ffffff !important;
+    border-bottom: 2px solid #00105E !important;
+    box-shadow: 0 1px 3px rgba(0, 16, 94, 0.06) !important;
+}
+.fi-topbar nav {
+    background-color: #ffffff !important;
+}
+
+/* ── Page Headers ───────────────────────────── */
 .fi-header-heading {
+    color: #00105E !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.025em !important;
+}
+.fi-header-subheading {
+    color: #64748b !important;
+}
+
+/* ── Breadcrumbs ────────────────────────────── */
+.fi-breadcrumbs li {
+    color: #64748b !important;
+}
+.fi-breadcrumbs a {
+    color: #00105E !important;
+}
+.fi-breadcrumbs a:hover {
+    color: #00E1FF !important;
+}
+
+/* ── Cards / Sections ───────────────────────── */
+.fi-section {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden !important;
+}
+.fi-section-header {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+.fi-section-header-heading {
+    color: #00105E !important;
+    font-weight: 700 !important;
+}
+.fi-section-header-description {
+    color: #64748b !important;
+}
+
+/* ── Stats Overview Widgets ─────────────────── */
+.fi-wi-stats-overview-stat {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.2s ease !important;
+    position: relative;
+    overflow: hidden;
+}
+.fi-wi-stats-overview-stat::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00105E, #00E1FF);
+}
+.fi-wi-stats-overview-stat:hover {
+    border-color: #00E1FF !important;
+    box-shadow: 0 4px 12px rgba(0, 225, 255, 0.1) !important;
+    transform: translateY(-1px);
+}
+.fi-wi-stats-overview-stat-value {
+    color: #00105E !important;
+    font-weight: 800 !important;
+    font-size: 1.875rem !important;
+}
+.fi-wi-stats-overview-stat-label {
+    color: #64748b !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.05em !important;
+}
+.fi-wi-stats-overview-stat-description {
+    color: #94a3b8 !important;
+}
+
+/* ── Chart Widget ───────────────────────────── */
+.fi-wi-chart {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+}
+.fi-wi-chart-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+.fi-wi-chart-heading {
+    color: #00105E !important;
+    font-weight: 700 !important;
+}
+
+/* ── Tables ──────────────────────────────────── */
+.fi-ta-header-cell {
+    background-color: #00105E !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.05em !important;
+    padding: 0.875rem 1rem !important;
+}
+.fi-ta-header-cell button,
+.fi-ta-header-cell span {
+    color: #ffffff !important;
+}
+/* Sort icon in table headers */
+.fi-ta-header-cell .fi-ta-header-cell-sort-icon {
+    color: #00E1FF !important;
+}
+.fi-ta-row:hover td {
+    background-color: rgba(0, 225, 255, 0.04) !important;
+}
+.fi-ta-row:nth-child(even) td {
+    background-color: #f8fafc;
+}
+
+/* Table container border */
+.fi-ta-content {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.75rem !important;
+    overflow: hidden !important;
+}
+
+/* ── Buttons ─────────────────────────────────── */
+.fi-btn-primary,
+.fi-btn[style*="--c-500:var(--primary-500)"] {
+    transition: all 0.15s ease !important;
+}
+.fi-btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(0, 16, 94, 0.3) !important;
+}
+
+/* ── Badges ──────────────────────────────────── */
+.fi-badge {
+    font-weight: 600 !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* ── Forms ────────────────────────────────────── */
+.fi-fo-field-wrp label {
+    color: #00105E !important;
+    font-weight: 600 !important;
+}
+.fi-input:focus-within {
+    border-color: #00E1FF !important;
+    box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.2) !important;
+}
+.fi-fo-field-wrp .fi-input-wrp {
+    border-radius: 0.5rem !important;
+}
+
+/* ── Global Search ───────────────────────────── */
+.fi-global-search-input {
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 0.5rem !important;
+}
+.fi-global-search-input:focus-within {
+    border-color: #00E1FF !important;
+    box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.15) !important;
+}
+
+/* ── Notifications ───────────────────────────── */
+.fi-notification {
+    border-left: 4px solid #00E1FF !important;
+}
+
+/* ── Modal ────────────────────────────────────── */
+.fi-modal-heading {
+    color: #00105E !important;
+    font-weight: 700 !important;
+}
+
+/* ── Widget table heading ────────────────────── */
+.fi-wi-table .fi-ta-header-cell {
+    background-color: #00105E !important;
+    color: #ffffff !important;
+}
+
+/* ── Tabs ─────────────────────────────────────── */
+.fi-tabs-tab-active {
+    border-color: #00E1FF !important;
     color: #00105E !important;
 }
 
-/* Stats widget icons */
-.fi-wi-stats-overview-stat-icon {
-    color: #00E1FF !important;
+/* ── Empty state ─────────────────────────────── */
+.fi-ta-empty-state-heading {
+    color: #00105E !important;
+    font-weight: 700 !important;
+}
+.fi-ta-empty-state-description {
+    color: #64748b !important;
+}
+
+/* ── Pagination ──────────────────────────────── */
+.fi-pagination-item-active {
+    background-color: #00105E !important;
+    color: #ffffff !important;
+}
+
+/* ── Footer accent bar ───────────────────────── */
+.fi-body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #00105E, #00E1FF, #00105E);
+    z-index: 50;
+    pointer-events: none;
 }

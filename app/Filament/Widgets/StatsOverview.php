@@ -19,21 +19,35 @@ class StatsOverview extends BaseWidget
         $suspendedTenants = Tenant::where('status', 'suspended')->count();
         $totalPlans = Plan::where('is_active', true)->count();
 
+        $activePercent = $totalTenants > 0
+            ? round(($activeTenants / $totalTenants) * 100)
+            : 0;
+
         return [
             Stat::make('Total Iglesias', $totalTenants)
-                ->description('Iglesias registradas')
+                ->description("{$activePercent}% activas")
                 ->descriptionIcon('heroicon-m-building-office-2')
                 ->color('primary')
-                ->chart($this->getMonthlyTenantChart()),
+                ->chart($this->getMonthlyTenantChart())
+                ->extraAttributes([
+                    'class' => 'cursor-pointer',
+                    'wire:click' => "\$dispatch('setStatusFilter', { filter: '' })",
+                ]),
 
-            Stat::make('Iglesias Activas', $activeTenants)
-                ->description("{$trialTenants} en prueba")
+            Stat::make('Activas', $activeTenants)
+                ->description('Iglesias operando')
                 ->descriptionIcon('heroicon-m-check-circle')
-                ->color('success'),
+                ->color('success')
+                ->chart(array_fill(0, 6, $activeTenants)),
+
+            Stat::make('En Prueba', $trialTenants)
+                ->description('Periodo de evaluación')
+                ->descriptionIcon('heroicon-m-clock')
+                ->color('info'),
 
             Stat::make('Suspendidas', $suspendedTenants)
-                ->description('Iglesias suspendidas')
-                ->descriptionIcon('heroicon-m-pause-circle')
+                ->description($suspendedTenants > 0 ? 'Requieren atención' : 'Todo en orden')
+                ->descriptionIcon($suspendedTenants > 0 ? 'heroicon-m-exclamation-triangle' : 'heroicon-m-shield-check')
                 ->color($suspendedTenants > 0 ? 'warning' : 'success'),
 
             Stat::make('Planes Activos', $totalPlans)
@@ -45,13 +59,10 @@ class StatsOverview extends BaseWidget
 
     private function getMonthlyTenantChart(): array
     {
-        // Simple growth chart based on monthly registrations
-        $months = collect(range(5, 0))->map(function ($monthsAgo) {
+        return collect(range(5, 0))->map(function ($monthsAgo) {
             return Tenant::where('created_at', '>=', now()->subMonths($monthsAgo)->startOfMonth())
                 ->where('created_at', '<', now()->subMonths($monthsAgo)->endOfMonth())
                 ->count();
-        });
-
-        return $months->toArray();
+        })->toArray();
     }
 }

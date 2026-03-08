@@ -7,6 +7,8 @@ use App\Models\Plan;
 use App\Models\Tenant;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -27,6 +29,36 @@ class TenantResource extends Resource
     protected static ?string $navigationGroup = 'Gestión de Tenants';
 
     protected static ?int $navigationSort = 1;
+
+    protected static ?string $recordTitleAttribute = 'church_name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['church_name', 'pastor_name', 'email', 'slug'];
+    }
+
+    public static function getGlobalSearchResultDetails(\Illuminate\Database\Eloquent\Model $record): array
+    {
+        return [
+            'Pastor' => $record->pastor_name ?? '—',
+            'Estado' => match ($record->status) {
+                'active' => 'Activo',
+                'trial' => 'Prueba',
+                'suspended' => 'Suspendido',
+                default => $record->status,
+            },
+        ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) static::getModel()::count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return static::getModel()::count() > 10 ? 'success' : 'info';
+    }
 
     public static function form(Form $form): Form
     {
@@ -219,6 +251,77 @@ class TenantResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make('Información de la Iglesia')
+                    ->icon('heroicon-o-building-office-2')
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('church_name')
+                            ->label('Nombre de la Iglesia')
+                            ->size(Infolists\Components\TextEntry\TextEntrySize::Large)
+                            ->weight('bold')
+                            ->columnSpan(2),
+                        Infolists\Components\TextEntry::make('status')
+                            ->label('Estado')
+                            ->badge()
+                            ->color(fn (string $state): string => match ($state) {
+                                'active' => 'success',
+                                'trial' => 'info',
+                                'suspended' => 'warning',
+                                'cancelled' => 'danger',
+                                default => 'gray',
+                            })
+                            ->formatStateUsing(fn (string $state): string => match ($state) {
+                                'active' => 'Activo',
+                                'trial' => 'Prueba',
+                                'suspended' => 'Suspendido',
+                                'cancelled' => 'Cancelado',
+                                default => $state,
+                            }),
+                        Infolists\Components\TextEntry::make('slug')
+                            ->label('Subdominio')
+                            ->formatStateUsing(fn (string $state): string => "{$state}.poimano.localhost")
+                            ->icon('heroicon-o-globe-alt')
+                            ->copyable()
+                            ->color('primary'),
+                        Infolists\Components\TextEntry::make('plan.name')
+                            ->label('Plan')
+                            ->badge()
+                            ->placeholder('Sin plan'),
+                        Infolists\Components\TextEntry::make('created_at')
+                            ->label('Fecha de Registro')
+                            ->dateTime('d/m/Y H:i')
+                            ->icon('heroicon-o-calendar'),
+                    ]),
+                Infolists\Components\Section::make('Contacto del Pastor')
+                    ->icon('heroicon-o-user')
+                    ->columns(2)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('pastor_name')
+                            ->label('Nombre del Pastor')
+                            ->placeholder('No registrado')
+                            ->icon('heroicon-o-user'),
+                        Infolists\Components\TextEntry::make('email')
+                            ->label('Correo Electrónico')
+                            ->placeholder('No registrado')
+                            ->icon('heroicon-o-envelope')
+                            ->copyable(),
+                        Infolists\Components\TextEntry::make('phone')
+                            ->label('Teléfono')
+                            ->placeholder('No registrado')
+                            ->icon('heroicon-o-phone'),
+                        Infolists\Components\TextEntry::make('address')
+                            ->label('Dirección')
+                            ->placeholder('No registrada')
+                            ->icon('heroicon-o-map-pin')
+                            ->columnSpanFull(),
+                    ]),
+            ]);
+    }
+
     public static function getRelations(): array
     {
         return [];
@@ -229,6 +332,7 @@ class TenantResource extends Resource
         return [
             'index' => Pages\ListTenants::route('/'),
             'create' => Pages\CreateTenant::route('/create'),
+            'view' => Pages\ViewTenant::route('/{record}'),
             'edit' => Pages\EditTenant::route('/{record}/edit'),
         ];
     }

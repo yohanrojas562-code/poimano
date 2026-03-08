@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\TenantResource;
 use App\Models\Tenant;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,13 +23,28 @@ class LatestTenants extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('church_name')
                     ->label('Iglesia')
-                    ->weight('bold'),
+                    ->weight('bold')
+                    ->icon('heroicon-o-building-office-2')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('pastor_name')
-                    ->label('Pastor'),
+                    ->label('Pastor')
+                    ->icon('heroicon-o-user')
+                    ->placeholder('—'),
+                Tables\Columns\TextColumn::make('email')
+                    ->label('Email')
+                    ->icon('heroicon-o-envelope')
+                    ->placeholder('—')
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Subdominio')
                     ->formatStateUsing(fn (string $state): string => "{$state}.poimano.localhost")
-                    ->color('primary'),
+                    ->color('primary')
+                    ->copyable()
+                    ->copyMessage('Subdominio copiado'),
+                Tables\Columns\TextColumn::make('plan.name')
+                    ->label('Plan')
+                    ->badge()
+                    ->placeholder('Sin plan'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estado')
                     ->badge()
@@ -47,7 +63,13 @@ class LatestTenants extends BaseWidget
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Registrada')
-                    ->since(),
+                    ->since()
+                    ->tooltip(fn (Tenant $record): string => $record->created_at->format('d/m/Y H:i')),
+            ])
+            ->actions([
+                Tables\Actions\Action::make('ver')
+                    ->icon('heroicon-o-eye')
+                    ->url(fn (Tenant $record): string => TenantResource::getUrl('view', ['record' => $record])),
             ])
             ->paginated(false);
     }

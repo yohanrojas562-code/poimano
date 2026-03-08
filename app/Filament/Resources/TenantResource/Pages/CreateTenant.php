@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\TenantResource\Pages;
 
 use App\Filament\Resources\TenantResource;
+use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class CreateTenant extends CreateRecord
 {
@@ -17,12 +18,26 @@ class CreateTenant extends CreateRecord
 
     protected function afterCreate(): void
     {
+        set_time_limit(120);
+
         $tenant = $this->record;
 
         // Create subdomain for the tenant
         $tenant->domains()->create([
             'domain' => $tenant->slug,
         ]);
+
+        // Create admin user inside the tenant's database
+        $tenant->run(function () use ($tenant) {
+            User::create([
+                'name' => $tenant->pastor_name ?? 'Administrador',
+                'email' => $tenant->email ?? $tenant->slug . '@poimano.app',
+                'password' => Hash::make('password'),
+                'role' => 'admin',
+                'phone' => $tenant->phone,
+                'is_active' => true,
+            ]);
+        });
     }
 
     protected function getCreatedNotificationTitle(): ?string

@@ -8,12 +8,25 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.tsx',
-                'resources/css/filament/admin/theme.css',
             ],
             refresh: true,
+            detectTls: false,
         }),
         react(),
     ],
+    server: {
+        host: '0.0.0.0',
+        port: 5173,
+        strictPort: true,
+        hmr: {
+            host: '127.0.0.1',
+            port: 5173,
+            protocol: 'ws',
+        },
+        cors: {
+            origin: '*',
+        },
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js'),
