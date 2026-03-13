@@ -6,29 +6,94 @@
  */
 
 /* ═══════════════════════════════════════════════
-   LOGIN PAGE
+   LOGIN PAGE — Two Column Custom Layout
    ═══════════════════════════════════════════════ */
+
+/* Override default simple layout for custom login */
 .fi-simple-layout {
-    background: linear-gradient(160deg, #00105E 0%, #00195f 40%, #002080 100%) !important;
+    background: transparent !important;
+    padding: 0 !important;
+    max-width: none !important;
 }
 .fi-simple-layout::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 30% 20%, rgba(0,225,255,0.08) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 80%, rgba(0,225,255,0.05) 0%, transparent 50%);
-    pointer-events: none;
+    display: none !important;
 }
 .fi-simple-main {
-    background: #ffffff !important;
-    border-radius: 1.25rem !important;
-    box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.4) !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
     border: none !important;
+    max-width: none !important;
+    padding: 0 !important;
 }
-.fi-simple-layout .fi-logo,
-.fi-simple-layout .fi-logo * {
+.fi-simple-layout .fi-logo {
+    display: none !important;
+}
+
+/* Form inputs on blue background */
+.fi-simple-page .fi-input,
+.fi-simple-page input[type="email"],
+.fi-simple-page input[type="password"],
+.fi-simple-page input[type="text"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
     color: #ffffff !important;
-    font-weight: 800 !important;
+}
+.fi-simple-page .fi-input::placeholder,
+.fi-simple-page input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+.fi-simple-page .fi-input:focus,
+.fi-simple-page input:focus {
+    border-color: #00E1FF !important;
+    box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.2) !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Labels */
+.fi-simple-page .fi-fo-field-wrp label,
+.fi-simple-page .fi-fo-field-wrp .fi-fo-field-wrp-label label {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Checkbox / Remember me */
+.fi-simple-page .fi-checkbox-input {
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+.fi-simple-page .fi-checkbox-label,
+.fi-simple-page .fi-fo-field-wrp .text-sm {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Login button */
+.fi-simple-page .fi-btn-primary,
+.fi-simple-page .fi-btn {
+    background: linear-gradient(135deg, #00E1FF 0%, #00b8d4 100%) !important;
+    color: #00105E !important;
+    font-weight: 700 !important;
+    border: none !important;
+    border-radius: 0.75rem !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 16px rgba(0, 225, 255, 0.3) !important;
+}
+.fi-simple-page .fi-btn-primary:hover,
+.fi-simple-page .fi-btn:hover {
+    background: linear-gradient(135deg, #33e8ff 0%, #00d4f5 100%) !important;
+    box-shadow: 0 8px 24px rgba(0, 225, 255, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Validation errors */
+.fi-simple-page .fi-fo-field-wrp-error-message {
+    color: #ff8a8a !important;
+}
+
+/* Input wrapper icon (eye icon for password) */
+.fi-simple-page .fi-input-wrp-suffix button,
+.fi-simple-page .fi-input-wrp-suffix svg {
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
 /* ═══════════════════════════════════════════════

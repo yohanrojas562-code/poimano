@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->domains(config('tenancy.central_domains'))
-            ->login()
+            ->login(\App\Filament\Pages\Auth\Login::class)
             ->brandName('Poimano')
             ->brandLogo(function () {
                 try {
