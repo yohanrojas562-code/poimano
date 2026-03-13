@@ -37,7 +37,7 @@ class LatestTenants extends BaseWidget
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Subdominio')
-                    ->formatStateUsing(fn (string $state): string => "{$state}.poimano.localhost")
+                    ->formatStateUsing(fn (string $state): string => "{$state}." . parse_url(config('app.url'), PHP_URL_HOST))
                     ->color('primary')
                     ->copyable()
                     ->copyMessage('Subdominio copiado'),

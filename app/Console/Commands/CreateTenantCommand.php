@@ -24,7 +24,8 @@ class CreateTenantCommand extends Command
         $pastor = $this->option('pastor');
 
         $this->info("Creando iglesia: {$name}");
-        $this->info("Subdominio: {$slug}.poimano.localhost");
+        $domain = parse_url(config('app.url'), PHP_URL_HOST);
+        $this->info("Subdominio: {$slug}.{$domain}");
 
         if (Tenant::find($slug)) {
             $this->error("Ya existe un tenant con el ID '{$slug}'");
@@ -51,13 +52,14 @@ class CreateTenantCommand extends Command
             [
                 ['ID', $tenant->id],
                 ['Iglesia', $tenant->church_name],
-                ['Subdominio', $slug . '.poimano.localhost'],
+                ['Subdominio', $slug . '.' . $domain],
                 ['BD', 'tenant_' . $slug],
                 ['Estado', $tenant->status],
             ]
         );
 
-        $this->info("Accede en: http://{$slug}.poimano.localhost:8000");
+        $scheme = parse_url(config('app.url'), PHP_URL_SCHEME);
+        $this->info("Accede en: {$scheme}://{$slug}.{$domain}");
 
         return 0;
     }

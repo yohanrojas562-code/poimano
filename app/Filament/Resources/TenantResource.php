@@ -88,8 +88,8 @@ class TenantResource extends Resource
                             ->maxLength(100)
                             ->unique(ignoreRecord: true)
                             ->alphaDash()
-                            ->prefix('http://')
-                            ->suffix('.poimano.localhost')
+                            ->prefix(str_contains(config('app.url'), 'https') ? 'https://' : 'http://')
+                            ->suffix('.' . parse_url(config('app.url'), PHP_URL_HOST))
                             ->helperText('Se genera del nombre. Puedes editarlo si lo necesitas.'),
 
                         Forms\Components\Hidden::make('id')
@@ -163,7 +163,7 @@ class TenantResource extends Resource
                 Tables\Columns\TextColumn::make('slug')
                     ->label('Subdominio')
                     ->searchable()
-                    ->formatStateUsing(fn (string $state): string => "{$state}.poimano.localhost")
+                    ->formatStateUsing(fn (string $state): string => "{$state}." . parse_url(config('app.url'), PHP_URL_HOST))
                     ->color('primary')
                     ->copyable(),
 
@@ -283,7 +283,7 @@ class TenantResource extends Resource
                             }),
                         Infolists\Components\TextEntry::make('slug')
                             ->label('Subdominio')
-                            ->formatStateUsing(fn (string $state): string => "{$state}.poimano.localhost")
+                            ->formatStateUsing(fn (string $state): string => "{$state}." . parse_url(config('app.url'), PHP_URL_HOST))
                             ->icon('heroicon-o-globe-alt')
                             ->copyable()
                             ->color('primary'),
