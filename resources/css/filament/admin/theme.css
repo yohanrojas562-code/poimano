@@ -58,9 +58,10 @@
 .fi-simple-page input[type="email"],
 .fi-simple-page input[type="password"],
 .fi-simple-page input[type="text"] {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #00105E !important;
+    caret-color: #00105E !important;
 }
 .fi-simple-page .fi-input::placeholder,
 .fi-simple-page input::placeholder {
@@ -70,7 +71,8 @@
 .fi-simple-page input:focus {
     border-color: #00E1FF !important;
     box-shadow: 0 0 0 2px rgba(0, 225, 255, 0.2) !important;
-    background: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #00105E !important;
 }
 
 /* Labels */

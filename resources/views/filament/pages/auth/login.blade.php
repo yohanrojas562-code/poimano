@@ -282,7 +282,7 @@
 
             <p class="poimano-login__brand-subtitle">Panel de Administración</p>
             <p class="poimano-login__brand-desc">
-                Gestiona tenants, configura planes, monitorea métricas y administra toda la plataforma desde un solo lugar centralizado.
+                Gestión centralizada de la plataforma.
             </p>
 
             <div class="poimano-login__features">
