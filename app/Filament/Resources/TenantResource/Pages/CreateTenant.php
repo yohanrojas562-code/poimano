@@ -21,6 +21,7 @@ class CreateTenant extends CreateRecord
         set_time_limit(120);
 
         $tenant = $this->record;
+        $adminPassword = $this->data['admin_password'] ?? 'password';
 
         // Create subdomain for the tenant
         $tenant->domains()->create([
@@ -28,11 +29,11 @@ class CreateTenant extends CreateRecord
         ]);
 
         // Create admin user inside the tenant's database
-        $tenant->run(function () use ($tenant) {
+        $tenant->run(function () use ($tenant, $adminPassword) {
             User::create([
                 'name' => $tenant->pastor_name ?? 'Administrador',
                 'email' => $tenant->email ?? $tenant->slug . '@poimano.app',
-                'password' => Hash::make('password'),
+                'password' => Hash::make($adminPassword),
                 'role' => 'admin',
                 'phone' => $tenant->phone,
                 'is_active' => true,

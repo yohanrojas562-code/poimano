@@ -140,6 +140,23 @@ class TenantResource extends Resource
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
+
+                Forms\Components\Section::make('Credenciales del Administrador')
+                    ->description('Usuario que administrará esta iglesia')
+                    ->icon('heroicon-o-key')
+                    ->schema([
+                        Forms\Components\TextInput::make('admin_password')
+                            ->label('Contraseña del Admin')
+                            ->password()
+                            ->revealable()
+                            ->required()
+                            ->minLength(8)
+                            ->default('password')
+                            ->helperText('Se creará un usuario con el email del pastor. Mínimo 8 caracteres.')
+                            ->dehydrated(false),
+                    ])
+                    ->columns(2)
+                    ->visibleOn('create'),
             ]);
     }
 
