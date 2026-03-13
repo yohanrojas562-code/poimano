@@ -33,8 +33,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Poimano')
             ->brandLogo(function () {
                 try {
-                    $logo = Setting::get('platform_logo');
-                    return $logo ? asset('storage/' . $logo) : null;
+                    $logoWhite = Setting::get('platform_logo_white');
+                    return $logoWhite ? asset('storage/' . $logoWhite) : null;
                 } catch (\Throwable) {
                     return null;
                 }
@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
                     return null;
                 }
             })
-            ->brandLogoHeight('2rem')
+            ->brandLogoHeight('3rem')
             ->favicon(function () {
                 try {
                     $favicon = Setting::get('platform_favicon');
