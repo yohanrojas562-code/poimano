@@ -14,8 +14,19 @@
     background: transparent !important;
     padding: 0 !important;
     max-width: none !important;
+    min-height: 100vh !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 .fi-simple-layout::before {
+    display: none !important;
+}
+/* Hide any Filament header/nav on login */
+.fi-simple-layout > header,
+.fi-simple-layout > nav,
+.fi-simple-layout .fi-simple-header {
     display: none !important;
 }
 .fi-simple-main {
@@ -25,6 +36,18 @@
     border: none !important;
     max-width: none !important;
     padding: 0 !important;
+    flex: 1 !important;
+    display: flex !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+.fi-simple-main-ctn {
+    width: 100% !important;
+    max-width: none !important;
+    flex: 1 !important;
+    display: flex !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 .fi-simple-layout .fi-logo {
     display: none !important;

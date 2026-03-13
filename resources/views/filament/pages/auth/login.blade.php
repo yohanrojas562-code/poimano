@@ -1,11 +1,15 @@
 <style>
-    /* ====== Login Two-Column Layout ====== */
+    /* ====== Login Two-Column Layout — Full Viewport ====== */
     .poimano-login {
         display: flex;
-        min-height: 100vh;
-        width: 100%;
+        height: 100vh;
+        width: 100vw;
         margin: 0;
         padding: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        left: 0;
     }
 
     /* Left branding column */
@@ -18,7 +22,7 @@
         justify-content: center;
         position: relative;
         overflow: hidden;
-        padding: 3rem;
+        padding: 2rem 2.5rem;
     }
     @media (min-width: 1024px) {
         .poimano-login__brand { display: flex; }
@@ -44,38 +48,38 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        max-width: 24rem;
+        max-width: 22rem;
     }
     .poimano-login__brand-logo {
-        height: 6rem; width: auto;
-        margin-bottom: 2rem;
+        height: 5rem; width: auto;
+        margin-bottom: 1.25rem;
         filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
     .poimano-login__brand-title {
-        font-size: 3rem;
+        font-size: 2.5rem;
         font-weight: 900;
         letter-spacing: -0.03em;
         color: #00105E;
-        margin-bottom: 2rem;
+        margin-bottom: 1.25rem;
         line-height: 1;
     }
     .poimano-login__brand-line {
-        width: 4rem; height: 4px;
+        width: 3.5rem; height: 3px;
         background: linear-gradient(90deg, #00105E, #00E1FF);
         border-radius: 9999px;
-        margin-bottom: 2rem;
+        margin-bottom: 1.25rem;
     }
     .poimano-login__brand-subtitle {
-        font-size: 1.125rem;
+        font-size: 1rem;
         font-weight: 600;
         color: #00105E;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0.5rem;
     }
     .poimano-login__brand-desc {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         color: #6b7280;
-        line-height: 1.6;
-        margin-bottom: 2.5rem;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
     }
 
     /* Feature cards */
@@ -83,41 +87,66 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.625rem;
     }
     .poimano-login__feature {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: 0.625rem;
         text-align: left;
     }
     .poimano-login__feature-icon {
         flex-shrink: 0;
-        width: 2.5rem; height: 2.5rem;
+        width: 2.25rem; height: 2.25rem;
         background: rgba(0,16,94,0.05);
-        border-radius: 0.75rem;
+        border-radius: 0.625rem;
         display: flex;
         align-items: center;
         justify-content: center;
     }
     .poimano-login__feature-icon svg {
-        width: 1.25rem; height: 1.25rem;
+        width: 1.125rem; height: 1.125rem;
         color: #00105E;
     }
     .poimano-login__feature-title {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         font-weight: 600;
         color: #00105E;
         margin: 0;
     }
     .poimano-login__feature-text {
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: #9ca3af;
         margin: 0;
     }
-    .poimano-login__brand-footer {
-        margin-top: 3rem;
+
+    /* Bible verse */
+    .poimano-login__verse {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-left: 3px solid #00E1FF;
+        background: rgba(0,16,94,0.03);
+        border-radius: 0 0.5rem 0.5rem 0;
+    }
+    .poimano-login__verse p {
         font-size: 0.75rem;
+        font-style: italic;
+        color: #4b5563;
+        line-height: 1.5;
+        margin: 0;
+    }
+    .poimano-login__verse cite {
+        display: block;
+        font-size: 0.7rem;
+        color: #9ca3af;
+        font-style: normal;
+        font-weight: 600;
+        margin-top: 0.375rem;
+    }
+
+    .poimano-login__brand-footer {
+        margin-top: 1.5rem;
+        font-size: 0.7rem;
         color: #d1d5db;
     }
 
@@ -130,7 +159,7 @@
         background: linear-gradient(135deg, #00105E 0%, #001570 50%, #002080 100%);
         position: relative;
         overflow: hidden;
-        padding: 3rem 1.5rem;
+        padding: 2rem 1.5rem;
     }
     .poimano-login__form-deco {
         position: absolute; inset: 0; pointer-events: none;
@@ -161,25 +190,25 @@
         position: relative;
         z-index: 10;
         width: 100%;
-        max-width: 28rem;
+        max-width: 26rem;
     }
 
     /* Mobile logo */
     .poimano-login__mobile-logo {
         display: block;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     @media (min-width: 1024px) {
         .poimano-login__mobile-logo { display: none; }
     }
     .poimano-login__mobile-logo img {
-        height: 4rem; width: auto;
-        margin: 0 auto 1rem;
+        height: 3.5rem; width: auto;
+        margin: 0 auto 0.75rem;
         filter: brightness(0) invert(1);
     }
     .poimano-login__mobile-logo h1 {
-        font-size: 1.875rem;
+        font-size: 1.75rem;
         font-weight: 900;
         color: #ffffff;
         letter-spacing: -0.03em;
@@ -188,16 +217,16 @@
     /* Header */
     .poimano-login__header {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     .poimano-login__header h2 {
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         font-weight: 700;
         color: #ffffff;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.375rem;
     }
     .poimano-login__header p {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
         color: rgba(255,255,255,0.5);
     }
 
@@ -207,7 +236,7 @@
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
         border-radius: 1rem;
-        padding: 2rem;
+        padding: 1.5rem;
         border: 1px solid rgba(255,255,255,0.1);
         box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
     }
@@ -216,8 +245,8 @@
     .poimano-login__mobile-footer {
         display: block;
         text-align: center;
-        margin-top: 2rem;
-        font-size: 0.75rem;
+        margin-top: 1.5rem;
+        font-size: 0.7rem;
         color: rgba(255,255,255,0.3);
     }
     @media (min-width: 1024px) {
@@ -250,9 +279,9 @@
 
             <div class="poimano-login__brand-line"></div>
 
-            <p class="poimano-login__brand-subtitle">Plataforma SaaS para Iglesias</p>
+            <p class="poimano-login__brand-subtitle">Panel de Administración</p>
             <p class="poimano-login__brand-desc">
-                Administra tu iglesia de forma moderna y eficiente. Gestiona miembros, grupos, eventos, finanzas y mucho más desde un solo lugar.
+                Gestiona tenants, configura planes, monitorea métricas y administra toda la plataforma desde un solo lugar centralizado.
             </p>
 
             <div class="poimano-login__features">
@@ -261,8 +290,8 @@
                         <x-heroicon-o-building-office-2 />
                     </div>
                     <div>
-                        <p class="poimano-login__feature-title">Multi-Iglesia</p>
-                        <p class="poimano-login__feature-text">Cada iglesia con su propio espacio</p>
+                        <p class="poimano-login__feature-title">Multi-Tenant</p>
+                        <p class="poimano-login__feature-text">Gestión centralizada de todas las iglesias</p>
                     </div>
                 </div>
                 <div class="poimano-login__feature">
@@ -271,7 +300,7 @@
                     </div>
                     <div>
                         <p class="poimano-login__feature-title">Seguro y Confiable</p>
-                        <p class="poimano-login__feature-text">Datos protegidos y respaldados</p>
+                        <p class="poimano-login__feature-text">Datos aislados y respaldados por tenant</p>
                     </div>
                 </div>
                 <div class="poimano-login__feature">
@@ -280,9 +309,15 @@
                     </div>
                     <div>
                         <p class="poimano-login__feature-title">Reportes y Métricas</p>
-                        <p class="poimano-login__feature-text">Información en tiempo real</p>
+                        <p class="poimano-login__feature-text">Monitoreo en tiempo real de la plataforma</p>
                     </div>
                 </div>
+            </div>
+
+            {{-- Versículo --}}
+            <div class="poimano-login__verse">
+                <p>"Aunque ande en valle de sombra de muerte, no temeré mal alguno, porque tú estarás conmigo; tu vara y tu cayado me infundirán aliento."</p>
+                <cite>— Salmos 23:4</cite>
             </div>
 
             <p class="poimano-login__brand-footer">&copy; {{ date('Y') }} Poimano. Todos los derechos reservados.</p>
@@ -309,7 +344,7 @@
 
             {{-- Header --}}
             <div class="poimano-login__header">
-                <h2>Bienvenido de vuelta</h2>
+                <h2>Panel de Administración</h2>
                 <p>Ingresa tus credenciales para continuar</p>
             </div>
 
