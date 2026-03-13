@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\Setting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -30,7 +31,31 @@ class AdminPanelProvider extends PanelProvider
             ->domains(config('tenancy.central_domains'))
             ->login()
             ->brandName('Poimano')
-            ->favicon(asset('favicon.ico'))
+            ->brandLogo(function () {
+                try {
+                    $logo = Setting::get('platform_logo');
+                    return $logo ? asset('storage/' . $logo) : null;
+                } catch (\Throwable) {
+                    return null;
+                }
+            })
+            ->darkModeBrandLogo(function () {
+                try {
+                    $logoWhite = Setting::get('platform_logo_white');
+                    return $logoWhite ? asset('storage/' . $logoWhite) : null;
+                } catch (\Throwable) {
+                    return null;
+                }
+            })
+            ->brandLogoHeight('2rem')
+            ->favicon(function () {
+                try {
+                    $favicon = Setting::get('platform_favicon');
+                    return $favicon ? asset('storage/' . $favicon) : asset('favicon.ico');
+                } catch (\Throwable) {
+                    return asset('favicon.ico');
+                }
+            })
             ->colors([
                 'primary' => [
                     50 => '#E6E8F2',
@@ -95,6 +120,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->sidebarCollapsibleOnDesktop()
+            ->sidebarWidth('16rem')
             ->maxContentWidth('full')
             ->renderHook(
                 'panels::head.end',
