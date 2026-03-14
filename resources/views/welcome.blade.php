@@ -655,7 +655,7 @@
                 Plataforma para Iglesias
             </div>
             <h1 class="hero-title">
-                Gestiona tu iglesia de forma <span>moderna y eficiente</span>
+                Administra la iglesia de forma <span>moderna y eficiente</span>
             </h1>
             <p class="hero-subtitle">
                 Poimano es la plataforma todo-en-uno para administrar miembros, grupos, eventos, finanzas y mucho más. Tu iglesia merece herramientas del siglo XXI.
