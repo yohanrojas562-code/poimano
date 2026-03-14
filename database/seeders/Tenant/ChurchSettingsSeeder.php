@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Tenant;
 
+use App\Modules\Church\Domain\Models\ChurchSetting;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ChurchSettingsSeeder extends Seeder
 {
@@ -13,12 +13,19 @@ class ChurchSettingsSeeder extends Seeder
     {
         $tenant = tenant();
 
-        // Configuraciones iniciales de la iglesia.
-        // Se activará cuando el módulo Church tenga su tabla church_settings.
-        // Ejemplo de datos que se seedearán:
-        // - timezone: America/Bogota
-        // - currency: USD
-        // - language: es
-        // - service_days: ['domingo']
+        ChurchSetting::updateOrCreate(
+            ['id' => 1],
+            [
+                'church_name'     => $tenant->church_name ?? 'Mi Iglesia',
+                'email'           => $tenant->email ?? null,
+                'phone'           => $tenant->phone ?? null,
+                'address'         => $tenant->address ?? null,
+                'primary_color'   => '#00105E',
+                'secondary_color' => '#00E1FF',
+                'language'        => 'es',
+                'currency'        => 'USD',
+                'timezone'        => 'America/Bogota',
+            ],
+        );
     }
 }
