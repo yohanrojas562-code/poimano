@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\MemberController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
@@ -51,5 +52,7 @@ Route::middleware([
                 ],
             ]);
         });
+
+        Route::resource('members', MemberController::class);
     });
 });

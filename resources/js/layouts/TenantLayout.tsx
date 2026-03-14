@@ -13,6 +13,8 @@ import {
     ChevronLeft,
     ChevronRight,
     LogOut,
+    CheckCircle2,
+    XCircle,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
@@ -35,7 +37,7 @@ const navigation: NavItem[] = [
 ]
 
 export default function TenantLayout({ children }: { children: React.ReactNode }) {
-    const { tenant, auth } = usePage<PageProps>().props
+    const { tenant, auth, flash } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
 
     return (
@@ -60,7 +62,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 {/* Navigation */}
                 <nav className="flex-1 space-y-1 px-2 py-4">
                     {navigation.map((item) => {
-                        const isActive = window.location.pathname === item.href
+                        const isActive = window.location.pathname === item.href || window.location.pathname.startsWith(item.href + '/')
                         return (
                             <Link
                                 key={item.href}
@@ -113,6 +115,20 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                         </Link>
                     </div>
                 </header>
+
+                {/* Flash messages */}
+                {flash?.success && (
+                    <div className="mx-6 mt-4 flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+                        <CheckCircle2 className="h-4 w-4 shrink-0" />
+                        {flash.success}
+                    </div>
+                )}
+                {flash?.error && (
+                    <div className="mx-6 mt-4 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                        <XCircle className="h-4 w-4 shrink-0" />
+                        {flash.error}
+                    </div>
+                )}
 
                 {/* Page Content */}
                 <main className="flex-1 overflow-y-auto bg-gray-50 p-6">

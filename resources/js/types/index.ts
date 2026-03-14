@@ -25,4 +25,8 @@ export type PageProps<T extends Record<string, unknown> = Record<string, unknown
         user: User
     }
     tenant?: Tenant
+    flash?: {
+        success?: string
+        error?: string
+    }
 }

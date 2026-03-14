@@ -32,6 +32,8 @@ class Member extends Model
         'user_id', 'notes', 'is_active',
     ];
 
+    protected $appends = ['full_name', 'complete_name'];
+
     protected $casts = [
         'birth_date' => 'date',
         'baptism_date' => 'date',
