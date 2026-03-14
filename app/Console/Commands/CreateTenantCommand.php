@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Tenant;
+use App\Core\Tenants\Domain\Models\Tenant;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 

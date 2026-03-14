@@ -1,7 +1,7 @@
 @php
     $logo = null;
     try {
-        $logoPath = \App\Models\Setting::get('platform_logo');
+        $logoPath = \App\Core\Settings\Domain\Models\Setting::get('platform_logo');
         if ($logoPath) {
             $logo = asset('storage/' . $logoPath);
         }

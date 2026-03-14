@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Plan;
-use App\Models\Tenant;
+use App\Core\Plans\Domain\Models\Plan;
+use App\Core\Tenants\Domain\Models\Tenant;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Tenant;
+use App\Core\Tenants\Domain\Models\Tenant;
 use Filament\Widgets\ChartWidget;
 
 class TenantsChart extends ChartWidget

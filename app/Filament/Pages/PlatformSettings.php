@@ -2,7 +2,7 @@
 
 namespace App\Filament\Pages;
 
-use App\Models\Setting;
+use App\Core\Settings\Domain\Models\Setting;
 use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Concerns\InteractsWithForms;

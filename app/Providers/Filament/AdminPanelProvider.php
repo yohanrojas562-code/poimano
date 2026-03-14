@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Models\Setting;
+use App\Core\Settings\Domain\Models\Setting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;

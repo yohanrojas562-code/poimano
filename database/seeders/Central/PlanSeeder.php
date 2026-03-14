@@ -2,7 +2,7 @@
 
 namespace Database\Seeders\Central;
 
-use App\Models\Plan;
+use App\Core\Plans\Domain\Models\Plan;
 use Illuminate\Database\Seeder;
 
 class PlanSeeder extends Seeder

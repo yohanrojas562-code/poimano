@@ -11,7 +11,7 @@
     @php
         $favicon = null;
         try {
-            $fav = \App\Models\Setting::get('platform_favicon');
+            $fav = \App\Core\Settings\Domain\Models\Setting::get('platform_favicon');
             $favicon = $fav ? asset('storage/' . $fav) : asset('favicon.ico');
         } catch (\Throwable) {
             $favicon = asset('favicon.ico');
@@ -608,9 +608,9 @@
         $logo = null;
         $logoWhite = null;
         try {
-            $l = \App\Models\Setting::get('platform_logo');
+            $l = \App\Core\Settings\Domain\Models\Setting::get('platform_logo');
             if ($l) $logo = asset('storage/' . $l);
-            $lw = \App\Models\Setting::get('platform_logo_white');
+            $lw = \App\Core\Settings\Domain\Models\Setting::get('platform_logo_white');
             if ($lw) $logoWhite = asset('storage/' . $lw);
         } catch (\Throwable) {}
     @endphp

@@ -2,8 +2,8 @@
 
 namespace App\Filament\Widgets;
 
+use App\Core\Tenants\Domain\Models\Tenant;
 use App\Filament\Resources\TenantResource;
-use App\Models\Tenant;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;

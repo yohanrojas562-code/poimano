@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Core\Plans\Domain\Models\Plan;
+use App\Core\Tenants\Domain\Models\Tenant;
 use App\Filament\Resources\TenantResource\Pages;
-use App\Models\Plan;
-use App\Models\Tenant;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;

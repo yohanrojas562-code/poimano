@@ -9,7 +9,17 @@ use Illuminate\Support\ServiceProvider;
 class ModuleServiceProvider extends ServiceProvider
 {
     /**
-     * List of module service providers to register.
+     * List of Core (SaaS platform) service providers.
+     */
+    protected array $core = [
+        \App\Core\Tenants\Infrastructure\Providers\TenantsServiceProvider::class,
+        \App\Core\Plans\Infrastructure\Providers\PlansServiceProvider::class,
+        \App\Core\Settings\Infrastructure\Providers\SettingsServiceProvider::class,
+        \App\Core\Billing\Infrastructure\Providers\BillingServiceProvider::class,
+    ];
+
+    /**
+     * List of module (church/tenant) service providers.
      */
     protected array $modules = [
         \App\Modules\Church\Infrastructure\Providers\ChurchServiceProvider::class,
@@ -25,6 +35,10 @@ class ModuleServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        foreach ($this->core as $provider) {
+            $this->app->register($provider);
+        }
+
         foreach ($this->modules as $module) {
             $this->app->register($module);
         }

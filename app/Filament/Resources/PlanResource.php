@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Core\Plans\Domain\Models\Plan;
 use App\Filament\Resources\PlanResource\Pages;
-use App\Models\Plan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
