@@ -14,8 +14,9 @@ class SuperAdminSeeder extends Seeder
             ['email' => 'admin@poimano.com'],
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('password'),
-                'is_admin' => true,
+                'password' => Hash::make('Admin2026'),
+                'role' => 'admin',
+                'is_active' => true,
                 'email_verified_at' => now(),
             ],
         );

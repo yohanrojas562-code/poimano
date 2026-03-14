@@ -152,8 +152,7 @@ class TenantResource extends Resource
                             ->required()
                             ->minLength(8)
                             ->default('password')
-                            ->helperText('Se creará un usuario con el email del pastor. Mínimo 8 caracteres.')
-                            ->dehydrated(false),
+                            ->helperText('Se creará un usuario con el email del pastor. Mínimo 8 caracteres.'),
                     ])
                     ->columns(2)
                     ->visibleOn('create'),
