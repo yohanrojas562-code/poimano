@@ -185,7 +185,18 @@ return [
      */
     'migration_parameters' => [
         '--force' => true, // This needs to be true to run migrations in production.
-        '--path' => [database_path('migrations/tenant')],
+        '--path' => [
+            database_path('migrations/tenant'),
+            database_path('migrations/tenant/members'),
+            database_path('migrations/tenant/groups'),
+            database_path('migrations/tenant/attendance'),
+            database_path('migrations/tenant/finance'),
+            database_path('migrations/tenant/communication'),
+            database_path('migrations/tenant/activities'),
+            database_path('migrations/tenant/projects'),
+            database_path('migrations/tenant/reports'),
+            database_path('migrations/tenant/church'),
+        ],
         '--realpath' => true,
     ],
 
