@@ -30,14 +30,21 @@ class CreateTenant extends CreateRecord
 
         // Create admin user inside the tenant's database
         $tenant->run(function () use ($tenant, $adminPassword) {
-            User::create([
-                'name' => $tenant->pastor_name ?? 'Administrador',
-                'email' => $tenant->email ?? $tenant->slug . '@poimano.app',
-                'password' => Hash::make($adminPassword),
-                'role' => 'admin',
-                'phone' => $tenant->phone,
-                'is_active' => true,
-            ]);
+            $email = $tenant->email ?? $tenant->slug . '@poimano.app';
+
+            $user = User::where('email', $email)->first();
+            if ($user) {
+                $user->update(['password' => Hash::make($adminPassword)]);
+            } else {
+                User::create([
+                    'name' => $tenant->pastor_name ?? 'Administrador',
+                    'email' => $email,
+                    'password' => Hash::make($adminPassword),
+                    'role' => 'admin',
+                    'phone' => $tenant->phone,
+                    'is_active' => true,
+                ]);
+            }
         });
     }
 
