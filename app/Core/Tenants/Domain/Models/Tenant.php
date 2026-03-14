@@ -40,4 +40,10 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     {
         return $this->belongsTo(Plan::class, 'plan_id');
     }
+
+    public function hasModule(string $slug): bool
+    {
+        return $this->plan
+            && $this->plan->modules()->where('slug', $slug)->exists();
+    }
 }

@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
+
+        $middleware->alias([
+            'module' => \App\Http\Middleware\CheckModuleAccess::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
