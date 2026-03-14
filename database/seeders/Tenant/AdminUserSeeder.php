@@ -22,7 +22,8 @@ class AdminUserSeeder extends Seeder
                 [
                     'name' => $tenant->pastor_name ?? $tenant->church_name,
                     'password' => Hash::make('Poimano2026!'),
-                    'is_admin' => true,
+                    'role' => 'admin',
+                    'is_active' => true,
                 ]
             );
         }
