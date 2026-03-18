@@ -6,7 +6,7 @@ $app = require __DIR__ . '/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
-$tenant = App\Models\Tenant::find('lasalle');
+$tenant = App\Core\Tenants\Domain\Models\Tenant::find('lasalle');
 $tenant->run(function () {
     $s = App\Modules\Church\Domain\Models\ChurchSetting::first();
     if ($s) {
