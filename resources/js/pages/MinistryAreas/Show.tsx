@@ -4,14 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table'
+
 import {
     ArrowLeft,
     Pencil,
@@ -43,7 +36,7 @@ export default function Show({ area }: ShowProps) {
         <TenantLayout>
             <Head title={area.name} />
 
-            <div className="mx-auto max-w-4xl space-y-6 p-6">
+            <div className="mx-auto max-w-7xl space-y-6 p-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
@@ -54,9 +47,14 @@ export default function Show({ area }: ShowProps) {
                         </Link>
                         <div>
                             <h1 className="text-2xl font-bold text-navy">{area.name}</h1>
-                            <Badge variant={area.is_active ? 'default' : 'secondary'} className="mt-1">
-                                {area.is_active ? 'Activa' : 'Inactiva'}
-                            </Badge>
+                            <div className="flex items-center gap-2 mt-1">
+                                <Badge variant={area.is_active ? 'default' : 'secondary'}>
+                                    {area.is_active ? 'Activa' : 'Inactiva'}
+                                </Badge>
+                                {area.description && (
+                                    <span className="text-sm text-muted-foreground">{area.description}</span>
+                                )}
+                            </div>
                         </div>
                     </div>
                     <Link href={`/ministry-areas/${area.id}/edit`}>
@@ -67,123 +65,104 @@ export default function Show({ area }: ShowProps) {
                     </Link>
                 </div>
 
-                {/* Descripción */}
-                {area.description && (
-                    <Card>
+                {/* 2 columnas: Liderazgo + Red */}
+                <div className="grid gap-6 lg:grid-cols-2">
+                    {/* Columna izquierda - Estructura de Liderazgo */}
+                    <Card className="h-fit">
                         <CardHeader>
-                            <CardTitle className="text-navy">Descripción</CardTitle>
+                            <CardTitle className="text-navy">Estructura de Liderazgo</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-muted-foreground whitespace-pre-wrap">{area.description}</p>
-                        </CardContent>
-                    </Card>
-                )}
-
-                {/* Estructura de Liderazgo */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="text-navy">Estructura de Liderazgo</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            {roleConfig.map((role) => {
-                                const member = area[role.key as keyof MinistryArea] as MinistryArea['coordinator']
-                                return (
-                                    <div key={role.key} className={`rounded-lg border p-4 ${role.bgColor}`}>
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <role.icon className={`h-5 w-5 ${role.color}`} />
-                                            <h3 className="font-semibold text-sm">{role.label}</h3>
-                                        </div>
-                                        <p className="text-xs text-muted-foreground mb-3">{role.description}</p>
-                                        <Separator className="mb-3" />
-                                        {member ? (
-                                            <Link
-                                                href={`/members/${member.id}`}
-                                                className="inline-flex items-center gap-2 text-sm font-medium text-navy hover:underline"
-                                            >
-                                                <User className="h-4 w-4" />
-                                                {member.first_name} {member.last_name}
-                                            </Link>
-                                        ) : (
-                                            <p className="text-sm text-muted-foreground italic">Sin asignar</p>
-                                        )}
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                {/* Red Ministerial */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2 text-navy">
-                            <FishSymbol className="h-5 w-5 text-cyan" />
-                            Red Ministerial
-                        </CardTitle>
-                        <p className="text-sm text-muted-foreground">
-                            Miembros que pertenecen a la red de esta área ministerial ({networkMembers.length})
-                        </p>
-                    </CardHeader>
-                    <CardContent>
-                        {networkMembers.length === 0 ? (
-                            <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
-                                <FishSymbol className="mx-auto h-8 w-8 text-gray-300" />
-                                <p className="mt-2 text-sm text-muted-foreground">
-                                    Aún no hay miembros en esta red ministerial.
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                    Para agregar miembros, edita un miembro y selecciona esta área en la sección "Red Ministerial".
-                                </p>
-                            </div>
-                        ) : (
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Nombre</TableHead>
-                                        <TableHead>Categoría</TableHead>
-                                        <TableHead>Estado</TableHead>
-                                        <TableHead>Teléfono</TableHead>
-                                        <TableHead>Correo</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {networkMembers.map((member) => (
-                                        <TableRow key={member.id}>
-                                            <TableCell>
+                            <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
+                                {roleConfig.map((role) => {
+                                    const member = area[role.key as keyof MinistryArea] as MinistryArea['coordinator']
+                                    return (
+                                        <div key={role.key} className={`rounded-lg border p-3 ${role.bgColor}`}>
+                                            <div className="flex items-center gap-2 mb-1.5">
+                                                <role.icon className={`h-4 w-4 ${role.color}`} />
+                                                <h3 className="font-semibold text-xs">{role.label}</h3>
+                                            </div>
+                                            <p className="text-[11px] text-muted-foreground mb-2 leading-tight">{role.description}</p>
+                                            <Separator className="mb-2" />
+                                            {member ? (
                                                 <Link
                                                     href={`/members/${member.id}`}
-                                                    className="font-medium text-navy hover:underline"
+                                                    className="inline-flex items-center gap-1.5 text-sm font-medium text-navy hover:underline"
                                                 >
+                                                    <User className="h-3.5 w-3.5" />
                                                     {member.first_name} {member.last_name}
                                                 </Link>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Badge variant="outline" className="text-xs">
+                                            ) : (
+                                                <p className="text-sm text-muted-foreground italic">Sin asignar</p>
+                                            )}
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Columna derecha - Red Ministerial */}
+                    <Card className="h-fit">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-navy">
+                                <FishSymbol className="h-5 w-5 text-cyan" />
+                                Red Ministerial
+                            </CardTitle>
+                            <p className="text-sm text-muted-foreground">
+                                Miembros en la red ({networkMembers.length})
+                            </p>
+                        </CardHeader>
+                        <CardContent>
+                            {networkMembers.length === 0 ? (
+                                <div className="rounded-lg border border-dashed border-gray-300 p-6 text-center">
+                                    <FishSymbol className="mx-auto h-8 w-8 text-gray-300" />
+                                    <p className="mt-2 text-sm text-muted-foreground">
+                                        Aún no hay miembros en esta red.
+                                    </p>
+                                    <p className="text-xs text-muted-foreground mt-1">
+                                        Edita un miembro y selecciona esta área en "Red Ministerial".
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                                    {networkMembers.map((member) => (
+                                        <Link
+                                            key={member.id}
+                                            href={`/members/${member.id}`}
+                                            className="flex items-center justify-between rounded-lg border p-3 hover:bg-muted/50 transition-colors"
+                                        >
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-cyan/10 text-cyan shrink-0">
+                                                    <User className="h-4 w-4" />
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-medium text-navy truncate">
+                                                        {member.first_name} {member.last_name}
+                                                    </p>
+                                                    <p className="text-xs text-muted-foreground truncate">
+                                                        {member.phone ?? member.email ?? '—'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                                                <Badge variant="outline" className="text-[10px]">
                                                     {categoryLabels[member.category] ?? member.category}
                                                 </Badge>
-                                            </TableCell>
-                                            <TableCell>
                                                 <Badge
                                                     variant={member.member_status === 'activo' ? 'default' : 'secondary'}
-                                                    className="text-xs"
+                                                    className="text-[10px]"
                                                 >
                                                     {statusLabels[member.member_status] ?? member.member_status}
                                                 </Badge>
-                                            </TableCell>
-                                            <TableCell className="text-sm text-muted-foreground">
-                                                {member.phone ?? '—'}
-                                            </TableCell>
-                                            <TableCell className="text-sm text-muted-foreground">
-                                                {member.email ?? '—'}
-                                            </TableCell>
-                                        </TableRow>
+                                            </div>
+                                        </Link>
                                     ))}
-                                </TableBody>
-                            </Table>
-                        )}
-                    </CardContent>
-                </Card>
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </div>
 
                 {/* Info */}
                 <Card>
