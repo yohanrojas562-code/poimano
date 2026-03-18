@@ -66,6 +66,7 @@ class HandleInertiaRequests extends Middleware
                             'slogan'          => $s->slogan,
                             'primary_color'   => $s->primary_color,
                             'secondary_color' => $s->secondary_color,
+                            'text_color'      => $s->text_color ?? '#FFFFFF',
                         ];
                     }
                 }

@@ -14,6 +14,7 @@ class ChurchSetting extends Model
         'slogan',
         'primary_color',
         'secondary_color',
+        'text_color',
         'language',
         'currency',
         'timezone',

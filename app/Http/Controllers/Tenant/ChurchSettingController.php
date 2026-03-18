@@ -43,6 +43,7 @@ class ChurchSettingController extends Controller
             'slogan'          => ['nullable', 'string', 'max:255'],
             'primary_color'   => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'secondary_color' => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
+            'text_color'      => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'language'        => ['required', 'string', 'in:es,en,pt'],
             'currency'        => ['required', 'string', 'in:USD,COP,MXN,EUR,BRL,PEN,ARS,CLP'],
             'timezone'        => ['required', 'string', 'max:50'],
@@ -84,6 +85,9 @@ class ChurchSettingController extends Controller
             $file->move($logoDir, $filename);
 
             $validated['logo'] = 'church-logos/' . $tenantId . '/' . $filename;
+        } else {
+            // No logo change — preserve existing logo
+            unset($validated['logo']);
         }
 
         unset($validated['remove_logo']);

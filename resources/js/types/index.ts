@@ -26,6 +26,7 @@ export interface ChurchBranding {
     slogan: string | null
     primary_color: string
     secondary_color: string
+    text_color: string
 }
 
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {

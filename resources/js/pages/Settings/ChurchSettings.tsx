@@ -27,6 +27,9 @@ import {
     Link as LinkIcon,
     CalendarDays,
     BookOpen,
+    LayoutDashboard,
+    Users,
+    Home,
 } from 'lucide-react'
 import { type FormEvent, useState, useRef } from 'react'
 import type { PageProps } from '@/types'
@@ -38,6 +41,7 @@ interface ChurchSettings {
     slogan: string | null
     primary_color: string
     secondary_color: string
+    text_color: string
     language: string
     currency: string
     timezone: string
@@ -110,6 +114,7 @@ export default function ChurchSettingsPage() {
         slogan: settings.slogan ?? '',
         primary_color: settings.primary_color ?? '#00105E',
         secondary_color: settings.secondary_color ?? '#00E1FF',
+        text_color: settings.text_color ?? '#FFFFFF',
         language: settings.language ?? 'es',
         currency: settings.currency ?? 'USD',
         timezone: settings.timezone ?? 'America/Bogota',
@@ -157,7 +162,7 @@ export default function ChurchSettingsPage() {
         <TenantLayout>
             <Head title="Configuración de Iglesia" />
 
-            <form onSubmit={submit} className="mx-auto max-w-5xl space-y-6 p-6">
+            <form onSubmit={submit} className="mx-auto max-w-5xl space-y-6">
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
@@ -487,6 +492,24 @@ export default function ChurchSettingsPage() {
                                             />
                                         </div>
                                     </div>
+                                    <div className="space-y-1.5">
+                                        <Label htmlFor="text_color" className="text-xs">Color Texto del Menú</Label>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="color"
+                                                id="text_color"
+                                                value={data.text_color}
+                                                onChange={(e) => setData('text_color', e.target.value)}
+                                                className="h-9 w-12 cursor-pointer rounded border border-gray-200 p-0.5"
+                                            />
+                                            <Input
+                                                value={data.text_color}
+                                                onChange={(e) => setData('text_color', e.target.value)}
+                                                className="font-mono text-xs uppercase"
+                                                maxLength={7}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Preview */}
@@ -502,9 +525,24 @@ export default function ChurchSettingsPage() {
                                             {data.church_name || 'Mi Iglesia'}
                                         </span>
                                     </div>
+                                    <div className="mt-2 space-y-1 rounded-md p-2" style={{ backgroundColor: data.primary_color }}>
+                                        <div className="flex items-center gap-2 rounded px-2 py-1" style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}>
+                                            <LayoutDashboard className="h-3.5 w-3.5" style={{ color: data.secondary_color }} />
+                                            <span className="text-[10px] font-medium" style={{ color: data.secondary_color }}>Dashboard</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded px-2 py-1">
+                                            <Users className="h-3.5 w-3.5" style={{ color: data.text_color, opacity: 0.7 }} />
+                                            <span className="text-[10px]" style={{ color: data.text_color, opacity: 0.7 }}>Miembros</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 rounded px-2 py-1">
+                                            <Home className="h-3.5 w-3.5" style={{ color: data.text_color, opacity: 0.7 }} />
+                                            <span className="text-[10px]" style={{ color: data.text_color, opacity: 0.7 }}>Familias</span>
+                                        </div>
+                                    </div>
                                     <div className="mt-2 flex gap-2">
                                         <div className="h-8 flex-1 rounded" style={{ backgroundColor: data.primary_color }} />
                                         <div className="h-8 flex-1 rounded" style={{ backgroundColor: data.secondary_color }} />
+                                        <div className="h-8 flex-1 rounded border" style={{ backgroundColor: data.text_color }} />
                                     </div>
                                 </div>
 

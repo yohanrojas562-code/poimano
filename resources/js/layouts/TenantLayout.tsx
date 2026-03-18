@@ -68,7 +68,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                         <Church className="h-7 w-7 shrink-0" style={{ color: churchSettings?.secondary_color ?? '#00E1FF' }} />
                     )}
                     {!collapsed && (
-                        <span className="truncate text-sm font-semibold text-white">
+                        <span className="truncate text-sm font-semibold" style={{ color: churchSettings?.text_color ?? '#FFFFFF' }}>
                             {churchSettings?.church_name ?? tenant?.church_name ?? 'Poimano'}
                         </span>
                     )}
@@ -78,6 +78,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
                     {navigation.map((item) => {
                         const isActive = window.location.pathname === item.href || window.location.pathname.startsWith(item.href + '/')
+                        const textColor = churchSettings?.text_color ?? '#FFFFFF'
                         return (
                             <Link
                                 key={item.href}
@@ -85,9 +86,15 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                                 className={cn(
                                     'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
                                     isActive
-                                        ? 'bg-white/10 text-cyan'
-                                        : 'text-white/70 hover:bg-white/5 hover:text-white'
+                                        ? 'bg-white/10'
+                                        : 'hover:bg-white/5'
                                 )}
+                                style={{
+                                    color: isActive
+                                        ? (churchSettings?.secondary_color ?? '#00E1FF')
+                                        : textColor,
+                                    opacity: isActive ? 1 : 0.7,
+                                }}
                             >
                                 <item.icon className="h-5 w-5 shrink-0" />
                                 {!collapsed && <span>{item.label}</span>}
@@ -100,7 +107,8 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 <div className="shrink-0 border-t border-white/10 p-2">
                     <button
                         onClick={() => setCollapsed(!collapsed)}
-                        className="flex w-full items-center justify-center rounded-md p-2 text-white/50 hover:bg-white/5 hover:text-white"
+                        className="flex w-full items-center justify-center rounded-md p-2 hover:bg-white/5"
+                        style={{ color: churchSettings?.text_color ?? '#FFFFFF', opacity: 0.5 }}
                     >
                         {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
                     </button>
