@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Tenant\AuthController;
 use App\Http\Controllers\Tenant\FamilyController;
 use App\Http\Controllers\Tenant\MemberController;
+use App\Http\Controllers\Tenant\MinistryAreaController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
@@ -56,5 +57,6 @@ Route::middleware([
 
         Route::resource('members', MemberController::class);
         Route::resource('families', FamilyController::class);
+        Route::resource('ministry-areas', MinistryAreaController::class);
     });
 });
