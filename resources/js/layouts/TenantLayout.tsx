@@ -57,7 +57,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 style={{ backgroundColor: churchSettings?.primary_color ?? '#00105E' }}
             >
                 {/* Logo / Church */}
-                <div className="flex h-16 items-center gap-3 border-b border-white/10 px-4">
+                <div className="flex h-16 shrink-0 items-center gap-3 border-b border-white/10 px-4">
                     {churchSettings?.logo ? (
                         <img
                             src={churchSettings.logo}
@@ -75,7 +75,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 space-y-1 px-2 py-4">
+                <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
                     {navigation.map((item) => {
                         const isActive = window.location.pathname === item.href || window.location.pathname.startsWith(item.href + '/')
                         return (
@@ -97,7 +97,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 </nav>
 
                 {/* Footer */}
-                <div className="border-t border-white/10 p-2">
+                <div className="shrink-0 border-t border-white/10 p-2">
                     <button
                         onClick={() => setCollapsed(!collapsed)}
                         className="flex w-full items-center justify-center rounded-md p-2 text-white/50 hover:bg-white/5 hover:text-white"
@@ -110,7 +110,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
             {/* Main Content */}
             <div className="flex flex-1 flex-col overflow-hidden">
                 {/* Top Bar */}
-                <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
+                <header className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-6">
                     <div>
                         <h2 className="text-lg font-semibold text-black">
                             {/* Page title set by children */}

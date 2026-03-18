@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Modules\Church\Domain\Models\ChurchSetting;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -57,16 +57,33 @@ class ChurchSettingController extends Controller
             'remove_logo'     => ['nullable', 'boolean'],
         ]);
 
-        // Handle logo
+        $tenantId = tenant()->id;
+        $basePublic = base_path('storage/app/public');
+        $logoDir = $basePublic . '/church-logos/' . $tenantId;
+
+        // Handle logo removal
         if ($request->boolean('remove_logo') && $settings->logo) {
-            Storage::disk('public')->delete($settings->logo);
+            $oldPath = public_path('storage/' . ltrim($settings->logo, '/'));
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
             $validated['logo'] = null;
         } elseif ($request->hasFile('logo')) {
             // Delete old logo
             if ($settings->logo) {
-                Storage::disk('public')->delete($settings->logo);
+                $oldPath = public_path('storage/' . ltrim($settings->logo, '/'));
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
             }
-            $validated['logo'] = $request->file('logo')->store('church/logos', 'public');
+
+            // Save to central public storage (accessible via symlink)
+            File::ensureDirectoryExists($logoDir);
+            $file = $request->file('logo');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move($logoDir, $filename);
+
+            $validated['logo'] = 'church-logos/' . $tenantId . '/' . $filename;
         }
 
         unset($validated['remove_logo']);
