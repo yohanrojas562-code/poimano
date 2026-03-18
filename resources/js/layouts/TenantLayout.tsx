@@ -47,11 +47,11 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
     const [collapsed, setCollapsed] = useState(false)
 
     return (
-        <div className="flex h-screen overflow-hidden bg-white">
+        <div className="flex h-screen bg-white">
             {/* Sidebar */}
             <aside
                 className={cn(
-                    'flex flex-col text-white transition-all duration-300',
+                    'fixed inset-y-0 left-0 z-30 flex flex-col text-white transition-all duration-300',
                     collapsed ? 'w-16' : 'w-64'
                 )}
                 style={{ backgroundColor: churchSettings?.primary_color ?? '#00105E' }}
@@ -108,7 +108,7 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
             </aside>
 
             {/* Main Content */}
-            <div className="flex flex-1 flex-col overflow-hidden">
+            <div className={cn('flex flex-1 flex-col overflow-hidden', collapsed ? 'ml-16' : 'ml-64')} style={{ transition: 'margin-left 300ms' }}>
                 {/* Top Bar */}
                 <header className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-6">
                     <div>

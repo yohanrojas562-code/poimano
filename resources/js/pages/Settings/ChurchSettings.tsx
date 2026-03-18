@@ -533,22 +533,6 @@ export default function ChurchSettingsPage() {
                     </div>
                 </div>
 
-                {/* Footer Save */}
-                <div className="flex justify-end pt-2">
-                    <Button type="submit" disabled={processing} className="bg-navy hover:bg-navy/90">
-                        {processing ? (
-                            <>
-                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Guardando...
-                            </>
-                        ) : (
-                            <>
-                                <Save className="mr-2 h-4 w-4" />
-                                Guardar Cambios
-                            </>
-                        )}
-                    </Button>
-                </div>
             </form>
         </TenantLayout>
     )
