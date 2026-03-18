@@ -1,0 +1,2550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DOCUMENTACION_TECNICA.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%F0%9F%93%98-poimano--documentaci%C3%B3n-t%C3%A9cnica">📘 Poimano — Documentación Técnica</h1>
+<blockquote>
+<p><strong>SaaS Multi-Tenant para Gestión de Iglesias</strong>
+Versión: 1.0.0-alpha · Última actualización: 14 de marzo de 2026</p>
+</blockquote>
+<hr>
+<h2 id="%C3%ADndice">Índice</h2>
+<ol>
+<li><a href="#1-visi%C3%B3n-general">Visión General</a></li>
+<li><a href="#2-stack-tecnol%C3%B3gico">Stack Tecnológico</a></li>
+<li><a href="#3-arquitectura-del-sistema">Arquitectura del Sistema</a></li>
+<li><a href="#4-infraestructura-y-despliegue">Infraestructura y Despliegue</a></li>
+<li><a href="#5-multi-tenancy">Multi-Tenancy</a></li>
+<li><a href="#6-base-de-datos-central">Base de Datos Central</a></li>
+<li><a href="#7-base-de-datos-tenant">Base de Datos Tenant</a></li>
+<li><a href="#8-core-saas-plataforma">Core SaaS (Plataforma)</a></li>
+<li><a href="#9-sistema-modular-negocio">Sistema Modular (Negocio)</a></li>
+<li><a href="#10-panel-super-admin-filament">Panel Super Admin (Filament)</a></li>
+<li><a href="#11-frontend-tenant-react--inertia">Frontend Tenant (React + Inertia)</a></li>
+<li><a href="#12-autenticaci%C3%B3n-y-autorizaci%C3%B3n">Autenticación y Autorización</a></li>
+<li><a href="#13-rutas-del-sistema">Rutas del Sistema</a></li>
+<li><a href="#14-seeders-y-datos-iniciales">Seeders y Datos Iniciales</a></li>
+<li><a href="#15-estado-actual-por-m%C3%B3dulo">Estado Actual por Módulo</a></li>
+<li><a href="#16-estructura-de-archivos">Estructura de Archivos</a></li>
+<li><a href="#17-flujos-cr%C3%ADticos">Flujos Críticos</a></li>
+<li><a href="#18-roadmap-pendiente">Roadmap Pendiente</a></li>
+</ol>
+<hr>
+<h2 id="1-visi%C3%B3n-general">1. Visión General</h2>
+<p><strong>Poimano</strong> es una plataforma SaaS diseñada para la gestión integral de iglesias. Permite a cada iglesia (tenant) administrar miembros, familias, grupos, asistencia, finanzas, actividades, comunicaciones, proyectos y reportes desde su propio subdominio.</p>
+<p><strong>Propuesta de valor:</strong></p>
+<ul>
+<li>Una iglesia se registra → obtiene su subdominio (<code>miIglesia.poimano.com</code>)</li>
+<li>Se le asigna un plan de suscripción con módulos específicos habilitados</li>
+<li>Cada iglesia tiene su base de datos independiente (aislamiento total)</li>
+<li>Un super administrador gestiona todas las iglesias desde un panel centralizado</li>
+</ul>
+<p><strong>Modelo de negocio:</strong> 4 planes (Gratuito → Enterprise) con módulos desbloqueados progresivamente.</p>
+<hr>
+<h2 id="2-stack-tecnol%C3%B3gico">2. Stack Tecnológico</h2>
+<h3 id="backend">Backend</h3>
+<table>
+<thead>
+<tr>
+<th>Tecnología</th>
+<th>Versión</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PHP</strong></td>
+<td>8.3</td>
+<td>Lenguaje backend</td>
+</tr>
+<tr>
+<td><strong>Laravel</strong></td>
+<td>11.48</td>
+<td>Framework MVC principal</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong></td>
+<td>16</td>
+<td>Motor de base de datos (central + tenants)</td>
+</tr>
+<tr>
+<td><strong>stancl/tenancy</strong></td>
+<td>3.9</td>
+<td>Multi-tenancy database-per-tenant</td>
+</tr>
+<tr>
+<td><strong>Filament</strong></td>
+<td>3.3</td>
+<td>Panel administrativo del super admin</td>
+</tr>
+<tr>
+<td><strong>Inertia.js</strong></td>
+<td>2.0</td>
+<td>Bridge backend-frontend (server-side routing con SPA UX)</td>
+</tr>
+<tr>
+<td><strong>spatie/laravel-activitylog</strong></td>
+<td>4.12</td>
+<td>Auditoría y registro de cambios</td>
+</tr>
+<tr>
+<td><strong>predis/predis</strong></td>
+<td>3.4</td>
+<td>Cliente Redis para cache/session/queue</td>
+</tr>
+</tbody>
+</table>
+<h3 id="frontend">Frontend</h3>
+<table>
+<thead>
+<tr>
+<th>Tecnología</th>
+<th>Versión</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>React</strong></td>
+<td>19.2</td>
+<td>UI library (tenant frontend)</td>
+</tr>
+<tr>
+<td><strong>TypeScript</strong></td>
+<td>5.9</td>
+<td>Tipado estático para JavaScript</td>
+</tr>
+<tr>
+<td><strong>@inertiajs/react</strong></td>
+<td>2.3</td>
+<td>Adaptador React para Inertia.js</td>
+</tr>
+<tr>
+<td><strong>shadcn/ui</strong></td>
+<td>—</td>
+<td>Componentes UI basados en Radix UI</td>
+</tr>
+<tr>
+<td><strong>@tanstack/react-table</strong></td>
+<td>8.21</td>
+<td>Tablas con sorting, filtering, paginación</td>
+</tr>
+<tr>
+<td><strong>Recharts</strong></td>
+<td>3.8</td>
+<td>Gráficos y visualización de datos</td>
+</tr>
+<tr>
+<td><strong>Lucide React</strong></td>
+<td>0.577</td>
+<td>Sistema de iconos</td>
+</tr>
+<tr>
+<td><strong>Tailwind CSS</strong></td>
+<td>3.4</td>
+<td>Framework CSS utility-first</td>
+</tr>
+<tr>
+<td><strong>Vite</strong></td>
+<td>6.0</td>
+<td>Build tool y dev server con HMR</td>
+</tr>
+</tbody>
+</table>
+<h3 id="devops--infraestructura">DevOps / Infraestructura</h3>
+<table>
+<thead>
+<tr>
+<th>Tecnología</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ubuntu</strong> 24.04 (VPS Hostinger)</td>
+<td>Servidor de producción</td>
+</tr>
+<tr>
+<td><strong>Nginx</strong></td>
+<td>Servidor web / reverse proxy</td>
+</tr>
+<tr>
+<td><strong>Cloudflare</strong></td>
+<td>DNS + SSL wildcard (<code>*.poimano.com</code>)</td>
+</tr>
+<tr>
+<td><strong>GitHub</strong></td>
+<td>Repositorio de código</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>Control de versiones y deploy manual</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-arquitectura-del-sistema">3. Arquitectura del Sistema</h2>
+<h3 id="patr%C3%B3n-arquitect%C3%B3nico-ddd-lite--mvc--modular-monolith">Patrón Arquitectónico: DDD Lite + MVC + Modular Monolith</h3>
+<pre class="hljs"><code><div>┌─────────────────────────────────────────────────────────────┐
+│                    POIMANO PLATFORM                         │
+│                                                             │
+│  ┌──────────────────┐        ┌────────────────────────┐     │
+│  │  PANEL CENTRAL   │        │   FRONTEND TENANT      │     │
+│  │  (Filament PHP)  │        │   (React + Inertia)    │     │
+│  │                  │        │                        │     │
+│  │  poimano.com     │        │  {slug}.poimano.com    │     │
+│  │  /admin          │        │  /login /dashboard     │     │
+│  │                  │        │  /members /groups ...  │     │
+│  └────────┬─────────┘        └───────────┬────────────┘     │
+│           │                              │                  │
+│  ┌────────▼──────────────────────────────▼────────────┐     │
+│  │              LARAVEL 11 APPLICATION                │     │
+│  │                                                    │     │
+│  │  ┌──────────┐  ┌──────────────────────────────┐    │     │
+│  │  │  CORE    │  │         MODULES              │    │     │
+│  │  │  SaaS    │  │  (DDD Lite por módulo)       │    │     │
+│  │  │          │  │                              │    │     │
+│  │  │ Tenants  │  │  Church    │ Members ✅      │    │     │
+│  │  │ Plans    │  │  Groups    │ Attendance      │    │     │
+│  │  │ Billing  │  │  Finance   │ Activities      │    │     │
+│  │  │ Settings │  │  Comms     │ Projects        │    │     │
+│  │  │          │  │  Reports   │                 │    │     │
+│  │  └──────────┘  └──────────────────────────────┘    │     │
+│  │                                                    │     │
+│  │  ┌───────────────────────┐  ┌──────────────────┐   │     │
+│  │  │  stancl/tenancy 3.9  │  │  Middleware Stack │   │     │
+│  │  │  DB-per-tenant       │  │  SubdomainID      │   │     │
+│  │  │  Auto-migrate/seed   │  │  ModuleAccess     │   │     │
+│  │  └───────────────────────┘  └──────────────────┘   │     │
+│  └────────────────────────────────────────────────────┘     │
+│                                                             │
+│  ┌──────────────────┐    ┌────────────────────────────┐     │
+│  │  PostgreSQL 16   │    │    Redis (Cache/Session)   │     │
+│  │                  │    │                            │     │
+│  │  poimano_central │    │    Prefixed per tenant     │     │
+│  │  tenant_iglesia1 │    └────────────────────────────┘     │
+│  │  tenant_iglesia2 │                                       │
+│  │  tenant_...      │                                       │
+│  └──────────────────┘                                       │
+└─────────────────────────────────────────────────────────────┘
+</div></code></pre>
+<h3 id="capas-de-la-arquitectura">Capas de la Arquitectura</h3>
+<table>
+<thead>
+<tr>
+<th>Capa</th>
+<th>Descripción</th>
+<th>Ejemplo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Presentation</strong></td>
+<td>Interfaz de usuario (Filament o React/Inertia)</td>
+<td><code>Members/Index.tsx</code>, <code>TenantResource.php</code></td>
+</tr>
+<tr>
+<td><strong>Application</strong></td>
+<td>Casos de uso, validación, DTOs</td>
+<td><code>MemberController.php</code>, <code>AuthController.php</code></td>
+</tr>
+<tr>
+<td><strong>Domain</strong></td>
+<td>Modelos, reglas de negocio, eventos</td>
+<td><code>Member.php</code>, <code>Plan.php</code>, <code>Tenant.php</code></td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td>Repositorios, providers, persistencia</td>
+<td><code>TenancyServiceProvider.php</code>, migrations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tres-capas-de-datos">Tres Capas de Datos</h3>
+<ol>
+<li><strong>Central (compartida):</strong> Datos de la plataforma — tenants, planes, módulos, roles, permisos, países, templates</li>
+<li><strong>Shared (tablas centrales accedidas por tenants):</strong> Roles y permisos (definidos centralmente, relacionados desde tenant)</li>
+<li><strong>Tenant (aislada por iglesia):</strong> Usuarios locales, miembros, familias, configuración de iglesia, logs de auditoría</li>
+</ol>
+<hr>
+<h2 id="4-infraestructura-y-despliegue">4. Infraestructura y Despliegue</h2>
+<h3 id="servidor-de-producci%C3%B3n">Servidor de Producción</h3>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Proveedor</strong></td>
+<td>Hostinger VPS</td>
+</tr>
+<tr>
+<td><strong>IP</strong></td>
+<td>187.124.157.50</td>
+</tr>
+<tr>
+<td><strong>OS</strong></td>
+<td>Ubuntu 24.04 LTS</td>
+</tr>
+<tr>
+<td><strong>Web Server</strong></td>
+<td>Nginx</td>
+</tr>
+<tr>
+<td><strong>PHP</strong></td>
+<td>8.3 (PHP-FPM)</td>
+</tr>
+<tr>
+<td><strong>PostgreSQL</strong></td>
+<td>16</td>
+</tr>
+<tr>
+<td><strong>Ruta proyecto</strong></td>
+<td><code>/var/www/poimano</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dominio-y-dns">Dominio y DNS</h3>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dominio principal</strong></td>
+<td>poimano.com</td>
+</tr>
+<tr>
+<td><strong>DNS</strong></td>
+<td>Cloudflare</td>
+</tr>
+<tr>
+<td><strong>SSL</strong></td>
+<td>Wildcard <code>*.poimano.com</code> (Cloudflare)</td>
+</tr>
+<tr>
+<td><strong>Panel admin</strong></td>
+<td>https://poimano.com/admin</td>
+</tr>
+<tr>
+<td><strong>Subdominios tenant</strong></td>
+<td>https://{slug}.poimano.com</td>
+</tr>
+</tbody>
+</table>
+<h3 id="flujo-de-deploy">Flujo de Deploy</h3>
+<pre class="hljs"><code><div>Local: git push origin main
+  ↓
+VPS (manual por SSH):
+  cd /var/www/poimano
+  git pull origin main
+  composer install --no-dev
+  npm install &amp;&amp; npm run build
+  php artisan optimize:clear
+  php artisan optimize
+</div></code></pre>
+<hr>
+<h2 id="5-multi-tenancy">5. Multi-Tenancy</h2>
+<h3 id="estrategia-database-per-tenant-stancltenancy-39">Estrategia: Database-per-Tenant (stancl/tenancy 3.9)</h3>
+<p>Cada iglesia tiene su propia base de datos PostgreSQL. Esto garantiza:</p>
+<ul>
+<li><strong>Aislamiento total</strong> de datos entre iglesias</li>
+<li><strong>Escalabilidad</strong> independiente por tenant</li>
+<li><strong>Seguridad</strong> — imposible acceder datos de otra iglesia</li>
+<li><strong>Backup/restore</strong> independiente por iglesia</li>
+</ul>
+<h3 id="identificaci%C3%B3n-del-tenant">Identificación del Tenant</h3>
+<table>
+<thead>
+<tr>
+<th>Mecanismo</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Tipo</strong></td>
+<td>Subdomain-based</td>
+</tr>
+<tr>
+<td><strong>Middleware</strong></td>
+<td><code>InitializeTenancyBySubdomain</code></td>
+</tr>
+<tr>
+<td><strong>Flujo</strong></td>
+<td><code>iglesia1.poimano.com</code> → extrae <code>iglesia1</code> → busca en tabla <code>domains</code> → inicializa tenant context</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bootstrappers-activos">Bootstrappers Activos</h3>
+<table>
+<thead>
+<tr>
+<th>Bootstrapper</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DatabaseTenancyBootstrapper</code></td>
+<td>Cambia la conexión de BD activa al tenant</td>
+</tr>
+<tr>
+<td><code>CacheTenancyBootstrapper</code></td>
+<td>Prefija las claves de cache con el tenant ID</td>
+</tr>
+<tr>
+<td><code>FilesystemTenancyBootstrapper</code></td>
+<td>Aísla <code>storage/app/</code> por tenant</td>
+</tr>
+<tr>
+<td><code>QueueTenancyBootstrapper</code></td>
+<td>Adjunta tenant context a jobs en cola</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dominios-centrales-no-tenant">Dominios Centrales (no-tenant)</h3>
+<pre class="hljs"><code><div><span class="hljs-string">'central_domains'</span> =&gt; [<span class="hljs-string">'127.0.0.1'</span>, <span class="hljs-string">'localhost'</span>, <span class="hljs-string">'poimano.localhost'</span>, <span class="hljs-string">'poimano.com'</span>]
+</div></code></pre>
+<p>Estos dominios NO inicializan tenancy y sirven el panel central (Filament) y la landing page.</p>
+<h3 id="ciclo-de-vida-del-tenant">Ciclo de Vida del Tenant</h3>
+<pre class="hljs"><code><div>Crear Iglesia (Filament) → Evento TenancyCreated
+  ├─ Job: CreateDatabase      → CREATE DATABASE tenant_{slug}
+  ├─ Job: MigrateDatabase     → php artisan tenants:migrate (10 rutas de migración)
+  ├─ Job: SeedDatabase        → TenantDatabaseSeeder (roles, settings, admin user)
+  └─ afterCreate()            → Crear dominio + usuario admin con password del formulario
+</div></code></pre>
+<hr>
+<h2 id="6-base-de-datos-central">6. Base de Datos Central</h2>
+<h3 id="esquema-poimanocentral">Esquema: <code>poimano_central</code></h3>
+<h4 id="tablas-de-plataforma-stancltenancy">Tablas de Plataforma (stancl/tenancy)</h4>
+<table>
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Campos clave</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tenants</code></td>
+<td>id, church_name, slug, plan_id, status, pastor_name, email, phone, address, data (JSON)</td>
+<td>Registro de cada iglesia</td>
+</tr>
+<tr>
+<td><code>domains</code></td>
+<td>id, domain, tenant_id</td>
+<td>Subdominios asociados a tenants</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tablas-de-usuarios-y-auth">Tablas de Usuarios y Auth</h4>
+<table>
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Campos clave</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>users</code></td>
+<td>id, name, email, password, is_admin, role</td>
+<td>Super admins de la plataforma</td>
+</tr>
+<tr>
+<td><code>password_reset_tokens</code></td>
+<td>email, token</td>
+<td>Reset de contraseñas</td>
+</tr>
+<tr>
+<td><code>sessions</code></td>
+<td>id, user_id, ip_address, payload</td>
+<td>Sesiones activas</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tablas-de-planes-y-m%C3%B3dulos">Tablas de Planes y Módulos</h4>
+<table>
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Campos clave</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>plans</code></td>
+<td>id, name, slug, description, price, billing_cycle, max_members, features (JSON), is_active</td>
+<td>Planes de suscripción</td>
+</tr>
+<tr>
+<td><code>modules</code></td>
+<td>id, name, slug, description, icon, is_active, sort_order</td>
+<td>Módulos disponibles del sistema</td>
+</tr>
+<tr>
+<td><code>plan_modules</code></td>
+<td>plan_id, module_id</td>
+<td>Relación N:M que define qué módulos incluye cada plan</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tablas-compartidas-shared">Tablas Compartidas (Shared)</h4>
+<table>
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Campos clave</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>roles</code></td>
+<td>id, name, slug, scope, description, is_default</td>
+<td>Roles RBAC (central y tenant)</td>
+</tr>
+<tr>
+<td><code>permissions</code></td>
+<td>id, name, slug, module, description</td>
+<td>Permisos granulares por módulo</td>
+</tr>
+<tr>
+<td><code>role_permission</code></td>
+<td>role_id, permission_id</td>
+<td>Relación N:M roles-permisos</td>
+</tr>
+<tr>
+<td><code>countries</code></td>
+<td>id, name, code, phone_code, currency, currency_symbol</td>
+<td>Catálogo de países</td>
+</tr>
+<tr>
+<td><code>templates</code></td>
+<td>id, name, slug, type, module, subject, body, variables (JSON)</td>
+<td>Templates de email/SMS/notificaciones</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tablas-de-configuraci%C3%B3n-y-soporte">Tablas de Configuración y Soporte</h4>
+<table>
+<thead>
+<tr>
+<th>Tabla</th>
+<th>Campos clave</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>settings</code></td>
+<td>key (PK), value</td>
+<td>Configuración clave-valor de plataforma (con cache Redis 1h)</td>
+</tr>
+<tr>
+<td><code>notifications</code></td>
+<td>id, type, notifiable_id, data (JSONB)</td>
+<td>Notificaciones de Laravel</td>
+</tr>
+<tr>
+<td><code>cache</code></td>
+<td>key, value, expiration</td>
+<td>Cache store (fallback si Redis no disponible)</td>
+</tr>
+<tr>
+<td><code>jobs</code> / <code>job_batches</code> / <code>failed_jobs</code></td>
+<td>—</td>
+<td>Cola de trabajos (queue)</td>
+</tr>
+<tr>
+<td><code>activity_log</code></td>
+<td>id, log_name, description, subject, causer, properties</td>
+<td>Logs de auditoría (Spatie)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-base-de-datos-tenant">7. Base de Datos Tenant</h2>
+<h3 id="esquema-tenantslug-por-cada-iglesia">Esquema: <code>tenant_{slug}</code> (por cada iglesia)</h3>
+<h4 id="tabla-users-usuarios-locales-de-la-iglesia">Tabla: <code>users</code> (Usuarios locales de la iglesia)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Nombre completo</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string (unique)</td>
+<td>Correo electrónico</td>
+</tr>
+<tr>
+<td>password</td>
+<td>string (hashed)</td>
+<td>Contraseña (bcrypt)</td>
+</tr>
+<tr>
+<td>role</td>
+<td>string (default: 'member')</td>
+<td>Rol local: admin, pastor, leader, member</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string nullable</td>
+<td>Teléfono</td>
+</tr>
+<tr>
+<td>address</td>
+<td>text nullable</td>
+<td>Dirección</td>
+</tr>
+<tr>
+<td>birth_date</td>
+<td>date nullable</td>
+<td>Fecha de nacimiento</td>
+</tr>
+<tr>
+<td>avatar</td>
+<td>string nullable</td>
+<td>Ruta de foto de perfil</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>boolean (default: true)</td>
+<td>Estado activo/inactivo</td>
+</tr>
+<tr>
+<td>email_verified_at</td>
+<td>timestamp nullable</td>
+<td>Verificación de email</td>
+</tr>
+<tr>
+<td>remember_token</td>
+<td>string</td>
+<td>Token de sesión persistente</td>
+</tr>
+<tr>
+<td>timestamps</td>
+<td>—</td>
+<td>created_at, updated_at</td>
+</tr>
+</tbody>
+</table>
+<p>Tablas asociadas: <code>password_reset_tokens</code>, <code>sessions</code></p>
+<h4 id="tabla-churchsettings-configuraci%C3%B3n-de-la-iglesia">Tabla: <code>church_settings</code> (Configuración de la iglesia)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>church_name</td>
+<td>string</td>
+<td>Nombre de la iglesia</td>
+</tr>
+<tr>
+<td>logo</td>
+<td>string nullable</td>
+<td>Logo de la iglesia</td>
+</tr>
+<tr>
+<td>slogan</td>
+<td>string nullable</td>
+<td>Lema</td>
+</tr>
+<tr>
+<td>primary_color</td>
+<td>string (#00105E)</td>
+<td>Color primario</td>
+</tr>
+<tr>
+<td>secondary_color</td>
+<td>string (#00E1FF)</td>
+<td>Color secundario</td>
+</tr>
+<tr>
+<td>language</td>
+<td>string (es)</td>
+<td>Idioma</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>string (USD)</td>
+<td>Moneda</td>
+</tr>
+<tr>
+<td>timezone</td>
+<td>string (America/Bogota)</td>
+<td>Zona horaria</td>
+</tr>
+<tr>
+<td>phone, email, address, city</td>
+<td>—</td>
+<td>Datos de contacto</td>
+</tr>
+<tr>
+<td>country_id</td>
+<td>FK nullable</td>
+<td>País (referencia central)</td>
+</tr>
+<tr>
+<td>website</td>
+<td>string nullable</td>
+<td>Sitio web</td>
+</tr>
+<tr>
+<td>founded_at</td>
+<td>date nullable</td>
+<td>Fecha de fundación</td>
+</tr>
+<tr>
+<td>denomination</td>
+<td>string nullable</td>
+<td>Denominación</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tabla-families-familiashogares">Tabla: <code>families</code> (Familias/hogares)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Apellido o nombre de familia</td>
+</tr>
+<tr>
+<td>address</td>
+<td>text nullable</td>
+<td>Dirección del hogar</td>
+</tr>
+<tr>
+<td>phone</td>
+<td>string nullable</td>
+<td>Teléfono familiar</td>
+</tr>
+<tr>
+<td>wedding_date</td>
+<td>date nullable</td>
+<td>Fecha de matrimonio</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>text nullable</td>
+<td>Notas</td>
+</tr>
+<tr>
+<td>timestamps + soft_deletes</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tabla-members-miembros--30-columnas">Tabla: <code>members</code> (Miembros — ~30 columnas)</h4>
+<table>
+<thead>
+<tr>
+<th>Sección</th>
+<th>Campos</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Personal</strong></td>
+<td>first_name, middle_name, last_name, second_last_name, gender (enum M/F), birth_date, photo, blood_type, marital_status (enum 5 opciones), nationality, document_type, document_number</td>
+<td>Datos personales completos</td>
+</tr>
+<tr>
+<td><strong>Contacto</strong></td>
+<td>email, phone, mobile, address, city, state, zip_code, country_id</td>
+<td>Información de contacto</td>
+</tr>
+<tr>
+<td><strong>Espiritual</strong></td>
+<td>member_status (5 estados), category (5 categorías), is_baptized, baptism_date, baptism_church, conversion_date, membership_date, how_arrived, referred_by_id</td>
+<td>Vida espiritual y eclesiástica</td>
+</tr>
+<tr>
+<td><strong>Familia</strong></td>
+<td>family_id (FK), family_role (cabeza/esposa/hijo/otro)</td>
+<td>Vínculo familiar</td>
+</tr>
+<tr>
+<td><strong>Sistema</strong></td>
+<td>user_id (FK nullable), notes, is_active, soft_deletes, timestamps</td>
+<td>Administración</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Índices:</strong> email, phone, member_status, category, family_id, is_active</p>
+<p><strong>Traits:</strong> <code>SoftDeletes</code>, <code>LogsActivity</code> (Spatie — auditoría automática)</p>
+<p><strong>Scopes:</strong> <code>active()</code>, <code>byCategory()</code>, <code>baptized()</code></p>
+<p><strong>Accessors:</strong> <code>full_name</code>, <code>complete_name</code></p>
+<h4 id="tabla-memberskills-habilidadesdones">Tabla: <code>member_skills</code> (Habilidades/dones)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>FK (cascade delete)</td>
+<td>Miembro asociado</td>
+</tr>
+<tr>
+<td>skill</td>
+<td>string</td>
+<td>Habilidad o don (unique por miembro)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tabla-memberhistory-historial-de-cambios-de-estado">Tabla: <code>member_history</code> (Historial de cambios de estado)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>FK (cascade delete)</td>
+<td>Miembro asociado</td>
+</tr>
+<tr>
+<td>from_status</td>
+<td>string nullable</td>
+<td>Estado anterior</td>
+</tr>
+<tr>
+<td>to_status</td>
+<td>string</td>
+<td>Estado nuevo</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>text nullable</td>
+<td>Motivo del cambio</td>
+</tr>
+<tr>
+<td>changed_by</td>
+<td>FK (users) nullable</td>
+<td>Usuario que hizo el cambio</td>
+</tr>
+<tr>
+<td>changed_at</td>
+<td>timestamp</td>
+<td>Fecha del cambio</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tabla-userroles-roles-asignados-a-usuarios">Tabla: <code>user_roles</code> (Roles asignados a usuarios)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>FK (cascade)</td>
+<td>Usuario local</td>
+</tr>
+<tr>
+<td>role_id</td>
+<td>FK (cascade)</td>
+<td>Rol (de tabla central <code>roles</code>)</td>
+</tr>
+<tr>
+<td>unique(user_id, role_id)</td>
+<td>—</td>
+<td>Un usuario no puede tener el mismo rol dos veces</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tabla-activitylog-auditor%C3%ADa--spatie">Tabla: <code>activity_log</code> (Auditoría — Spatie)</h4>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Tipo</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>bigint PK</td>
+<td>Identificador</td>
+</tr>
+<tr>
+<td>log_name</td>
+<td>string nullable</td>
+<td>Nombre del log</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td>Descripción de la acción</td>
+</tr>
+<tr>
+<td>subject_type/id</td>
+<td>morphs</td>
+<td>Entidad afectada (ej: Member)</td>
+</tr>
+<tr>
+<td>causer_type/id</td>
+<td>morphs nullable</td>
+<td>Usuario que realizó la acción</td>
+</tr>
+<tr>
+<td>properties</td>
+<td>JSON</td>
+<td>Datos old/new del cambio</td>
+</tr>
+<tr>
+<td>event</td>
+<td>string nullable</td>
+<td>Tipo de evento</td>
+</tr>
+<tr>
+<td>batch_uuid</td>
+<td>UUID nullable</td>
+<td>Agrupación de cambios</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="8-core-saas-plataforma">8. Core SaaS (Plataforma)</h2>
+<p>El Core SaaS gestiona la plataforma misma. Vive en <code>app/Core/</code> y opera sobre la BD central.</p>
+<h3 id="coretenants--gesti%C3%B3n-de-iglesias">Core/Tenants — Gestión de Iglesias</h3>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Domain/Models/Tenant.php</code></td>
+<td>Modelo que extiende <code>BaseTenant</code> de stancl. Campos: church_name, slug, plan_id, status, pastor_name, email, phone, address. Método <code>hasModule(slug)</code>: verifica si el plan del tenant incluye un módulo.</td>
+</tr>
+<tr>
+<td><code>Infrastructure/Providers/TenantsServiceProvider.php</code></td>
+<td>Service provider del módulo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="coreplans--planes-de-suscripci%C3%B3n">Core/Plans — Planes de Suscripción</h3>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Domain/Models/Plan.php</code></td>
+<td>Modelo con campos: name, slug, price, billing_cycle, max_members, features (JSON), is_active. Relación <code>belongsToMany(Module)</code>. Método <code>hasModule(slug)</code>.</td>
+</tr>
+<tr>
+<td><code>Infrastructure/Providers/PlansServiceProvider.php</code></td>
+<td>Service provider del módulo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="coresettings--configuraci%C3%B3n-global">Core/Settings — Configuración Global</h3>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Domain/Models/Setting.php</code></td>
+<td>Modelo clave-valor con caché Redis (1 hora). Métodos estáticos: <code>get(key, default)</code>, <code>set(key, value)</code>, <code>clearCache()</code>.</td>
+</tr>
+<tr>
+<td><code>Infrastructure/Providers/SettingsServiceProvider.php</code></td>
+<td>Service provider del módulo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="corebilling--facturaci%C3%B3n-esqueleto">Core/Billing — Facturación (esqueleto)</h3>
+<table>
+<thead>
+<tr>
+<th>Archivo</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Infrastructure/Providers/BillingServiceProvider.php</code></td>
+<td>Estructura lista para implementar cobros y facturación</td>
+</tr>
+</tbody>
+</table>
+<h3 id="service-providers-centrales">Service Providers Centrales</h3>
+<table>
+<thead>
+<tr>
+<th>Provider</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AppServiceProvider.php</code></td>
+<td>Carga migraciones shared (<code>database/migrations/shared</code>)</td>
+</tr>
+<tr>
+<td><code>ModuleServiceProvider.php</code></td>
+<td>Registra los 4 Core providers + 9 Module providers</td>
+</tr>
+<tr>
+<td><code>TenancyServiceProvider.php</code></td>
+<td>Configura eventos de stancl/tenancy: crear BD, migrar, seed</td>
+</tr>
+<tr>
+<td><code>Filament/AdminPanelProvider.php</code></td>
+<td>Configura panel Filament: colores, login, navegación</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="9-sistema-modular-negocio">9. Sistema Modular (Negocio)</h2>
+<p>Cada módulo de negocio vive en <code>app/Modules/</code> y opera sobre la BD del tenant. Siguen un patrón DDD Lite:</p>
+<pre class="hljs"><code><div>Módulo/
+├── Application/      ← Casos de uso, DTOs, Form Requests
+│   ├── Actions/
+│   ├── DTOs/
+│   └── Requests/
+├── Domain/           ← Modelos Eloquent, eventos de dominio, servicios
+│   ├── Events/
+│   ├── Models/
+│   └── Services/
+├── Infrastructure/   ← Providers, repositorios, persistencia
+│   ├── Providers/
+│   └── Repositories/
+└── Presentation/     ← Controllers (API/Web), Resources
+    ├── Controllers/
+    └── Resources/
+</div></code></pre>
+<h3 id="los-9-m%C3%B3dulos">Los 9 Módulos</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Módulo</th>
+<th>Slug</th>
+<th>Función</th>
+<th>Estado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Church</strong></td>
+<td><code>church</code></td>
+<td>Configuración y datos de la iglesia</td>
+<td>✅ Básico</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Members</strong></td>
+<td><code>members</code></td>
+<td>Gestión de miembros y familias</td>
+<td>✅ Completo</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>Groups</strong></td>
+<td><code>groups</code></td>
+<td>Células, ministerios, equipos de servicio</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Attendance</strong></td>
+<td><code>attendance</code></td>
+<td>Registro de asistencia a servicios y eventos</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Activities</strong></td>
+<td><code>activities</code></td>
+<td>Calendario de eventos y actividades</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Finance</strong></td>
+<td><code>finance</code></td>
+<td>Diezmos, ofrendas, gastos, presupuestos</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Communication</strong></td>
+<td><code>communication</code></td>
+<td>Envío de emails y notificaciones masivas</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Projects</strong></td>
+<td><code>projects</code></td>
+<td>Gestión de proyectos de la iglesia</td>
+<td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>Reports</strong></td>
+<td><code>reports</code></td>
+<td>Reportes y estadísticas</td>
+<td>📋 Esqueleto</td>
+</tr>
+</tbody>
+</table>
+<h3 id="control-de-acceso-por-m%C3%B3dulo">Control de Acceso por Módulo</h3>
+<p>El middleware <code>CheckModuleAccess</code> valida que el tenant tenga acceso al módulo:</p>
+<pre class="hljs"><code><div>Route::middleware(<span class="hljs-string">'module:finance'</span>)-&gt;group(<span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// Solo accesible si el plan del tenant incluye el módulo 'finance'</span>
+});
+</div></code></pre>
+<p>Flujo: <code>request → CheckModuleAccess → tenant()-&gt;hasModule(slug) → plan-&gt;hasModule(slug) → plan_modules table</code></p>
+<h3 id="m%C3%B3dulo-members-detalle-de-implementaci%C3%B3n">Módulo Members (detalle de implementación)</h3>
+<p>Es el primer módulo completamente implementado. Sirve como referencia para los demás:</p>
+<p><strong>Backend:</strong></p>
+<ul>
+<li>Modelo <code>Member.php</code> con 30+ campos, soft deletes, audit logging automático</li>
+<li>Modelo <code>Family.php</code> para agrupación familiar</li>
+<li>Modelo <code>MemberSkill.php</code> para habilidades/dones</li>
+<li>Modelo <code>MemberHistory.php</code> para historial de cambios de estado</li>
+<li><code>MemberController.php</code> con CRUD completo (search, filter, pagination)</li>
+<li>5 migraciones para el schema completo</li>
+</ul>
+<p><strong>Frontend:</strong></p>
+<ul>
+<li><code>Members/Index.tsx</code> — Tabla con búsqueda, filtros por status/categoría, paginación, stats cards</li>
+<li><code>Members/Create.tsx</code> / <code>Edit.tsx</code> — Formulario multi-sección reutilizable</li>
+<li><code>Members/Show.tsx</code> — Perfil con tabs (info, espiritual, familia, historial)</li>
+<li><code>MemberForm.tsx</code> — Componente de formulario compartido (5 secciones)</li>
+<li>Tipos TypeScript completos en <code>types/members.ts</code></li>
+</ul>
+<hr>
+<h2 id="10-panel-super-admin-filament">10. Panel Super Admin (Filament)</h2>
+<h3 id="acceso">Acceso</h3>
+<ul>
+<li><strong>URL:</strong> <code>https://poimano.com/admin</code></li>
+<li><strong>Usuario:</strong> <code>admin@poimano.com</code></li>
+<li><strong>Framework:</strong> Filament v3.3 (Livewire + Alpine.js)</li>
+<li><strong>Solo accesible desde dominios centrales</strong></li>
+</ul>
+<h3 id="recursos-crud">Recursos (CRUD)</h3>
+<h4 id="tenantresource--gesti%C3%B3n-de-iglesias">TenantResource — Gestión de Iglesias</h4>
+<table>
+<thead>
+<tr>
+<th>Sección del Form</th>
+<th>Campos</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Información de la Iglesia</td>
+<td>church_name → auto-genera slug e id, plan_id (select), status</td>
+<td>Datos principales</td>
+</tr>
+<tr>
+<td>Contacto del Pastor</td>
+<td>pastor_name, email, phone, address</td>
+<td>Pastor principal</td>
+</tr>
+<tr>
+<td>Credenciales Admin</td>
+<td>admin_password (visible solo al crear)</td>
+<td>Contraseña del admin de la iglesia</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tabla:</strong> church_name, slug (copiable), pastor_name, email, plan badge, status badge, fecha</p>
+<p><strong>Vista detalle (Infolist):</strong> Todas las secciones en modo lectura</p>
+<h4 id="planresource--gesti%C3%B3n-de-planes">PlanResource — Gestión de Planes</h4>
+<table>
+<thead>
+<tr>
+<th>Sección del Form</th>
+<th>Campos</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Información</td>
+<td>name → auto-genera slug, description</td>
+<td>Datos del plan</td>
+</tr>
+<tr>
+<td>Precios y Límites</td>
+<td>price, billing_cycle, max_members, is_active</td>
+<td>Config de facturación</td>
+</tr>
+<tr>
+<td>Features</td>
+<td>KeyValue field (JSON)</td>
+<td>Características incluidas</td>
+</tr>
+</tbody>
+</table>
+<h3 id="widgets-del-dashboard">Widgets del Dashboard</h3>
+<table>
+<thead>
+<tr>
+<th>Widget</th>
+<th>Función</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>StatsOverview</code></td>
+<td>Cards con KPIs: total iglesias, activas, en prueba</td>
+</tr>
+<tr>
+<td><code>LatestTenants</code></td>
+<td>Tabla con las últimas iglesias registradas</td>
+</tr>
+<tr>
+<td><code>TenantsChart</code></td>
+<td>Gráfico de evolución de iglesias en el tiempo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="personalizaci%C3%B3n-visual">Personalización Visual</h3>
+<ul>
+<li><strong>Colores:</strong> Navy (<code>#00105E</code>) como primario, Cyan (<code>#00E1FF</code>) como info</li>
+<li><strong>Login personalizado:</strong> <code>app/Filament/Pages/Auth/Login.php</code></li>
+<li><strong>Settings UI:</strong> <code>app/Filament/Pages/PlatformSettings.php</code></li>
+</ul>
+<hr>
+<h2 id="11-frontend-tenant-react--inertia">11. Frontend Tenant (React + Inertia)</h2>
+<h3 id="arquitectura-frontend">Arquitectura Frontend</h3>
+<pre class="hljs"><code><div>resources/js/
+├── app.tsx              ← Entry point: React 19 + Inertia setup + page resolver
+├── bootstrap.js         ← Axios defaults
+├── vite-env.d.ts        ← Vite types
+├── lib/
+│   └── utils.ts         ← cn() helper (clsx + tailwind-merge)
+├── types/
+│   ├── index.ts         ← PageProps, User, Flash (Inertia shared)
+│   └── members.ts       ← Member, Family, MemberSkill, enums, label maps
+├── layouts/
+│   └── TenantLayout.tsx ← Sidebar, header, nav, flash messages
+├── components/
+│   ├── ui/              ← 15+ componentes shadcn/ui
+│   │   ├── button.tsx, card.tsx, input.tsx, label.tsx
+│   │   ├── select.tsx, dialog.tsx, alert-dialog.tsx
+│   │   ├── dropdown-menu.tsx, tabs.tsx, tooltip.tsx
+│   │   ├── table.tsx, badge.tsx, avatar.tsx
+│   │   ├── separator.tsx, spinner.tsx
+│   │   └── index.ts    ← Barrel export
+│   └── members/
+│       └── MemberForm.tsx ← Formulario reutilizable (5 secciones)
+└── pages/
+    ├── Auth/Login.tsx      ← Login form
+    ├── Dashboard.tsx       ← Dashboard con stats placeholder
+    └── Members/
+        ├── Index.tsx       ← Lista + búsqueda + filtros + paginación + delete
+        ├── Create.tsx      ← Crear miembro
+        ├── Edit.tsx        ← Editar miembro
+        └── Show.tsx        ← Perfil detallado con tabs
+</div></code></pre>
+<h3 id="tenantlayout--layout-principal">TenantLayout — Layout Principal</h3>
+<ul>
+<li><strong>Sidebar colapsable</strong> con navegación por módulo</li>
+<li><strong>Header</strong> con nombre de iglesia + botón logout</li>
+<li><strong>Flash messages</strong> (success/error) con auto-dismiss</li>
+<li><strong>Navegación:</strong> Dashboard, Miembros, Grupos, Actividades, Proyectos, Finanzas, Comunicación, Reportes</li>
+<li><strong>Active state:</strong> Detecta ruta actual con <code>startsWith</code> para nested routes</li>
+</ul>
+<h3 id="componentes-ui-shadcnui">Componentes UI (shadcn/ui)</h3>
+<p>Basados en Radix UI primitives. Estilizados con Tailwind CSS + <code>class-variance-authority</code> para variants.</p>
+<table>
+<thead>
+<tr>
+<th>Componente</th>
+<th>Uso en el proyecto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Button</code></td>
+<td>Acciones, submit, navegación</td>
+</tr>
+<tr>
+<td><code>Card</code></td>
+<td>Contenedores de secciones</td>
+</tr>
+<tr>
+<td><code>Input</code> / <code>Label</code></td>
+<td>Campos de formulario</td>
+</tr>
+<tr>
+<td><code>Select</code></td>
+<td>Dropdowns de selección</td>
+</tr>
+<tr>
+<td><code>Table</code></td>
+<td>Tablas de datos (Members Index)</td>
+</tr>
+<tr>
+<td><code>Dialog</code></td>
+<td>Modales de confirmación</td>
+</tr>
+<tr>
+<td><code>AlertDialog</code></td>
+<td>Confirmación destructiva (delete)</td>
+</tr>
+<tr>
+<td><code>Tabs</code></td>
+<td>Navegación por secciones (Members Show)</td>
+</tr>
+<tr>
+<td><code>DropdownMenu</code></td>
+<td>Menú de acciones por fila</td>
+</tr>
+<tr>
+<td><code>Badge</code></td>
+<td>Status tags (Activo, Bautizado, etc.)</td>
+</tr>
+<tr>
+<td><code>Avatar</code></td>
+<td>Fotos de perfil de miembros</td>
+</tr>
+<tr>
+<td><code>Tooltip</code></td>
+<td>Información contextual</td>
+</tr>
+<tr>
+<td><code>Spinner</code></td>
+<td>Loading states</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tema-y-estilos">Tema y Estilos</h3>
+<ul>
+<li><strong>Font:</strong> Inter (sans-serif)</li>
+<li><strong>Colores brand:</strong> Navy <code>#00105E</code>, Cyan <code>#00E1FF</code></li>
+<li><strong>Dark mode:</strong> Soporte via clase CSS (desactivado por defecto)</li>
+<li><strong>CSS Variables:</strong> Sistema completo para tema: <code>--background</code>, <code>--foreground</code>, <code>--primary</code>, <code>--secondary</code>, <code>--destructive</code>, <code>--muted</code>, <code>--accent</code>, etc.</li>
+<li><strong>Plugin:</strong> <code>tailwindcss-animate</code> para transiciones</li>
+</ul>
+<hr>
+<h2 id="12-autenticaci%C3%B3n-y-autorizaci%C3%B3n">12. Autenticación y Autorización</h2>
+<h3 id="autenticaci%C3%B3n-central-super-admin">Autenticación Central (Super Admin)</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Implementación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Guard</strong></td>
+<td><code>web</code> (default Laravel)</td>
+</tr>
+<tr>
+<td><strong>Modelo</strong></td>
+<td><code>App\Models\User</code> (BD central)</td>
+</tr>
+<tr>
+<td><strong>UI</strong></td>
+<td>Filament Login page customizada</td>
+</tr>
+<tr>
+<td><strong>Validación</strong></td>
+<td><code>canAccessPanel()</code> → <code>role === 'admin' \|\| is_admin</code></td>
+</tr>
+<tr>
+<td><strong>Credencial</strong></td>
+<td><code>admin@poimano.com</code> / <code>Admin2026</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="autenticaci%C3%B3n-tenant-iglesia">Autenticación Tenant (Iglesia)</h3>
+<table>
+<thead>
+<tr>
+<th>Aspecto</th>
+<th>Implementación</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Guard</strong></td>
+<td><code>web</code> (dentro del tenant context — BD tenant)</td>
+</tr>
+<tr>
+<td><strong>Modelo</strong></td>
+<td><code>App\Models\User</code> (BD tenant)</td>
+</tr>
+<tr>
+<td><strong>Controller</strong></td>
+<td><code>AuthController::login()</code></td>
+</tr>
+<tr>
+<td><strong>UI</strong></td>
+<td>React <code>Auth/Login.tsx</code> via Inertia</td>
+</tr>
+<tr>
+<td><strong>Validación</strong></td>
+<td><code>Auth::attempt([email, password, is_active =&gt; true])</code></td>
+</tr>
+<tr>
+<td><strong>Auto-generado</strong></td>
+<td>Al crear iglesia: email del pastor + password del formulario</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rbac-role-based-access-control">RBAC (Role-Based Access Control)</h3>
+<p><strong>6 Roles pre-configurados por tenant:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rol</th>
+<th>Alcance</th>
+<th>Permisos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pastor</td>
+<td>Total</td>
+<td>Todos los permisos de todos los módulos</td>
+</tr>
+<tr>
+<td>Administrador</td>
+<td>Total</td>
+<td>Todos los permisos de todos los módulos</td>
+</tr>
+<tr>
+<td>Líder</td>
+<td>Parcial</td>
+<td>Members (CRUD), Groups (CRUD), Attendance (create), Activities (CRUD), Church (view)</td>
+</tr>
+<tr>
+<td>Tesorero</td>
+<td>Financiero</td>
+<td>Finance (CRUD), Reports (view+export), Church (view)</td>
+</tr>
+<tr>
+<td>Secretaria</td>
+<td>Administrativo</td>
+<td>Members (CRUD+export), Groups/Attendance/Activities (view+create), Reports, Church (view)</td>
+</tr>
+<tr>
+<td>Miembro</td>
+<td>Lectura</td>
+<td>Members/Groups/Attendance/Activities/Church (solo view)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>30+ Permisos granulares por módulo:</strong></p>
+<ul>
+<li><code>members.view</code>, <code>members.create</code>, <code>members.edit</code>, <code>members.delete</code>, <code>members.export</code></li>
+<li><code>groups.view</code>, <code>groups.create</code>, <code>groups.edit</code>, <code>groups.delete</code></li>
+<li><code>attendance.view</code>, <code>attendance.create</code></li>
+<li><code>finance.view</code>, <code>finance.create</code>, <code>finance.edit</code>, <code>finance.delete</code></li>
+<li><code>communication.view</code>, <code>communication.create</code></li>
+<li><code>activities.view</code>, <code>activities.create</code>, <code>activities.edit</code>, <code>activities.delete</code></li>
+<li><code>projects.view</code>, <code>projects.create</code>, <code>projects.edit</code>, <code>projects.delete</code></li>
+<li><code>reports.view</code>, <code>reports.export</code></li>
+<li><code>church.view</code>, <code>church.edit</code></li>
+</ul>
+<h3 id="control-de-acceso-por-m%C3%B3dulo-plan">Control de Acceso por Módulo (Plan)</h3>
+<p>Independiente del RBAC. Controla qué módulos puede ver cada iglesia según su plan:</p>
+<table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>Precio</th>
+<th>Máx. Miembros</th>
+<th>Módulos</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Gratuito</strong></td>
+<td>$0/mes</td>
+<td>50</td>
+<td>Church, Members, Groups, Attendance</td>
+</tr>
+<tr>
+<td><strong>Esencial</strong></td>
+<td>$29.99/mes</td>
+<td>200</td>
+<td>+Finance, Communication, Reports</td>
+</tr>
+<tr>
+<td><strong>Profesional</strong></td>
+<td>$59.99/mes</td>
+<td>1,000</td>
+<td>+Activities, Projects</td>
+</tr>
+<tr>
+<td><strong>Enterprise</strong></td>
+<td>$149.99/mes</td>
+<td>10,000</td>
+<td>Todos los módulos</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="13-rutas-del-sistema">13. Rutas del Sistema</h2>
+<h3 id="rutas-centrales-routeswebphp">Rutas Centrales (<code>routes/web.php</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>URI</th>
+<th>Controlador/Vista</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/</code></td>
+<td><code>welcome.blade.php</code></td>
+<td>Landing page pública</td>
+</tr>
+<tr>
+<td>—</td>
+<td><code>/admin/*</code></td>
+<td>Filament (auto-registrado)</td>
+<td>Panel de super administración</td>
+</tr>
+</tbody>
+</table>
+<h3 id="rutas-tenant-routestenantphp">Rutas Tenant (<code>routes/tenant.php</code>)</h3>
+<p><strong>Middleware stack:</strong> <code>web</code> + <code>InitializeTenancyBySubdomain</code> + <code>PreventAccessFromCentralDomains</code></p>
+<h4 id="rutas-p%C3%BAblicas-guest">Rutas Públicas (Guest)</h4>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>URI</th>
+<th>Controlador</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/login</code></td>
+<td><code>AuthController@showLogin</code></td>
+<td>Página de login</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/login</code></td>
+<td><code>AuthController@login</code></td>
+<td>Procesar login</td>
+</tr>
+</tbody>
+</table>
+<h4 id="rutas-protegidas-auth">Rutas Protegidas (Auth)</h4>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>URI</th>
+<th>Controlador</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td><code>/dashboard</code></td>
+<td>Inertia <code>Dashboard</code></td>
+<td>Dashboard principal</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/logout</code></td>
+<td><code>AuthController@logout</code></td>
+<td>Cerrar sesión</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/members</code></td>
+<td><code>MemberController@index</code></td>
+<td>Listar miembros</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/members/create</code></td>
+<td><code>MemberController@create</code></td>
+<td>Form crear miembro</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/members</code></td>
+<td><code>MemberController@store</code></td>
+<td>Guardar miembro</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/members/{member}</code></td>
+<td><code>MemberController@show</code></td>
+<td>Ver detalle miembro</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/members/{member}/edit</code></td>
+<td><code>MemberController@edit</code></td>
+<td>Form editar miembro</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/members/{member}</code></td>
+<td><code>MemberController@update</code></td>
+<td>Actualizar miembro</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/members/{member}</code></td>
+<td><code>MemberController@destroy</code></td>
+<td>Eliminar miembro (soft)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="14-seeders-y-datos-iniciales">14. Seeders y Datos Iniciales</h2>
+<h3 id="seeders-centrales">Seeders Centrales</h3>
+<table>
+<thead>
+<tr>
+<th>Seeder</th>
+<th>Datos que crea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SuperAdminSeeder</code></td>
+<td>Usuario <code>admin@poimano.com</code> con role <code>admin</code></td>
+</tr>
+<tr>
+<td><code>PlanSeeder</code></td>
+<td>4 planes: Gratuito, Esencial, Profesional, Enterprise</td>
+</tr>
+<tr>
+<td><code>ModuleSeeder</code></td>
+<td>9 módulos + matriz de asignación plan↔módulo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="seeders-tenant-ejecutados-autom%C3%A1ticamente-al-crear-iglesia">Seeders Tenant (ejecutados automáticamente al crear iglesia)</h3>
+<table>
+<thead>
+<tr>
+<th>Seeder</th>
+<th>Orden</th>
+<th>Datos que crea</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>RolesSeeder</code></td>
+<td>1°</td>
+<td>6 roles (Pastor→Miembro) + 30+ permisos + asignaciones rol↔permiso</td>
+</tr>
+<tr>
+<td><code>ChurchSettingsSeeder</code></td>
+<td>2°</td>
+<td>Configuración inicial de la iglesia (nombre, colores, timezone, moneda)</td>
+</tr>
+<tr>
+<td><code>AdminUserSeeder</code></td>
+<td>3°</td>
+<td>Usuario admin local con email del tenant y password <code>Poimano2026!</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Nota:</strong> El <code>afterCreate()</code> de <code>CreateTenant.php</code> sobreescribe la contraseña del admin con la ingresada en el formulario de Filament.</p>
+</blockquote>
+<hr>
+<h2 id="15-estado-actual-por-m%C3%B3dulo">15. Estado Actual por Módulo</h2>
+<h3 id="resumen-de-progreso">Resumen de Progreso</h3>
+<pre class="hljs"><code><div>██████████████████████░░░░░░░░░░  ~25% completado (2/9 módulos + plataforma)
+</div></code></pre>
+<table>
+<thead>
+<tr>
+<th>Área</th>
+<th>Estado</th>
+<th>Detalle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Infraestructura</strong></td>
+<td>✅ Completo</td>
+<td>VPS, dominio, SSL wildcard, Nginx, PostgreSQL, deploy</td>
+</tr>
+<tr>
+<td><strong>Multi-Tenancy</strong></td>
+<td>✅ Completo</td>
+<td>DB-per-tenant, subdomain identification, auto-migrate/seed</td>
+</tr>
+<tr>
+<td><strong>Panel Super Admin</strong></td>
+<td>✅ Completo</td>
+<td>CRUD Iglesias, CRUD Planes, Widgets dashboard, Login custom</td>
+</tr>
+<tr>
+<td><strong>Auth Tenant</strong></td>
+<td>✅ Completo</td>
+<td>Login/logout, sesiones, flash messages</td>
+</tr>
+<tr>
+<td><strong>Frontend Base</strong></td>
+<td>✅ Completo</td>
+<td>Layout, shadcn/ui (15 components), tipos, tema</td>
+</tr>
+<tr>
+<td><strong>Módulo Church</strong></td>
+<td>✅ Básico</td>
+<td>Modelo + seeder + migración (falta UI de settings)</td>
+</tr>
+<tr>
+<td><strong>Módulo Members</strong></td>
+<td>✅ Completo</td>
+<td>Backend + Frontend CRUD completo + auditoría</td>
+</tr>
+<tr>
+<td><strong>Módulo Groups</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Attendance</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Activities</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Finance</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Communication</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Projects</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>Módulo Reports</strong></td>
+<td>📋 Esqueleto</td>
+<td>Estructura DDD + migración vacía</td>
+</tr>
+<tr>
+<td><strong>API REST</strong></td>
+<td>⏳ Pendiente</td>
+<td>Para futura app Flutter</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>⏳ Pendiente</td>
+<td>PHPUnit + Jest configurados pero sin tests</td>
+</tr>
+<tr>
+<td><strong>Billing real</strong></td>
+<td>⏳ Pendiente</td>
+<td>Integración con pasarela de pagos</td>
+</tr>
+</tbody>
+</table>
+<h3 id="commits-clave">Commits Clave</h3>
+<table>
+<thead>
+<tr>
+<th>Commit</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>64119aa</code></td>
+<td>Members module backend (migrations, models, RBAC, audit log)</td>
+</tr>
+<tr>
+<td><code>71c0285</code></td>
+<td>Members UI completo (Index/Create/Edit/Show + controller + routes)</td>
+</tr>
+<tr>
+<td><code>0fea499</code></td>
+<td>Traducciones al español (validation, auth, passwords, pagination)</td>
+</tr>
+<tr>
+<td><code>13c1db6</code></td>
+<td>Fix 500 errors (central_domains, AdminUserSeeder, CreateTenant duplicate)</td>
+</tr>
+<tr>
+<td><code>a1a43bc</code></td>
+<td>Fix admin_password dehydration, canAccessPanel, robust afterCreate</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="16-estructura-de-archivos">16. Estructura de Archivos</h2>
+<pre class="hljs"><code><div>poimano/
+│
+├── app/
+│   ├── Console/Commands/
+│   │   └── CreateTenantCommand.php           # CLI: php artisan tenant:create
+│   │
+│   ├── Core/                                 # ── PLATAFORMA SAAS ──
+│   │   ├── Billing/Infrastructure/Providers/
+│   │   ├── Plans/
+│   │   │   ├── Domain/Models/Plan.php
+│   │   │   └── Infrastructure/Providers/
+│   │   ├── Settings/
+│   │   │   ├── Domain/Models/Setting.php
+│   │   │   └── Infrastructure/Providers/
+│   │   └── Tenants/
+│   │       ├── Domain/Models/Tenant.php
+│   │       └── Infrastructure/Providers/
+│   │
+│   ├── Modules/                              # ── MÓDULOS DE NEGOCIO ──
+│   │   ├── Activities/  (esqueleto DDD)
+│   │   ├── Attendance/  (esqueleto DDD)
+│   │   ├── Church/
+│   │   │   └── Domain/Models/ChurchSetting.php
+│   │   ├── Communication/ (esqueleto DDD)
+│   │   ├── Finance/     (esqueleto DDD)
+│   │   ├── Groups/      (esqueleto DDD)
+│   │   ├── Members/
+│   │   │   └── Domain/Models/
+│   │   │       ├── Member.php
+│   │   │       ├── Family.php
+│   │   │       ├── MemberSkill.php
+│   │   │       └── MemberHistory.php
+│   │   ├── Projects/    (esqueleto DDD)
+│   │   └── Reports/     (esqueleto DDD)
+│   │
+│   ├── Models/                               # ── MODELOS COMPARTIDOS ──
+│   │   ├── User.php
+│   │   └── Shared/
+│   │       ├── Role.php
+│   │       ├── Permission.php
+│   │       ├── Module.php
+│   │       ├── Country.php
+│   │       └── Template.php
+│   │
+│   ├── Http/
+│   │   ├── Controllers/Tenant/
+│   │   │   ├── AuthController.php
+│   │   │   └── MemberController.php
+│   │   └── Middleware/
+│   │       ├── HandleInertiaRequests.php
+│   │       └── CheckModuleAccess.php
+│   │
+│   ├── Filament/                             # ── PANEL SUPER ADMIN ──
+│   │   ├── Pages/
+│   │   │   ├── Auth/Login.php
+│   │   │   └── PlatformSettings.php
+│   │   ├── Resources/
+│   │   │   ├── TenantResource.php
+│   │   │   ├── TenantResource/Pages/ (List, Create, Edit, View)
+│   │   │   ├── PlanResource.php
+│   │   │   └── PlanResource/Pages/ (List, Create, Edit)
+│   │   └── Widgets/
+│   │       ├── StatsOverview.php
+│   │       ├── LatestTenants.php
+│   │       └── TenantsChart.php
+│   │
+│   └── Providers/
+│       ├── AppServiceProvider.php
+│       ├── ModuleServiceProvider.php
+│       ├── TenancyServiceProvider.php
+│       └── Filament/AdminPanelProvider.php
+│
+├── database/
+│   ├── migrations/
+│   │   ├── (central – Laravel + stancl/tenancy + plans + settings)
+│   │   ├── shared/ (countries, roles, permissions, templates, modules)
+│   │   └── tenant/
+│   │       ├── (users, activity_log)
+│   │       ├── church/ (church_settings)
+│   │       └── members/ (families, members, member_skills, member_history, user_roles)
+│   └── seeders/
+│       ├── Central/ (SuperAdmin, Plans, Modules)
+│       └── Tenant/ (TenantDatabaseSeeder, Roles, ChurchSettings, AdminUser)
+│
+├── resources/
+│   ├── css/ (app.css + filament/)
+│   ├── js/
+│   │   ├── app.tsx
+│   │   ├── layouts/TenantLayout.tsx
+│   │   ├── components/
+│   │   │   ├── ui/ (15+ shadcn components)
+│   │   │   └── members/MemberForm.tsx
+│   │   ├── pages/
+│   │   │   ├── Auth/Login.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   └── Members/ (Index, Create, Edit, Show)
+│   │   ├── types/ (index.ts, members.ts)
+│   │   └── lib/utils.ts
+│   └── views/
+│       ├── app.blade.php (root Inertia template)
+│       └── welcome.blade.php (landing page)
+│
+├── routes/
+│   ├── web.php (central)
+│   ├── tenant.php (tenant – auth + members)
+│   └── console.php
+│
+├── lang/es/
+│   ├── validation.php
+│   ├── auth.php
+│   ├── passwords.php
+│   └── pagination.php
+│
+├── config/tenancy.php
+├── composer.json
+├── package.json
+├── vite.config.js
+├── tsconfig.json
+└── tailwind.config.js
+</div></code></pre>
+<hr>
+<h2 id="17-flujos-cr%C3%ADticos">17. Flujos Críticos</h2>
+<h3 id="flujo-1-crear-una-nueva-iglesia">Flujo 1: Crear una nueva iglesia</h3>
+<pre class="hljs"><code><div>Super Admin → Filament /admin/tenants/create
+  ↓
+Llena formulario: church_name, slug, plan, pastor_name, email, admin_password
+  ↓
+mutateFormDataBeforeCreate() → extrae admin_password del form data
+  ↓
+Filament crea registro Tenant en BD central
+  ↓
+Evento TenancyCreated se dispara automáticamente
+  ├─ CreateDatabase    → CREATE DATABASE tenant_{slug}
+  ├─ MigrateDatabase   → Ejecuta todas las migraciones de /tenant/*
+  └─ SeedDatabase      → Ejecuta TenantDatabaseSeeder
+       ├─ RolesSeeder          → 6 roles + 30+ permisos
+       ├─ ChurchSettingsSeeder → Config inicial iglesia
+       └─ AdminUserSeeder      → User admin (password: Poimano2026!)
+  ↓
+afterCreate() en CreateTenant.php
+  ├─ Crea dominio: tenant.domains()-&gt;firstOrCreate({domain: slug})
+  └─ En el contexto del tenant:
+       ├─ Busca usuario por email del pastor
+       ├─ Si existe → actualiza password con la del formulario
+       └─ Si no existe → crea User con password del formulario
+  ↓
+Redirect a lista de iglesias con notificación de éxito
+</div></code></pre>
+<h3 id="flujo-2-login-en-subdominio-tenant">Flujo 2: Login en subdominio tenant</h3>
+<pre class="hljs"><code><div>Usuario navega a iglesia1.poimano.com
+  ↓
+Nginx → Laravel → Middleware InitializeTenancyBySubdomain
+  ↓
+Extrae &quot;iglesia1&quot; del host → Busca en tabla domains → Inicializa tenant
+  ↓
+Middleware PreventAccessFromCentralDomains → OK (no es dominio central)
+  ↓
+Middleware auth → No autenticado → Redirect /login
+  ↓
+AuthController@showLogin → Inertia::render('Auth/Login')
+  ↓
+React renderiza Login.tsx con formulario
+  ↓
+POST /login → AuthController@login
+  ├─ Valida email + password
+  ├─ Auth::attempt([email, password, is_active =&gt; true])
+  ├─ ✅ Éxito → regenerate session → redirect /dashboard
+  └─ ❌ Fallo → back()-&gt;withErrors('Las credenciales no coinciden...')
+</div></code></pre>
+<h3 id="flujo-3-crud-de-miembros">Flujo 3: CRUD de Miembros</h3>
+<pre class="hljs"><code><div>/members (GET) → MemberController@index
+  ├─ Query: search (ilike en nombre, email, phone)
+  ├─ Filtros: status, category
+  ├─ Stats: total, activos, bautizados, nuevos (último mes)
+  ├─ Paginación: 15 por página
+  └─ Inertia::render('Members/Index', {members, filters, stats, ...})
+
+/members/create (GET) → MemberController@create
+  └─ Carga: families, members (para referred_by)
+
+/members (POST) → MemberController@store
+  ├─ Validación: 30+ campos con reglas
+  ├─ Member::create($validated)
+  └─ Redirect /members con flash success
+
+/members/{id} (GET) → MemberController@show
+  └─ Carga: family.members, skills, history, referrals, referredBy
+
+/members/{id}/edit (GET) → MemberController@edit
+  └─ Mismos datos que create + member actual
+
+/members/{id} (PUT) → MemberController@update
+  └─ Validación + update + redirect con flash
+
+/members/{id} (DELETE) → MemberController@destroy
+  └─ Soft delete + redirect con flash
+</div></code></pre>
+<hr>
+<h2 id="18-roadmap-pendiente">18. Roadmap Pendiente</h2>
+<h3 id="prioridad-alta-funcionalidad-core">Prioridad Alta (Funcionalidad Core)</h3>
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Módulo Groups</td>
+<td>CRUD de células/ministerios + asignación de miembros + líderes</td>
+</tr>
+<tr>
+<td>Módulo Attendance</td>
+<td>Registro de asistencia a servicios + reportes automáticos</td>
+</tr>
+<tr>
+<td>Módulo Finance</td>
+<td>Diezmos, ofrendas, gastos + reportes financieros</td>
+</tr>
+<tr>
+<td>Church Settings UI</td>
+<td>Pantalla para que la iglesia configure su info, logo, colores</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prioridad-media-experiencia">Prioridad Media (Experiencia)</h3>
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Módulo Activities</td>
+<td>Calendario de eventos + inscripciones</td>
+</tr>
+<tr>
+<td>Módulo Communication</td>
+<td>Envío de emails/notificaciones masivas a miembros</td>
+</tr>
+<tr>
+<td>Dashboard dinámico</td>
+<td>Charts y KPIs reales (Recharts ya instalado)</td>
+</tr>
+<tr>
+<td>Perfil de usuario</td>
+<td>Editar datos propios + cambiar contraseña</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prioridad-baja-escalamiento">Prioridad Baja (Escalamiento)</h3>
+<table>
+<thead>
+<tr>
+<th>Tarea</th>
+<th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Módulo Projects</td>
+<td>Gestión de proyectos de la iglesia</td>
+</tr>
+<tr>
+<td>Módulo Reports</td>
+<td>Reportes PDF/Excel exportables</td>
+</tr>
+<tr>
+<td>API REST</td>
+<td>Endpoints para futura app Flutter</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td>PHPUnit (backend) + Jest/Vitest (frontend)</td>
+</tr>
+<tr>
+<td>Billing real</td>
+<td>Integración pasarela de pagos (Stripe / PayU)</td>
+</tr>
+<tr>
+<td>Redis/Horizon</td>
+<td>Colas asíncronas para comunicaciones masivas</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td>Laravel Pulse / Telescope para monitoreo</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<blockquote>
+<p><strong>Documento generado automáticamente — Estado al 14 de marzo de 2026</strong>
+Repositorio: https://github.com/yohanrojas562-code/poimano</p>
+</blockquote>
+
+</body>
+</html>

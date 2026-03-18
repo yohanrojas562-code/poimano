@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\FamilyController;
 use App\Http\Controllers\Tenant\MemberController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -54,5 +55,6 @@ Route::middleware([
         });
 
         Route::resource('members', MemberController::class);
+        Route::resource('families', FamilyController::class);
     });
 });

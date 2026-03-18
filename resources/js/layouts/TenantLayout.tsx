@@ -15,6 +15,7 @@ import {
     LogOut,
     CheckCircle2,
     XCircle,
+    Home,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
@@ -28,6 +29,7 @@ interface NavItem {
 const navigation: NavItem[] = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { label: 'Miembros', href: '/members', icon: Users },
+    { label: 'Familias', href: '/families', icon: Home },
     { label: 'Grupos', href: '/groups', icon: UsersRound },
     { label: 'Actividades', href: '/activities', icon: Calendar },
     { label: 'Proyectos', href: '/projects', icon: FolderKanban },

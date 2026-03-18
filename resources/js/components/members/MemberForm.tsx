@@ -1,9 +1,18 @@
-import { useForm, Link } from '@inertiajs/react'
+import { useForm, Link, router } from '@inertiajs/react'
+import axios from 'axios'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog'
 import {
     UserRound,
     MapPin,
@@ -13,7 +22,9 @@ import {
     ArrowLeft,
     Save,
     Loader2,
+    Plus,
 } from 'lucide-react'
+import { useState } from 'react'
 import type { Member, Family } from '@/types/members'
 import {
     statusLabels,
@@ -47,8 +58,12 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     )
 }
 
-export default function MemberForm({ member, families, membersForRef }: MemberFormProps) {
+export default function MemberForm({ member, families: initialFamilies, membersForRef }: MemberFormProps) {
     const isEdit = !!member
+    const [families, setFamilies] = useState(initialFamilies)
+    const [showNewFamily, setShowNewFamily] = useState(false)
+    const [newFamilyName, setNewFamilyName] = useState('')
+    const [creatingFamily, setCreatingFamily] = useState(false)
 
     const form = useForm({
         first_name: member?.first_name ?? '',
@@ -92,6 +107,29 @@ export default function MemberForm({ member, families, membersForRef }: MemberFo
         } else {
             form.post('/members')
         }
+    }
+
+    function handleCreateFamily() {
+        if (!newFamilyName.trim()) return
+        setCreatingFamily(true)
+        axios
+            .post('/families', { name: newFamilyName.trim() }, {
+                headers: { Accept: 'application/json' },
+            })
+            .then(({ data }) => {
+                if (data.id) {
+                    setFamilies(
+                        [...families, { id: data.id, name: data.name }].sort((a, b) =>
+                            a.name.localeCompare(b.name)
+                        )
+                    )
+                    form.setData('family_id', String(data.id))
+                    setShowNewFamily(false)
+                    setNewFamilyName('')
+                }
+            })
+            .catch(() => {})
+            .finally(() => setCreatingFamily(false))
     }
 
     return (
@@ -420,20 +458,34 @@ export default function MemberForm({ member, families, membersForRef }: MemberFo
                     </CardTitle>
                 </CardHeader>
                 <CardContent className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <Field label="Familia" error={form.errors.family_id}>
-                        <select
-                            className={selectClass}
-                            value={form.data.family_id}
-                            onChange={(e) => form.setData('family_id', e.target.value)}
-                        >
-                            <option value="">— Sin asignar —</option>
-                            {families.map((f) => (
-                                <option key={f.id} value={f.id}>
-                                    {f.name}
-                                </option>
-                            ))}
-                        </select>
-                    </Field>
+                    <div className="space-y-1.5">
+                        <Label className="text-sm">Familia</Label>
+                        <div className="flex gap-2">
+                            <select
+                                className={selectClass + ' flex-1'}
+                                value={form.data.family_id}
+                                onChange={(e) => form.setData('family_id', e.target.value)}
+                            >
+                                <option value="">— Sin asignar —</option>
+                                {families.map((f) => (
+                                    <option key={f.id} value={f.id}>
+                                        {f.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="icon"
+                                className="h-9 w-9 shrink-0"
+                                onClick={() => setShowNewFamily(true)}
+                                title="Crear nueva familia"
+                            >
+                                <Plus className="h-4 w-4" />
+                            </Button>
+                        </div>
+                        {form.errors.family_id && <p className="text-xs text-red-500">{form.errors.family_id}</p>}
+                    </div>
                     <Field label="Rol en la Familia" error={form.errors.family_role}>
                         <select
                             className={selectClass}
@@ -499,6 +551,55 @@ export default function MemberForm({ member, families, membersForRef }: MemberFo
                     {isEdit ? 'Guardar Cambios' : 'Registrar Miembro'}
                 </Button>
             </div>
+
+            {/* Dialog: crear familia rápida */}
+            <Dialog open={showNewFamily} onOpenChange={setShowNewFamily}>
+                <DialogContent className="sm:max-w-md">
+                    <DialogHeader>
+                        <DialogTitle>Nueva Familia</DialogTitle>
+                        <DialogDescription>
+                            Ingresa el nombre de la familia. Podrás completar los datos adicionales luego.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-1.5">
+                        <Label htmlFor="new_family_name">Nombre / Apellido</Label>
+                        <Input
+                            id="new_family_name"
+                            value={newFamilyName}
+                            onChange={(e) => setNewFamilyName(e.target.value)}
+                            placeholder="Ej: Familia Rodríguez"
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    handleCreateFamily()
+                                }
+                            }}
+                        />
+                    </div>
+                    <DialogFooter>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setShowNewFamily(false)}
+                        >
+                            Cancelar
+                        </Button>
+                        <Button
+                            type="button"
+                            onClick={handleCreateFamily}
+                            disabled={creatingFamily || !newFamilyName.trim()}
+                            className="bg-navy hover:bg-navy/90"
+                        >
+                            {creatingFamily ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            ) : (
+                                <Plus className="mr-2 h-4 w-4" />
+                            )}
+                            Crear
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </form>
     )
 }
