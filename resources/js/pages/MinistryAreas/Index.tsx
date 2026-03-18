@@ -41,13 +41,14 @@ import {
     Megaphone,
     Layers,
     CheckCircle2,
+    FishSymbol,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import type { MinistryArea, MinistryAreaStats } from '@/types/ministry'
 import type { PaginatedData, PaginationLink } from '@/types/members'
 
 interface IndexProps {
-    areas: PaginatedData<MinistryArea>
+    areas: PaginatedData<MinistryArea & { network_members_count?: number }>
     filters: { search?: string }
     stats: MinistryAreaStats
 }
@@ -141,6 +142,7 @@ export default function Index({ areas, filters, stats }: IndexProps) {
                                     <TableHead>Consolidador</TableHead>
                                     <TableHead>Espiritual</TableHead>
                                     <TableHead>Evangelismo</TableHead>
+                                    <TableHead>Red</TableHead>
                                     <TableHead>Estado</TableHead>
                                     <TableHead className="w-10" />
                                 </TableRow>
@@ -148,7 +150,7 @@ export default function Index({ areas, filters, stats }: IndexProps) {
                             <TableBody>
                                 {areas.data.length === 0 ? (
                                     <TableRow>
-                                        <TableCell colSpan={7} className="py-8 text-center text-muted-foreground">
+                                        <TableCell colSpan={8} className="py-8 text-center text-muted-foreground">
                                             No se encontraron áreas ministeriales.
                                         </TableCell>
                                     </TableRow>
@@ -164,6 +166,12 @@ export default function Index({ areas, filters, stats }: IndexProps) {
                                             <TableCell>{renderLeaderBadge(area.consolidator, Heart, 'text-rose-600')}</TableCell>
                                             <TableCell>{renderLeaderBadge(area.spiritual, Flame, 'text-purple-600')}</TableCell>
                                             <TableCell>{renderLeaderBadge(area.evangelism, Megaphone, 'text-green-600')}</TableCell>
+                                            <TableCell>
+                                                <Badge variant="outline" className="text-xs gap-1">
+                                                    <FishSymbol className="h-3 w-3 text-cyan" />
+                                                    {(area as any).network_members_count ?? 0}
+                                                </Badge>
+                                            </TableCell>
                                             <TableCell>
                                                 <Badge variant={area.is_active ? 'default' : 'secondary'}>
                                                     {area.is_active ? 'Activa' : 'Inactiva'}

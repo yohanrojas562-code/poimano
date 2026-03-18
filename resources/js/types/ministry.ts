@@ -15,6 +15,7 @@ export interface MinistryArea {
     consolidator?: Pick<Member, 'id' | 'first_name' | 'last_name' | 'full_name'> | null
     spiritual?: Pick<Member, 'id' | 'first_name' | 'last_name' | 'full_name'> | null
     evangelism?: Pick<Member, 'id' | 'first_name' | 'last_name' | 'full_name'> | null
+    network_members?: Pick<Member, 'id' | 'first_name' | 'last_name' | 'full_name' | 'category' | 'member_status' | 'phone' | 'email'>[]
 }
 
 export interface MinistryAreaStats {

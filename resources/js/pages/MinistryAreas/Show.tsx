@@ -5,6 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table'
+import {
     ArrowLeft,
     Pencil,
     Crown,
@@ -12,8 +20,10 @@ import {
     Flame,
     Megaphone,
     User,
+    FishSymbol,
 } from 'lucide-react'
 import type { MinistryArea } from '@/types/ministry'
+import { categoryLabels, statusLabels } from '@/types/members'
 
 interface ShowProps {
     area: MinistryArea
@@ -27,6 +37,8 @@ const roleConfig = [
 ] as const
 
 export default function Show({ area }: ShowProps) {
+    const networkMembers = area.network_members ?? []
+
     return (
         <TenantLayout>
             <Head title={area.name} />
@@ -99,6 +111,77 @@ export default function Show({ area }: ShowProps) {
                                 )
                             })}
                         </div>
+                    </CardContent>
+                </Card>
+
+                {/* Red Ministerial */}
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2 text-navy">
+                            <FishSymbol className="h-5 w-5 text-cyan" />
+                            Red Ministerial
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                            Miembros que pertenecen a la red de esta área ministerial ({networkMembers.length})
+                        </p>
+                    </CardHeader>
+                    <CardContent>
+                        {networkMembers.length === 0 ? (
+                            <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
+                                <FishSymbol className="mx-auto h-8 w-8 text-gray-300" />
+                                <p className="mt-2 text-sm text-muted-foreground">
+                                    Aún no hay miembros en esta red ministerial.
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-1">
+                                    Para agregar miembros, edita un miembro y selecciona esta área en la sección "Red Ministerial".
+                                </p>
+                            </div>
+                        ) : (
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Nombre</TableHead>
+                                        <TableHead>Categoría</TableHead>
+                                        <TableHead>Estado</TableHead>
+                                        <TableHead>Teléfono</TableHead>
+                                        <TableHead>Correo</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {networkMembers.map((member) => (
+                                        <TableRow key={member.id}>
+                                            <TableCell>
+                                                <Link
+                                                    href={`/members/${member.id}`}
+                                                    className="font-medium text-navy hover:underline"
+                                                >
+                                                    {member.first_name} {member.last_name}
+                                                </Link>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant="outline" className="text-xs">
+                                                    {categoryLabels[member.category] ?? member.category}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge
+                                                    variant={member.member_status === 'activo' ? 'default' : 'secondary'}
+                                                    className="text-xs"
+                                                >
+                                                    {statusLabels[member.member_status] ?? member.member_status}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-sm text-muted-foreground">
+                                                {member.phone ?? '—'}
+                                            </TableCell>
+                                            <TableCell className="text-sm text-muted-foreground">
+                                                {member.email ?? '—'}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        )}
                     </CardContent>
                 </Card>
 

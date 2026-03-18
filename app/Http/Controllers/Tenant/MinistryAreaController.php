@@ -16,6 +16,7 @@ class MinistryAreaController extends Controller
     public function index(Request $request): Response
     {
         $query = MinistryArea::with(['coordinator', 'consolidator', 'spiritual', 'evangelism'])
+            ->withCount('networkMembers')
             ->when($request->input('search'), function ($q, $search) {
                 $q->where('name', 'ilike', "%{$search}%");
             })
@@ -49,7 +50,7 @@ class MinistryAreaController extends Controller
 
     public function show(MinistryArea $ministryArea): Response
     {
-        $ministryArea->load(['coordinator', 'consolidator', 'spiritual', 'evangelism']);
+        $ministryArea->load(['coordinator', 'consolidator', 'spiritual', 'evangelism', 'networkMembers']);
 
         return Inertia::render('MinistryAreas/Show', [
             'area' => $ministryArea,

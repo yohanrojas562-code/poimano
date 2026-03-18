@@ -50,6 +50,7 @@ export interface Member {
     referrals?: Member[]
     skills?: MemberSkill[]
     history?: MemberHistory[]
+    ministry_areas?: { id: number; name: string }[]
 }
 
 export interface Family {

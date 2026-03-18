@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Modules\Members\Domain\Models;
 
 use App\Models\User;
+use App\Modules\Ministry\Domain\Models\MinistryArea;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
@@ -73,6 +75,11 @@ class Member extends Model
     public function history(): HasMany
     {
         return $this->hasMany(MemberHistory::class)->orderByDesc('changed_at');
+    }
+
+    public function ministryAreas(): BelongsToMany
+    {
+        return $this->belongsToMany(MinistryArea::class, 'ministry_area_member')->withTimestamps();
     }
 
     // ── Accessors ──

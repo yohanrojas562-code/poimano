@@ -6,6 +6,7 @@ namespace App\Modules\Ministry\Domain\Models;
 use App\Modules\Members\Domain\Models\Member;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -47,6 +48,11 @@ class MinistryArea extends Model
     public function evangelism(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'evangelism_id');
+    }
+
+    public function networkMembers(): BelongsToMany
+    {
+        return $this->belongsToMany(Member::class, 'ministry_area_member')->withTimestamps();
     }
 
     // ── Scopes ──

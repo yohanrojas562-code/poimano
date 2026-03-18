@@ -23,6 +23,7 @@ import {
     Save,
     Loader2,
     Plus,
+    FishSymbol,
 } from 'lucide-react'
 import { useState } from 'react'
 import type { Member, Family } from '@/types/members'
@@ -38,6 +39,7 @@ interface MemberFormProps {
     member?: Member
     families: Pick<Family, 'id' | 'name'>[]
     membersForRef: Pick<Member, 'id' | 'first_name' | 'last_name'>[]
+    ministryAreas?: { id: number; name: string }[]
 }
 
 const selectClass =
@@ -58,7 +60,7 @@ function Field({ label, error, children }: { label: string; error?: string; chil
     )
 }
 
-export default function MemberForm({ member, families: initialFamilies, membersForRef }: MemberFormProps) {
+export default function MemberForm({ member, families: initialFamilies, membersForRef, ministryAreas = [] }: MemberFormProps) {
     const isEdit = !!member
     const [families, setFamilies] = useState(initialFamilies)
     const [showNewFamily, setShowNewFamily] = useState(false)
@@ -98,6 +100,7 @@ export default function MemberForm({ member, families: initialFamilies, membersF
         family_role: member?.family_role ?? '',
         notes: member?.notes ?? '',
         is_active: member?.is_active ?? true,
+        ministry_area_ids: (member?.ministry_areas ?? []).map((a) => a.id) as number[],
     })
 
     function handleSubmit(e: React.FormEvent) {
@@ -502,6 +505,55 @@ export default function MemberForm({ member, families: initialFamilies, membersF
                     </Field>
                 </CardContent>
             </Card>
+
+            {/* ── Red Ministerial ── */}
+            {ministryAreas.length > 0 && (
+                <Card>
+                    <CardHeader className="pb-4">
+                        <CardTitle className="flex items-center gap-2 text-navy">
+                            <FishSymbol className="h-5 w-5 text-cyan" />
+                            Red Ministerial
+                        </CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                            Selecciona las áreas ministeriales a las que pertenece este miembro (opcional).
+                        </p>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                            {ministryAreas.map((area) => {
+                                const checked = form.data.ministry_area_ids.includes(area.id)
+                                return (
+                                    <label
+                                        key={area.id}
+                                        className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 transition-colors ${
+                                            checked
+                                                ? 'border-cyan bg-cyan/5'
+                                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                        }`}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={checked}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    form.setData('ministry_area_ids', [...form.data.ministry_area_ids, area.id])
+                                                } else {
+                                                    form.setData('ministry_area_ids', form.data.ministry_area_ids.filter((id) => id !== area.id))
+                                                }
+                                            }}
+                                            className="h-4 w-4 rounded border-gray-300 text-navy focus:ring-cyan"
+                                        />
+                                        <div className="flex items-center gap-2">
+                                            <FishSymbol className="h-4 w-4 text-cyan" />
+                                            <span className="text-sm font-medium">{area.name}</span>
+                                        </div>
+                                    </label>
+                                )
+                            })}
+                        </div>
+                    </CardContent>
+                </Card>
+            )}
 
             {/* ── Notas y Estado ── */}
             <Card>

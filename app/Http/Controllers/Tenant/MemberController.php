@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Modules\Members\Domain\Models\Family;
 use App\Modules\Members\Domain\Models\Member;
+use App\Modules\Ministry\Domain\Models\MinistryArea;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -50,21 +51,27 @@ class MemberController extends Controller
             'membersForRef' => Member::active()
                 ->orderBy('first_name')
                 ->get(['id', 'first_name', 'last_name']),
+            'ministryAreas' => MinistryArea::where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate($this->rules());
+        $ministryAreaIds = $request->validate([
+            'ministry_area_ids' => ['nullable', 'array'],
+            'ministry_area_ids.*' => ['integer', 'exists:ministry_areas,id'],
+        ]);
 
-        Member::create($validated);
+        $member = Member::create($validated);
+        $member->ministryAreas()->sync($ministryAreaIds['ministry_area_ids'] ?? []);
 
         return redirect('/members')->with('success', 'Miembro registrado exitosamente.');
     }
 
     public function show(Member $member): Response
     {
-        $member->load(['family.members', 'skills', 'history.changedByUser', 'referredBy', 'referrals']);
+        $member->load(['family.members', 'skills', 'history.changedByUser', 'referredBy', 'referrals', 'ministryAreas']);
 
         return Inertia::render('Members/Show', [
             'member' => $member,
@@ -73,6 +80,8 @@ class MemberController extends Controller
 
     public function edit(Member $member): Response
     {
+        $member->load('ministryAreas');
+
         return Inertia::render('Members/Edit', [
             'member' => $member,
             'families' => Family::orderBy('name')->get(['id', 'name']),
@@ -80,14 +89,20 @@ class MemberController extends Controller
                 ->where('id', '!=', $member->id)
                 ->orderBy('first_name')
                 ->get(['id', 'first_name', 'last_name']),
+            'ministryAreas' => MinistryArea::where('is_active', true)->orderBy('name')->get(['id', 'name']),
         ]);
     }
 
     public function update(Request $request, Member $member): RedirectResponse
     {
         $validated = $request->validate($this->rules());
+        $ministryAreaIds = $request->validate([
+            'ministry_area_ids' => ['nullable', 'array'],
+            'ministry_area_ids.*' => ['integer', 'exists:ministry_areas,id'],
+        ]);
 
         $member->update($validated);
+        $member->ministryAreas()->sync($ministryAreaIds['ministry_area_ids'] ?? []);
 
         return redirect("/members/{$member->id}")->with('success', 'Miembro actualizado exitosamente.');
     }
