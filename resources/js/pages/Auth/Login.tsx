@@ -1,6 +1,7 @@
-import { useForm, Head } from '@inertiajs/react'
+import { useForm, Head, usePage } from '@inertiajs/react'
 import { Church, Loader2 } from 'lucide-react'
 import { type FormEvent } from 'react'
+import type { PageProps } from '@/types'
 
 interface LoginForm {
     email: string
@@ -9,11 +10,15 @@ interface LoginForm {
 }
 
 export default function Login() {
+    const { churchSettings } = usePage<PageProps>().props
     const { data, setData, post, processing, errors } = useForm<LoginForm>({
         email: '',
         password: '',
         remember: false,
     })
+
+    const primaryColor = churchSettings?.primary_color ?? '#00105E'
+    const secondaryColor = churchSettings?.secondary_color ?? '#00E1FF'
 
     const submit = (e: FormEvent) => {
         e.preventDefault()
@@ -23,15 +28,27 @@ export default function Login() {
     return (
         <>
             <Head title="Iniciar Sesión" />
-            <div className="flex min-h-screen items-center justify-center bg-navy px-4">
+            <div className="flex min-h-screen items-center justify-center px-4" style={{ backgroundColor: primaryColor }}>
                 <div className="w-full max-w-md">
                     {/* Logo */}
                     <div className="mb-8 flex flex-col items-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
-                            <Church className="h-9 w-9 text-cyan" />
-                        </div>
-                        <h1 className="mt-4 text-2xl font-bold text-white">Poimano</h1>
-                        <p className="mt-1 text-sm text-white/60">Ingresa a tu panel de administración</p>
+                        {churchSettings?.logo ? (
+                            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-white/10 p-2">
+                                <img src={churchSettings.logo} alt="Logo" className="h-full w-full object-contain" />
+                            </div>
+                        ) : (
+                            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+                                <Church className="h-9 w-9" style={{ color: secondaryColor }} />
+                            </div>
+                        )}
+                        <h1 className="mt-4 text-2xl font-bold text-white">
+                            {churchSettings?.church_name ?? 'Poimano'}
+                        </h1>
+                        {churchSettings?.slogan ? (
+                            <p className="mt-1 text-sm text-white/60">{churchSettings.slogan}</p>
+                        ) : (
+                            <p className="mt-1 text-sm text-white/60">Ingresa a tu panel de administración</p>
+                        )}
                     </div>
 
                     {/* Form Card */}
@@ -94,7 +111,8 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={processing}
-                                className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan px-4 py-2.5 text-sm font-semibold text-navy transition hover:bg-cyan/90 disabled:opacity-50"
+                                className="flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition hover:opacity-90 disabled:opacity-50"
+                                style={{ backgroundColor: secondaryColor, color: primaryColor }}
                             >
                                 {processing ? (
                                     <>

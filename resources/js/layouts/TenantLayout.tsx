@@ -17,6 +17,7 @@ import {
     XCircle,
     Home,
     Layers,
+    Settings,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
@@ -38,10 +39,11 @@ const navigation: NavItem[] = [
     { label: 'Finanzas', href: '/finance', icon: HandCoins },
     { label: 'Comunicación', href: '/communication', icon: MessageSquare },
     { label: 'Reportes', href: '/reports', icon: BarChart3 },
+    { label: 'Configuración', href: '/settings/church', icon: Settings },
 ]
 
 export default function TenantLayout({ children }: { children: React.ReactNode }) {
-    const { tenant, auth, flash } = usePage<PageProps>().props
+    const { tenant, auth, flash, churchSettings } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
 
     return (
@@ -49,16 +51,25 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
             {/* Sidebar */}
             <aside
                 className={cn(
-                    'flex flex-col bg-navy text-white transition-all duration-300',
+                    'flex flex-col text-white transition-all duration-300',
                     collapsed ? 'w-16' : 'w-64'
                 )}
+                style={{ backgroundColor: churchSettings?.primary_color ?? '#00105E' }}
             >
                 {/* Logo / Church */}
                 <div className="flex h-16 items-center gap-3 border-b border-white/10 px-4">
-                    <Church className="h-7 w-7 shrink-0 text-cyan" />
+                    {churchSettings?.logo ? (
+                        <img
+                            src={churchSettings.logo}
+                            alt="Logo"
+                            className="h-8 w-8 shrink-0 rounded object-contain"
+                        />
+                    ) : (
+                        <Church className="h-7 w-7 shrink-0" style={{ color: churchSettings?.secondary_color ?? '#00E1FF' }} />
+                    )}
                     {!collapsed && (
                         <span className="truncate text-sm font-semibold text-white">
-                            {tenant?.church_name ?? 'Poimano'}
+                            {churchSettings?.church_name ?? tenant?.church_name ?? 'Poimano'}
                         </span>
                     )}
                 </div>

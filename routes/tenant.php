@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Tenant\AuthController;
+use App\Http\Controllers\Tenant\ChurchSettingController;
 use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\FamilyController;
 use App\Http\Controllers\Tenant\MemberController;
@@ -49,5 +50,9 @@ Route::middleware([
         Route::resource('members', MemberController::class);
         Route::resource('families', FamilyController::class);
         Route::resource('ministry-areas', MinistryAreaController::class);
+
+        // Configuración de iglesia
+        Route::get('/settings/church', [ChurchSettingController::class, 'edit']);
+        Route::put('/settings/church', [ChurchSettingController::class, 'update']);
     });
 });

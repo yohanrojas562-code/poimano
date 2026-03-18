@@ -20,11 +20,20 @@ export interface Tenant {
     address?: string
 }
 
+export interface ChurchBranding {
+    church_name: string
+    logo: string | null
+    slogan: string | null
+    primary_color: string
+    secondary_color: string
+}
+
 export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
     auth: {
         user: User
     }
     tenant?: Tenant
+    churchSettings?: ChurchBranding | null
     flash?: {
         success?: string
         error?: string

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Modules\Church\Domain\Models\ChurchSetting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -52,6 +53,21 @@ class HandleInertiaRequests extends Middleware
                         'slug' => $tenant->slug,
                         'status' => $tenant->status,
                     ];
+                }
+                return null;
+            },
+            'churchSettings' => function () {
+                if (tenant()) {
+                    $s = ChurchSetting::first();
+                    if ($s) {
+                        return [
+                            'church_name'     => $s->church_name,
+                            'logo'            => $s->logo ? '/storage/' . $s->logo : null,
+                            'slogan'          => $s->slogan,
+                            'primary_color'   => $s->primary_color,
+                            'secondary_color' => $s->secondary_color,
+                        ];
+                    }
                 }
                 return null;
             },
