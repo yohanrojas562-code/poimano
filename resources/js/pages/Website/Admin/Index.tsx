@@ -640,7 +640,19 @@ function ImageUploader({
 }
 
 /* ── Helpers ── */
+const FIELD_LABELS: Record<string, string> = {
+    logo_height: 'Tamaño del Logo (px)',
+    overlay_opacity: 'Opacidad del Overlay (%)',
+    cta_text: 'Texto del Botón',
+    cta_link: 'Enlace del Botón',
+    bg_image: 'Imagen de Fondo',
+    show_map: 'Mostrar Mapa',
+    map_embed_url: 'URL del Mapa (Google Maps)',
+    social_links: 'Redes Sociales',
+}
+
 function formatLabel(key: string): string {
+    if (FIELD_LABELS[key]) return FIELD_LABELS[key]
     return key
         .replace(/_/g, ' ')
         .replace(/\b\w/g, (c) => c.toUpperCase())

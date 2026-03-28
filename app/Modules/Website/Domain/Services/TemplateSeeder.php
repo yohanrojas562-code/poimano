@@ -50,6 +50,7 @@ class TemplateSeeder
                     'cta_link'    => '#about',
                     'bg_image'    => null,
                     'overlay_opacity' => 60,
+                    'logo_height' => 40,
                 ],
             ],
             [

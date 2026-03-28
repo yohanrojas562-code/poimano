@@ -29,6 +29,7 @@ interface Sections {
         cta_link: string
         bg_image: string | null
         overlay_opacity: number
+        logo_height: number
     }
     about?: {
         title: string
@@ -83,6 +84,7 @@ export default function Esperanza({ church, sections }: Props) {
 
     const primary = church.primary_color
     const secondary = church.secondary_color
+    const logoH = sections.hero?.logo_height ?? 40
 
     useEffect(() => {
         const handler = () => setScrolled(window.scrollY > 50)
@@ -116,7 +118,7 @@ export default function Esperanza({ church, sections }: Props) {
                 <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
                     <a href="#hero" className="flex items-center gap-3">
                         {church.logo ? (
-                            <img src={church.logo} alt="" className="h-9 w-9 rounded-lg object-contain" />
+                            <img src={church.logo} alt="" className="rounded-lg object-contain" style={{ height: `${logoH}px` }} />
                         ) : (
                             <Church className="h-7 w-7" style={{ color: secondary }} />
                         )}
@@ -201,7 +203,8 @@ export default function Esperanza({ church, sections }: Props) {
                             <img
                                 src={church.logo}
                                 alt=""
-                                className="mx-auto mb-8 h-20 w-20 rounded-2xl object-contain ring-2 ring-white/20"
+                                className="mx-auto mb-8 rounded-2xl object-contain ring-2 ring-white/20"
+                                style={{ height: `${Math.round(logoH * 2)}px` }}
                             />
                         )}
                         <h1 className="text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl">
@@ -493,7 +496,7 @@ export default function Esperanza({ church, sections }: Props) {
                             <div>
                                 <div className="flex items-center gap-3">
                                     {church.logo ? (
-                                        <img src={church.logo} alt="" className="h-8 w-8 rounded-lg object-contain" />
+                                        <img src={church.logo} alt="" className="rounded-lg object-contain" style={{ height: `${Math.round(logoH * 0.8)}px` }} />
                                     ) : (
                                         <Church className="h-7 w-7" style={{ color: secondary }} />
                                     )}
