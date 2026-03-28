@@ -9,6 +9,7 @@ use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -25,6 +26,15 @@ class WebsiteSettingController extends Controller
 
     public function index(): Response
     {
+        // Ensure tables exist (new tenants might not have them yet)
+        if (! Schema::hasTable('website_settings')) {
+            return Inertia::render('Website/Admin/Index', [
+                'settings'           => ['id' => 0, 'template' => 'esperanza', 'is_published' => false],
+                'sections'           => [],
+                'availableTemplates' => self::AVAILABLE_TEMPLATES,
+            ]);
+        }
+
         $settings = WebsiteSetting::first();
 
         if (! $settings) {
