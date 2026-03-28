@@ -40,7 +40,16 @@ class PublicWebsiteController extends Controller
             ->orderBy('sort_order')
             ->get()
             ->keyBy('section_key')
-            ->map(fn ($s) => $s->content);
+            ->map(function ($s) {
+                $content = $s->content;
+                // Resolve image paths to public URLs
+                foreach (['bg_image', 'image'] as $field) {
+                    if (! empty($content[$field]) && ! str_starts_with($content[$field], 'http')) {
+                        $content[$field] = '/storage/' . $content[$field];
+                    }
+                }
+                return $content;
+            });
 
         return Inertia::render('Website/Templates/' . ucfirst($settings->template), [
             'church'   => $this->getChurchData(),

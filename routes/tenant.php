@@ -60,5 +60,7 @@ Route::middleware([
         Route::get('/settings/website', [WebsiteSettingController::class, 'index']);
         Route::put('/settings/website', [WebsiteSettingController::class, 'updateSettings']);
         Route::put('/settings/website/sections/{section}', [WebsiteSettingController::class, 'updateSection']);
+        Route::post('/settings/website/sections/{section}/image', [WebsiteSettingController::class, 'uploadSectionImage']);
+        Route::delete('/settings/website/sections/{section}/image', [WebsiteSettingController::class, 'removeSectionImage']);
     });
 });

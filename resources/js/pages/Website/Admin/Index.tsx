@@ -9,9 +9,9 @@ import {
     Globe, Eye, EyeOff, Save, Loader2, ExternalLink,
     Sparkles, GripVertical, ChevronDown, ChevronUp,
     Image as ImageIcon, Clock, Users, Phone, BookOpen,
-    Check,
+    Check, Upload, Trash2, Info,
 } from 'lucide-react'
-import { useState, type FormEvent } from 'react'
+import { useState, useRef, type FormEvent } from 'react'
 import type { PageProps } from '@/types'
 
 /* ── Types ── */
@@ -51,6 +51,20 @@ const sectionMeta: Record<string, { label: string; icon: React.ElementType; desc
     ministries: { label: 'Ministerios',        icon: Users,    description: 'Áreas de servicio y ministerios' },
     contact:    { label: 'Contacto',           icon: Phone,    description: 'Información de contacto y mapa' },
     footer:     { label: 'Pie de Página',      icon: Globe,    description: 'Descripción, redes sociales y copyright' },
+}
+
+/* ── Image field detection & recommended sizes ── */
+const IMAGE_FIELDS: Record<string, { label: string; hint: string; dimensions: string }> = {
+    'hero.bg_image':  { label: 'Imagen de Fondo', hint: 'Se muestra como fondo del hero con overlay de color', dimensions: '1920 × 1080 px' },
+    'about.image':    { label: 'Imagen de la Iglesia', hint: 'Se muestra junto a la descripción en la sección Nosotros', dimensions: '800 × 600 px' },
+}
+
+function isImageField(sectionKey: string, fieldKey: string): boolean {
+    return `${sectionKey}.${fieldKey}` in IMAGE_FIELDS
+}
+
+function getImageMeta(sectionKey: string, fieldKey: string) {
+    return IMAGE_FIELDS[`${sectionKey}.${fieldKey}`] || { label: formatLabel(fieldKey), hint: '', dimensions: '' }
 }
 
 /* ── Main Component ── */
@@ -280,6 +294,22 @@ function SectionEditor({
                     <div className="space-y-4">
                         {/* Dynamic fields based on section content */}
                         {Object.entries(form.data.content).map(([key, value]) => {
+                            // Image fields → uploader
+                            if (isImageField(section.section_key, key)) {
+                                const imgMeta = getImageMeta(section.section_key, key)
+                                return (
+                                    <ImageUploader
+                                        key={key}
+                                        sectionId={section.id}
+                                        fieldKey={key}
+                                        currentValue={(value as string) ?? null}
+                                        label={imgMeta.label}
+                                        hint={imgMeta.hint}
+                                        dimensions={imgMeta.dimensions}
+                                    />
+                                )
+                            }
+
                             // Skip complex arrays/objects — they get their own renderers
                             if (Array.isArray(value)) {
                                 return (
@@ -464,6 +494,127 @@ function ObjectFieldEditor({
                     </div>
                 ))}
             </div>
+        </div>
+    )
+}
+
+/* ── Image Uploader ── */
+function ImageUploader({
+    sectionId,
+    fieldKey,
+    currentValue,
+    label,
+    hint,
+    dimensions,
+}: {
+    sectionId: number
+    fieldKey: string
+    currentValue: string | null
+    label: string
+    hint: string
+    dimensions: string
+}) {
+    const fileRef = useRef<HTMLInputElement>(null)
+    const [uploading, setUploading] = useState(false)
+    const [removing, setRemoving] = useState(false)
+
+    const imageUrl = currentValue ? `/storage/${currentValue}` : null
+
+    const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setUploading(true)
+        router.post(`/settings/website/sections/${sectionId}/image`, {
+            image: file,
+            field: fieldKey,
+        }, {
+            preserveScroll: true,
+            forceFormData: true,
+            onFinish: () => setUploading(false),
+        })
+    }
+
+    const handleRemove = () => {
+        setRemoving(true)
+        router.delete(`/settings/website/sections/${sectionId}/image`, {
+            data: { field: fieldKey },
+            preserveScroll: true,
+            onFinish: () => setRemoving(false),
+        })
+    }
+
+    return (
+        <div className="space-y-2">
+            <div className="flex items-center gap-2">
+                <Label className="text-xs">{label}</Label>
+                <span className="inline-flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-[10px] text-blue-600">
+                    <Info className="h-2.5 w-2.5" />
+                    {dimensions}
+                </span>
+            </div>
+            {hint && <p className="text-[11px] text-gray-400">{hint}</p>}
+
+            {imageUrl ? (
+                <div className="relative group rounded-lg border overflow-hidden bg-gray-50">
+                    <img
+                        src={imageUrl}
+                        alt={label}
+                        className="w-full max-h-48 object-cover"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                            type="button"
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => fileRef.current?.click()}
+                            disabled={uploading}
+                        >
+                            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="mr-1 h-3.5 w-3.5" />}
+                            Cambiar
+                        </Button>
+                        <Button
+                            type="button"
+                            size="sm"
+                            variant="destructive"
+                            onClick={handleRemove}
+                            disabled={removing}
+                        >
+                            {removing ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="mr-1 h-3.5 w-3.5" />}
+                            Eliminar
+                        </Button>
+                    </div>
+                </div>
+            ) : (
+                <button
+                    type="button"
+                    onClick={() => fileRef.current?.click()}
+                    disabled={uploading}
+                    className="flex w-full flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-200 bg-gray-50/50 p-6 text-center hover:border-cyan/50 hover:bg-cyan/5 transition-colors"
+                >
+                    {uploading ? (
+                        <Loader2 className="h-6 w-6 animate-spin text-cyan" />
+                    ) : (
+                        <ImageIcon className="h-8 w-8 text-gray-300" />
+                    )}
+                    <div>
+                        <p className="text-sm font-medium text-gray-600">
+                            {uploading ? 'Subiendo...' : 'Subir imagen'}
+                        </p>
+                        <p className="text-[10px] text-gray-400 mt-0.5">
+                            JPG, PNG, WebP, GIF o SVG · Máx. 5MB · Recomendado: {dimensions}
+                        </p>
+                    </div>
+                </button>
+            )}
+
+            <input
+                ref={fileRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml"
+                className="hidden"
+                onChange={handleUpload}
+            />
         </div>
     )
 }

@@ -9,6 +9,7 @@ use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -83,5 +84,64 @@ class WebsiteSettingController extends Controller
         $section->update($validated);
 
         return redirect()->back()->with('success', 'Sección actualizada correctamente.');
+    }
+
+    /**
+     * Upload an image for a specific section field.
+     */
+    public function uploadSectionImage(Request $request, WebsiteSection $section)
+    {
+        $request->validate([
+            'image' => ['required', 'image', 'mimes:jpg,jpeg,png,webp,gif,svg', 'max:5120'],
+            'field' => ['required', 'string', 'max:80'],
+        ]);
+
+        $tenantId = tenant()->id;
+        $baseDir = base_path('storage/app/public') . '/website-images/' . $tenantId;
+        File::ensureDirectoryExists($baseDir);
+
+        // Delete old image if it exists
+        $content = $section->content;
+        $field = $request->input('field');
+        if (! empty($content[$field])) {
+            $oldPath = base_path('storage/app/public') . '/' . ltrim($content[$field], '/');
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+        }
+
+        $file = $request->file('image');
+        $filename = $section->section_key . '-' . $field . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $file->move($baseDir, $filename);
+
+        $content[$field] = 'website-images/' . $tenantId . '/' . $filename;
+        $section->update(['content' => $content]);
+
+        return redirect()->back()->with('success', 'Imagen actualizada correctamente.');
+    }
+
+    /**
+     * Remove an image from a specific section field.
+     */
+    public function removeSectionImage(Request $request, WebsiteSection $section)
+    {
+        $request->validate([
+            'field' => ['required', 'string', 'max:80'],
+        ]);
+
+        $field = $request->input('field');
+        $content = $section->content;
+
+        if (! empty($content[$field])) {
+            $oldPath = base_path('storage/app/public') . '/' . ltrim($content[$field], '/');
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+        }
+
+        $content[$field] = null;
+        $section->update(['content' => $content]);
+
+        return redirect()->back()->with('success', 'Imagen eliminada correctamente.');
     }
 }
