@@ -81,6 +81,10 @@ class WebsiteSettingController extends Controller
             'is_visible' => ['required', 'boolean'],
         ]);
 
+        // Merge incoming content with existing content to preserve image fields
+        $existingContent = $section->content ?? [];
+        $validated['content'] = array_merge($existingContent, $validated['content']);
+
         $section->update($validated);
 
         return redirect()->back()->with('success', 'Sección actualizada correctamente.');

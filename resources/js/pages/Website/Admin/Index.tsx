@@ -11,7 +11,7 @@ import {
     Image as ImageIcon, Clock, Users, Phone, BookOpen,
     Check, Upload, Trash2, Info,
 } from 'lucide-react'
-import { useState, useRef, type FormEvent } from 'react'
+import { useState, useRef, useEffect, type FormEvent } from 'react'
 import type { PageProps } from '@/types'
 
 /* ── Types ── */
@@ -236,8 +236,27 @@ function SectionEditor({
         is_visible: section.is_visible,
     })
 
+    // Sync form data when the section prop changes (e.g. after image upload redirect)
+    useEffect(() => {
+        form.setData({
+            content: section.content as Record<string, unknown>,
+            is_visible: section.is_visible,
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [section.content, section.is_visible])
+
     const save = () => {
-        form.put(`/settings/website/sections/${section.id}`, { preserveScroll: true })
+        // Exclude image fields from the save payload — they're managed by separate upload
+        const contentToSave = { ...form.data.content }
+        for (const key of Object.keys(contentToSave)) {
+            if (isImageField(section.section_key, key)) {
+                delete contentToSave[key]
+            }
+        }
+        router.put(`/settings/website/sections/${section.id}`, {
+            content: contentToSave,
+            is_visible: form.data.is_visible,
+        }, { preserveScroll: true })
     }
 
     const toggleVisibility = () => {
@@ -294,15 +313,16 @@ function SectionEditor({
                     <div className="space-y-4">
                         {/* Dynamic fields based on section content */}
                         {Object.entries(form.data.content).map(([key, value]) => {
-                            // Image fields → uploader
+                            // Image fields → uploader (use section prop directly for fresh data)
                             if (isImageField(section.section_key, key)) {
                                 const imgMeta = getImageMeta(section.section_key, key)
+                                const freshValue = (section.content as Record<string, unknown>)[key]
                                 return (
                                     <ImageUploader
                                         key={key}
                                         sectionId={section.id}
                                         fieldKey={key}
-                                        currentValue={(value as string) ?? null}
+                                        currentValue={(freshValue as string) ?? null}
                                         label={imgMeta.label}
                                         hint={imgMeta.hint}
                                         dimensions={imgMeta.dimensions}
