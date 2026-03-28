@@ -11,8 +11,10 @@ import {
     Image as ImageIcon, Clock, Users, Phone, BookOpen,
     Check, Upload, Trash2, Info,
 } from 'lucide-react'
-import { useState, useRef, useEffect, type FormEvent } from 'react'
+import { useState, useRef, useEffect, lazy, Suspense, type FormEvent } from 'react'
 import type { PageProps } from '@/types'
+
+const RichTextEditor = lazy(() => import('@/components/ui/rich-text-editor'))
 
 /* ── Types ── */
 interface WebsiteSettings {
@@ -65,6 +67,15 @@ function isImageField(sectionKey: string, fieldKey: string): boolean {
 
 function getImageMeta(sectionKey: string, fieldKey: string) {
     return IMAGE_FIELDS[`${sectionKey}.${fieldKey}`] || { label: formatLabel(fieldKey), hint: '', dimensions: '' }
+}
+
+/* ── Rich text field detection ── */
+const RICHTEXT_FIELDS = new Set([
+    'about.description',
+])
+
+function isRichTextField(sectionKey: string, fieldKey: string): boolean {
+    return RICHTEXT_FIELDS.has(`${sectionKey}.${fieldKey}`)
 }
 
 /* ── Main Component ── */
@@ -376,6 +387,21 @@ function SectionEditor({
                                             value={value}
                                             onChange={(e) => updateContent(key, parseInt(e.target.value) || 0)}
                                         />
+                                    </div>
+                                )
+                            }
+
+                            // Rich text fields
+                            if (typeof value === 'string' && isRichTextField(section.section_key, key)) {
+                                return (
+                                    <div key={key} className="space-y-1.5">
+                                        <Label className="text-xs">{formatLabel(key)}</Label>
+                                        <Suspense fallback={<div className="h-32 rounded-md border bg-gray-50 animate-pulse" />}>
+                                            <RichTextEditor
+                                                value={value}
+                                                onChange={(html) => updateContent(key, html)}
+                                            />
+                                        </Suspense>
                                     </div>
                                 )
                             }

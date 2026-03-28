@@ -276,9 +276,10 @@ export default function Esperanza({ church, sections }: Props) {
                                 >
                                     {sections.about.title}
                                 </h2>
-                                <p className="mt-6 text-lg leading-relaxed text-gray-600">
-                                    {sections.about.description}
-                                </p>
+                                <div
+                                    className="mt-6 prose prose-lg max-w-none text-gray-600 [&>p]:leading-relaxed"
+                                    dangerouslySetInnerHTML={{ __html: sections.about.description }}
+                                />
 
                                 {/* Stats */}
                                 {sections.about.stats && sections.about.stats.length > 0 && (
