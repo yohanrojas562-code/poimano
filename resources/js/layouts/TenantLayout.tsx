@@ -18,6 +18,7 @@ import {
     Home,
     Layers,
     Settings,
+    Globe,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
@@ -39,6 +40,7 @@ const navigation: NavItem[] = [
     { label: 'Finanzas', href: '/finance', icon: HandCoins },
     { label: 'Comunicación', href: '/communication', icon: MessageSquare },
     { label: 'Reportes', href: '/reports', icon: BarChart3 },
+    { label: 'Sitio Web', href: '/settings/website', icon: Globe },
     { label: 'Configuración', href: '/settings/church', icon: Settings },
 ]
 

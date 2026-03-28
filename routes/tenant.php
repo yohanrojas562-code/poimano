@@ -8,6 +8,8 @@ use App\Http\Controllers\Tenant\DashboardController;
 use App\Http\Controllers\Tenant\FamilyController;
 use App\Http\Controllers\Tenant\MemberController;
 use App\Http\Controllers\Tenant\MinistryAreaController;
+use App\Http\Controllers\Tenant\PublicWebsiteController;
+use App\Http\Controllers\Tenant\WebsiteSettingController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -29,6 +31,9 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
+    // --- Sitio web público ---
+    Route::get('/', PublicWebsiteController::class);
+
     // --- Auth (público) ---
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -41,10 +46,6 @@ Route::middleware([
 
     // --- Rutas protegidas ---
     Route::middleware('auth')->group(function () {
-        Route::get('/', function () {
-            return redirect('/dashboard');
-        });
-
         Route::get('/dashboard', DashboardController::class);
 
         Route::resource('members', MemberController::class);
@@ -54,5 +55,10 @@ Route::middleware([
         // Configuración de iglesia
         Route::get('/settings/church', [ChurchSettingController::class, 'edit']);
         Route::put('/settings/church', [ChurchSettingController::class, 'update']);
+
+        // Sitio web - administración
+        Route::get('/settings/website', [WebsiteSettingController::class, 'index']);
+        Route::put('/settings/website', [WebsiteSettingController::class, 'updateSettings']);
+        Route::put('/settings/website/sections/{section}', [WebsiteSettingController::class, 'updateSection']);
     });
 });

@@ -198,6 +198,7 @@ return [
             database_path('migrations/tenant/projects'),
             database_path('migrations/tenant/reports'),
             database_path('migrations/tenant/church'),
+            database_path('migrations/tenant/website'),
         ],
         '--realpath' => true,
     ],
