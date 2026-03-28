@@ -16,14 +16,25 @@ class TemplateSeeder
         $defaults = self::getDefaults($template);
 
         foreach ($defaults as $i => $section) {
-            WebsiteSection::firstOrCreate(
-                ['template' => $template, 'section_key' => $section['section_key']],
-                [
-                    'sort_order' => $i,
-                    'is_visible' => true,
-                    'content'    => $section['content'],
-                ]
-            );
+            $existing = WebsiteSection::where('template', $template)
+                ->where('section_key', $section['section_key'])
+                ->first();
+
+            if (! $existing) {
+                WebsiteSection::create([
+                    'template'    => $template,
+                    'section_key' => $section['section_key'],
+                    'sort_order'  => $i,
+                    'is_visible'  => true,
+                    'content'     => $section['content'],
+                ]);
+            } else {
+                // Add any new default keys missing from existing content
+                $merged = array_merge($section['content'], $existing->content);
+                if ($merged !== $existing->content) {
+                    $existing->update(['content' => $merged]);
+                }
+            }
         }
     }
 
