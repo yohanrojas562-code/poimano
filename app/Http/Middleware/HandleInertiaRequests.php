@@ -58,7 +58,11 @@ class HandleInertiaRequests extends Middleware
             },
             'churchSettings' => function () {
                 if (tenant()) {
-                    $s = ChurchSetting::first();
+                    try {
+                        $s = ChurchSetting::first();
+                    } catch (\Throwable) {
+                        $s = null;
+                    }
                     if ($s) {
                         return [
                             'church_name'     => $s->church_name,

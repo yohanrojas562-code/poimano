@@ -189,6 +189,7 @@ return [
         '--path' => [
             database_path('migrations/tenant'),
             database_path('migrations/tenant/members'),
+            database_path('migrations/tenant/ministry'),
             database_path('migrations/tenant/groups'),
             database_path('migrations/tenant/attendance'),
             database_path('migrations/tenant/finance'),

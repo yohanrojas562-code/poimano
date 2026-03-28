@@ -10,6 +10,7 @@ use App\Modules\Members\Domain\Models\Member;
 use App\Modules\Ministry\Domain\Models\MinistryArea;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Activitylog\Models\Activity;
@@ -20,35 +21,40 @@ class DashboardController extends Controller
     {
         $now = Carbon::now();
 
+        $hasMembers   = Schema::hasTable('members');
+        $hasFamilies  = Schema::hasTable('families');
+        $hasAreas     = Schema::hasTable('ministry_areas');
+        $hasActivity  = Schema::hasTable('activity_log');
+
         // ── Contadores principales ──
-        $totalMembers   = Member::count();
-        $activeMembers  = Member::where('is_active', true)->where('member_status', 'activo')->count();
-        $totalFamilies  = Family::count();
-        $totalAreas     = MinistryArea::where('is_active', true)->count();
-        $baptizedCount  = Member::where('is_baptized', true)->count();
-        $newThisMonth   = Member::whereMonth('created_at', $now->month)
+        $totalMembers   = $hasMembers ? Member::count() : 0;
+        $activeMembers  = $hasMembers ? Member::where('is_active', true)->where('member_status', 'activo')->count() : 0;
+        $totalFamilies  = $hasFamilies ? Family::count() : 0;
+        $totalAreas     = $hasAreas ? MinistryArea::where('is_active', true)->count() : 0;
+        $baptizedCount  = $hasMembers ? Member::where('is_baptized', true)->count() : 0;
+        $newThisMonth   = $hasMembers ? Member::whereMonth('created_at', $now->month)
             ->whereYear('created_at', $now->year)
-            ->count();
+            ->count() : 0;
 
         // ── Miembros por categoría ──
-        $byCategory = Member::select('category', DB::raw('count(*) as total'))
+        $byCategory = $hasMembers ? Member::select('category', DB::raw('count(*) as total'))
             ->groupBy('category')
             ->pluck('total', 'category')
-            ->toArray();
+            ->toArray() : [];
 
         // ── Miembros por estado ──
-        $byStatus = Member::select('member_status', DB::raw('count(*) as total'))
+        $byStatus = $hasMembers ? Member::select('member_status', DB::raw('count(*) as total'))
             ->groupBy('member_status')
             ->pluck('total', 'member_status')
-            ->toArray();
+            ->toArray() : [];
 
         // ── Crecimiento mensual (últimos 6 meses) ──
         $monthlyGrowth = [];
         for ($i = 5; $i >= 0; $i--) {
             $date = $now->copy()->subMonths($i);
-            $count = Member::whereMonth('created_at', $date->month)
+            $count = $hasMembers ? Member::whereMonth('created_at', $date->month)
                 ->whereYear('created_at', $date->year)
-                ->count();
+                ->count() : 0;
             $monthlyGrowth[] = [
                 'month' => $date->translatedFormat('M Y'),
                 'count' => $count,
@@ -56,14 +62,14 @@ class DashboardController extends Controller
         }
 
         // ── Miembros por género ──
-        $byGender = Member::select('gender', DB::raw('count(*) as total'))
+        $byGender = $hasMembers ? Member::select('gender', DB::raw('count(*) as total'))
             ->whereNotNull('gender')
             ->groupBy('gender')
             ->pluck('total', 'gender')
-            ->toArray();
+            ->toArray() : [];
 
         // ── Miembros recientes (últimos 5) ──
-        $recentMembers = Member::orderByDesc('created_at')
+        $recentMembers = $hasMembers ? Member::orderByDesc('created_at')
             ->take(5)
             ->get(['id', 'first_name', 'last_name', 'category', 'member_status', 'created_at'])
             ->map(fn (Member $m) => [
@@ -72,10 +78,10 @@ class DashboardController extends Controller
                 'category'   => $m->category,
                 'status'     => $m->member_status,
                 'created_at' => $m->created_at->translatedFormat('d M Y'),
-            ]);
+            ]) : collect([]);
 
         // ── Actividad reciente (últimos 8) ──
-        $recentActivity = Activity::orderByDesc('created_at')
+        $recentActivity = $hasActivity ? Activity::orderByDesc('created_at')
             ->take(8)
             ->get(['description', 'subject_type', 'subject_id', 'created_at'])
             ->map(fn (Activity $a) => [
@@ -83,7 +89,7 @@ class DashboardController extends Controller
                 'subject'     => class_basename($a->subject_type ?? ''),
                 'subject_id'  => $a->subject_id,
                 'date'        => Carbon::parse($a->created_at)->diffForHumans(),
-            ]);
+            ]) : collect([]);
 
         return Inertia::render('Dashboard', [
             'stats' => [
