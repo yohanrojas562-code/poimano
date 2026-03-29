@@ -4,7 +4,31 @@ import {
     Facebook, Instagram, Youtube, Music, Baby, Users, Globe,
     Heart, ArrowUp, Menu, X,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+
+/**
+ * Converts any Google Maps URL to its embeddable version.
+ * Supports: regular URLs, embed URLs (passthrough), and raw iframe HTML (extracts src).
+ */
+function toGoogleMapsEmbedUrl(raw: string | null): string | null {
+    if (!raw) return null
+    const input = raw.trim()
+
+    // If user pasted a full <iframe ...> tag, extract the src
+    const iframeMatch = input.match(/src=["']([^"']+)["']/i)
+    if (iframeMatch) return iframeMatch[1]
+
+    // Already an embed URL → pass through
+    if (input.includes('/maps/embed') || input.includes('output=embed')) return input
+
+    // Any Google Maps URL → convert via output=embed trick
+    if (input.match(/google\.\w+\/maps/i) || input.match(/maps\.google\./i) || input.match(/goo\.gl\/maps/i)) {
+        return `https://maps.google.com/maps?q=${encodeURIComponent(input)}&output=embed`
+    }
+
+    // Not recognized — use as-is
+    return input
+}
 
 /* ── Types ── */
 interface ChurchData {
@@ -472,18 +496,22 @@ export default function Esperanza({ church, sections }: Props) {
                         </div>
 
                         {/* Map embed (if configured) */}
-                        {sections.contact.show_map && sections.contact.map_embed_url && (
-                            <div className="mt-10 overflow-hidden rounded-2xl shadow-lg">
-                                <iframe
-                                    src={sections.contact.map_embed_url}
-                                    className="h-80 w-full border-0"
-                                    allowFullScreen
-                                    loading="lazy"
-                                    referrerPolicy="no-referrer-when-downgrade"
-                                    title="Ubicación"
-                                />
-                            </div>
-                        )}
+                        {sections.contact.show_map && sections.contact.map_embed_url && (() => {
+                            const embedUrl = toGoogleMapsEmbedUrl(sections.contact.map_embed_url)
+                            if (!embedUrl) return null
+                            return (
+                                <div className="mt-10 overflow-hidden rounded-2xl shadow-lg">
+                                    <iframe
+                                        src={embedUrl}
+                                        className="h-80 w-full border-0"
+                                        allowFullScreen
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title="Ubicación"
+                                    />
+                                </div>
+                            )
+                        })()}
                     </div>
                 </section>
             )}

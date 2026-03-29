@@ -794,7 +794,7 @@ const FIELD_LABELS: Record<string, string> = {
     cta_link: 'Enlace del Botón',
     bg_image: 'Imagen de Fondo',
     show_map: 'Mostrar Mapa',
-    map_embed_url: 'URL del Mapa (Google Maps)',
+    map_embed_url: 'Mapa de Google Maps (pega la URL o el código de incrustar)',
     social_links: 'Redes Sociales',
 }
 
