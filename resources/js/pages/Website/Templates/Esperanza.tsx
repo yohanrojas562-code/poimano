@@ -66,6 +66,7 @@ interface Sections {
     services?: {
         title: string
         subtitle: string
+        image: string | null
         items: Array<{ day: string; time: string; name: string; description: string }>
     }
     ministries?: {
@@ -334,49 +335,82 @@ export default function Esperanza({ church, sections }: Props) {
             {sections.services && (
                 <section id="services" className="py-20 sm:py-28" style={{ backgroundColor: '#F9FAFB' }}>
                     <div className="mx-auto max-w-7xl px-6">
-                        <div className="text-center">
-                            <p
-                                className="text-sm font-semibold uppercase tracking-widest"
-                                style={{ color: secondary }}
-                            >
-                                {sections.services.subtitle}
-                            </p>
-                            <h2
-                                className="mt-2 text-3xl font-bold sm:text-4xl"
-                                style={{ color: primary }}
-                            >
-                                {sections.services.title}
-                            </h2>
-                        </div>
-
-                        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                            {sections.services.items.map((item, i) => (
-                                <div
-                                    key={i}
-                                    className="group relative overflow-hidden rounded-2xl bg-white p-8 shadow-sm transition-shadow hover:shadow-lg"
-                                >
-                                    {/* Accent top bar */}
-                                    <div
-                                        className="absolute inset-x-0 top-0 h-1 transition-all group-hover:h-1.5"
-                                        style={{ backgroundColor: secondary }}
+                        <div className="grid items-stretch gap-12 lg:grid-cols-2">
+                            {/* Left — Image */}
+                            <div className="relative hidden overflow-hidden rounded-3xl lg:block">
+                                {sections.services.image ? (
+                                    <img
+                                        src={`/storage/${sections.services.image}`}
+                                        alt={sections.services.title}
+                                        className="h-full w-full object-cover"
                                     />
-                                    <div className="flex items-center gap-3">
-                                        <Clock className="h-5 w-5" style={{ color: secondary }} />
-                                        <span className="text-sm font-medium text-gray-500">
-                                            {item.day} · {item.time}
-                                        </span>
-                                    </div>
-                                    <h3
-                                        className="mt-4 text-xl font-bold"
-                                        style={{ color: primary }}
+                                ) : (
+                                    <div
+                                        className="flex h-full min-h-[480px] items-center justify-center"
+                                        style={{ backgroundColor: primary }}
                                     >
-                                        {item.name}
-                                    </h3>
-                                    <p className="mt-2 text-sm leading-relaxed text-gray-500">
-                                        {item.description}
-                                    </p>
+                                        <Clock className="h-24 w-24 text-white/20" />
+                                    </div>
+                                )}
+                                {/* Decorative overlay gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                            </div>
+
+                            {/* Right — Schedule cards */}
+                            <div className="flex flex-col justify-center">
+                                <p
+                                    className="text-sm font-semibold uppercase tracking-widest"
+                                    style={{ color: secondary }}
+                                >
+                                    {sections.services.subtitle}
+                                </p>
+                                <h2
+                                    className="mt-2 text-3xl font-bold sm:text-4xl"
+                                    style={{ color: primary }}
+                                >
+                                    {sections.services.title}
+                                </h2>
+
+                                <div className="mt-10 space-y-5">
+                                    {sections.services.items.map((item, i) => (
+                                        <div
+                                            key={i}
+                                            className="group relative flex items-start gap-5 rounded-2xl bg-white p-6 shadow-sm transition-all hover:shadow-lg"
+                                        >
+                                            {/* Colored time badge */}
+                                            <div
+                                                className="flex h-14 w-14 flex-shrink-0 flex-col items-center justify-center rounded-xl text-white"
+                                                style={{ backgroundColor: secondary }}
+                                            >
+                                                <Clock className="h-5 w-5" />
+                                            </div>
+
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-2">
+                                                    <h3
+                                                        className="text-lg font-bold"
+                                                        style={{ color: primary }}
+                                                    >
+                                                        {item.name}
+                                                    </h3>
+                                                </div>
+                                                <p className="mt-0.5 text-sm font-medium" style={{ color: secondary }}>
+                                                    {item.day} · {item.time}
+                                                </p>
+                                                <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
+                                                    {item.description}
+                                                </p>
+                                            </div>
+
+                                            {/* Accent left bar */}
+                                            <div
+                                                className="absolute left-0 top-4 bottom-4 w-1 rounded-r-full opacity-0 transition-opacity group-hover:opacity-100"
+                                                style={{ backgroundColor: secondary }}
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -58,8 +58,9 @@ const sectionMeta: Record<string, { label: string; icon: React.ElementType; desc
 
 /* ── Image field detection & recommended sizes ── */
 const IMAGE_FIELDS: Record<string, { label: string; hint: string; dimensions: string }> = {
-    'hero.bg_image':  { label: 'Imagen de Fondo', hint: 'Se muestra como fondo del hero con overlay de color', dimensions: '1920 × 1080 px' },
-    'about.image':    { label: 'Imagen de la Iglesia', hint: 'Se muestra junto a la descripción en la sección Nosotros', dimensions: '800 × 600 px' },
+    'hero.bg_image':    { label: 'Imagen de Fondo', hint: 'Se muestra como fondo del hero con overlay de color', dimensions: '1920 × 1080 px' },
+    'about.image':      { label: 'Imagen de la Iglesia', hint: 'Se muestra junto a la descripción en la sección Nosotros', dimensions: '800 × 600 px' },
+    'services.image':   { label: 'Imagen de Horarios', hint: 'Se muestra junto a los horarios de culto', dimensions: '800 × 1000 px' },
 }
 
 function isImageField(sectionKey: string, fieldKey: string): boolean {
