@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\IssueSslCertificate;
 use Illuminate\Http\Request;
 use Stancl\Tenancy\Database\Models\Domain;
 
@@ -38,7 +39,10 @@ class CustomDomainController extends Controller
 
         $tenant->domains()->create(['domain' => $domain]);
 
-        return redirect()->back()->with('success', 'Dominio conectado correctamente. Configura tu DNS para que apunte a nuestro servidor.');
+        // Dispatch SSL certificate issuance (runs in background via queue)
+        IssueSslCertificate::dispatch($domain);
+
+        return redirect()->back()->with('success', 'Dominio conectado correctamente. El certificado SSL se instalará automáticamente en unos minutos.');
     }
 
     public function destroy(Request $request)
