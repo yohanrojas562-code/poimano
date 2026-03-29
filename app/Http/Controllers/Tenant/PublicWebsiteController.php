@@ -71,6 +71,7 @@ class PublicWebsiteController extends Controller
         return [
             'name'            => $church?->church_name ?? $tenant?->church_name ?? 'Mi Iglesia',
             'logo'            => $church?->logo ? '/storage/' . $church->logo : null,
+            'favicon'         => $church?->favicon ? '/storage/' . $church->favicon : null,
             'slogan'          => $church?->slogan,
             'primary_color'   => $church?->primary_color ?? '#00105E',
             'secondary_color' => $church?->secondary_color ?? '#00E1FF',

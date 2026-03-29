@@ -23,6 +23,7 @@ export interface Tenant {
 export interface ChurchBranding {
     church_name: string
     logo: string | null
+    favicon: string | null
     slogan: string | null
     primary_color: string
     secondary_color: string

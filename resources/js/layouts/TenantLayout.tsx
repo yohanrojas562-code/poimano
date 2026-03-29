@@ -21,7 +21,7 @@ import {
     Globe,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 interface NavItem {
     label: string
@@ -47,6 +47,19 @@ const navigation: NavItem[] = [
 export default function TenantLayout({ children }: { children: React.ReactNode }) {
     const { tenant, auth, flash, churchSettings } = usePage<PageProps>().props
     const [collapsed, setCollapsed] = useState(false)
+
+    // Dynamic favicon
+    useEffect(() => {
+        if (churchSettings?.favicon) {
+            let link = document.querySelector<HTMLLinkElement>("link[rel~='icon']")
+            if (!link) {
+                link = document.createElement('link')
+                link.rel = 'icon'
+                document.head.appendChild(link)
+            }
+            link.href = churchSettings.favicon
+        }
+    }, [churchSettings?.favicon])
 
     return (
         <div className="flex h-screen bg-white">

@@ -38,6 +38,7 @@ interface ChurchSettings {
     id: number
     church_name: string
     logo: string | null
+    favicon: string | null
     slogan: string | null
     primary_color: string
     secondary_color: string
@@ -105,8 +106,12 @@ const presetColors = [
 export default function ChurchSettingsPage() {
     const { settings } = usePage<Props>().props
     const fileInputRef = useRef<HTMLInputElement>(null)
+    const faviconInputRef = useRef<HTMLInputElement>(null)
     const [preview, setPreview] = useState<string | null>(
         settings.logo ? `/storage/${settings.logo}` : null
+    )
+    const [faviconPreview, setFaviconPreview] = useState<string | null>(
+        settings.favicon ? `/storage/${settings.favicon}` : null
     )
 
     const { data, setData, post, processing, errors } = useForm({
@@ -127,6 +132,8 @@ export default function ChurchSettingsPage() {
         denomination: settings.denomination ?? '',
         logo: null as File | null,
         remove_logo: false,
+        favicon: null as File | null,
+        remove_favicon: false,
         _method: 'PUT',
     })
 
@@ -144,6 +151,22 @@ export default function ChurchSettingsPage() {
         setData('remove_logo', true)
         setPreview(null)
         if (fileInputRef.current) fileInputRef.current.value = ''
+    }
+
+    const handleFaviconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (file) {
+            setData('favicon', file)
+            setData('remove_favicon', false)
+            setFaviconPreview(URL.createObjectURL(file))
+        }
+    }
+
+    const removeFavicon = () => {
+        setData('favicon', null)
+        setData('remove_favicon', true)
+        setFaviconPreview(null)
+        if (faviconInputRef.current) faviconInputRef.current.value = ''
     }
 
     const applyPreset = (primary: string, secondary: string) => {
@@ -442,6 +465,70 @@ export default function ChurchSettingsPage() {
                                 {errors.logo && <p className="text-xs text-red-500">{errors.logo}</p>}
                                 <p className="text-[10px] text-muted-foreground text-center">
                                     JPG, PNG, WebP o SVG. Máximo 2MB.
+                                </p>
+                            </CardContent>
+                        </Card>
+
+                        {/* Favicon */}
+                        <Card>
+                            <CardHeader className="pb-4">
+                                <CardTitle className="flex items-center gap-2 text-navy text-base">
+                                    <Globe className="h-4 w-4 text-cyan" />
+                                    Favicon
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="flex flex-col items-center">
+                                    <div className="relative flex h-20 w-20 items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 overflow-hidden">
+                                        {faviconPreview ? (
+                                            <img
+                                                src={faviconPreview}
+                                                alt="Favicon"
+                                                className="h-full w-full object-contain p-2"
+                                            />
+                                        ) : (
+                                            <div className="text-center">
+                                                <Globe className="mx-auto h-6 w-6 text-gray-300" />
+                                                <p className="mt-0.5 text-[9px] text-gray-400">Sin favicon</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <input
+                                    ref={faviconInputRef}
+                                    type="file"
+                                    accept="image/jpeg,image/png,image/webp,image/x-icon,image/vnd.microsoft.icon"
+                                    onChange={handleFaviconChange}
+                                    className="hidden"
+                                />
+
+                                <div className="flex gap-2">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        className="flex-1"
+                                        onClick={() => faviconInputRef.current?.click()}
+                                    >
+                                        <Upload className="mr-1.5 h-3.5 w-3.5" />
+                                        Subir Favicon
+                                    </Button>
+                                    {faviconPreview && (
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={removeFavicon}
+                                            className="text-red-500 hover:text-red-600"
+                                        >
+                                            <Trash2 className="h-3.5 w-3.5" />
+                                        </Button>
+                                    )}
+                                </div>
+                                {errors.favicon && <p className="text-xs text-red-500">{errors.favicon}</p>}
+                                <p className="text-[10px] text-muted-foreground text-center">
+                                    Icono del navegador. PNG o ICO. Recomendado: 32 × 32 px. Máx 512KB.
                                 </p>
                             </CardContent>
                         </Card>

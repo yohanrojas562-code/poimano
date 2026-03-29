@@ -11,6 +11,7 @@ class ChurchSetting extends Model
     protected $fillable = [
         'church_name',
         'logo',
+        'favicon',
         'slogan',
         'primary_color',
         'secondary_color',

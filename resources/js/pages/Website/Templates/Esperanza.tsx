@@ -34,6 +34,7 @@ function toGoogleMapsEmbedUrl(raw: string | null): string | null {
 interface ChurchData {
     name: string
     logo: string | null
+    favicon: string | null
     slogan: string | null
     primary_color: string
     secondary_color: string
@@ -128,7 +129,9 @@ export default function Esperanza({ church, sections }: Props) {
 
     return (
         <>
-            <Head title={church.name} />
+            <Head title={church.name}>
+                {church.favicon && <link rel="icon" href={church.favicon} />}
+            </Head>
 
             {/* ═══════ NAVBAR ═══════ */}
             <nav

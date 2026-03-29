@@ -67,6 +67,7 @@ class HandleInertiaRequests extends Middleware
                         return [
                             'church_name'     => $s->church_name,
                             'logo'            => $s->logo ? '/storage/' . $s->logo : null,
+                            'favicon'         => $s->favicon ? '/storage/' . $s->favicon : null,
                             'slogan'          => $s->slogan,
                             'primary_color'   => $s->primary_color,
                             'secondary_color' => $s->secondary_color,

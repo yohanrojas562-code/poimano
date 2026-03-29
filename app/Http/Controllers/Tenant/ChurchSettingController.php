@@ -56,6 +56,8 @@ class ChurchSettingController extends Controller
             'denomination'    => ['nullable', 'string', 'max:255'],
             'logo'            => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'remove_logo'     => ['nullable', 'boolean'],
+            'favicon'         => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,ico', 'max:512'],
+            'remove_favicon'  => ['nullable', 'boolean'],
         ]);
 
         $tenantId = tenant()->id;
@@ -91,6 +93,35 @@ class ChurchSettingController extends Controller
         }
 
         unset($validated['remove_logo']);
+
+        // Handle favicon
+        $faviconDir = $basePublic . '/church-favicons/' . $tenantId;
+
+        if ($request->boolean('remove_favicon') && $settings->favicon) {
+            $oldPath = public_path('storage/' . ltrim($settings->favicon, '/'));
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+            $validated['favicon'] = null;
+        } elseif ($request->hasFile('favicon')) {
+            if ($settings->favicon) {
+                $oldPath = public_path('storage/' . ltrim($settings->favicon, '/'));
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
+            }
+
+            File::ensureDirectoryExists($faviconDir);
+            $file = $request->file('favicon');
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+            $file->move($faviconDir, $filename);
+
+            $validated['favicon'] = 'church-favicons/' . $tenantId . '/' . $filename;
+        } else {
+            unset($validated['favicon']);
+        }
+
+        unset($validated['remove_favicon']);
 
         $settings->update($validated);
 
