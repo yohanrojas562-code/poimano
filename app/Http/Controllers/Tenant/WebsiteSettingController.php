@@ -33,6 +33,7 @@ class WebsiteSettingController extends Controller
                 'settings'           => ['id' => 0, 'template' => 'esperanza', 'is_published' => false],
                 'sections'           => [],
                 'availableTemplates' => self::AVAILABLE_TEMPLATES,
+                'customDomains'      => [],
             ]);
         }
 
@@ -55,6 +56,7 @@ class WebsiteSettingController extends Controller
             'settings'           => $settings,
             'sections'           => $sections,
             'availableTemplates' => self::AVAILABLE_TEMPLATES,
+            'customDomains'      => tenant()->domains()->where('domain', '!=', tenant()->id)->pluck('domain'),
         ]);
     }
 

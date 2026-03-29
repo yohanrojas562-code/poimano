@@ -9,7 +9,7 @@ import {
     Globe, Eye, EyeOff, Save, Loader2, ExternalLink,
     Sparkles, GripVertical, ChevronDown, ChevronUp,
     Image as ImageIcon, Clock, Users, Phone, BookOpen,
-    Check, Upload, Trash2, Info,
+    Check, Upload, Trash2, Info, Link2, AlertTriangle,
 } from 'lucide-react'
 import { useState, useRef, useEffect, lazy, Suspense, type FormEvent } from 'react'
 import type { PageProps } from '@/types'
@@ -43,6 +43,7 @@ interface Props extends PageProps {
     settings: WebsiteSettings
     sections: WebsiteSection[]
     availableTemplates: Template[]
+    customDomains: string[]
 }
 
 /* ── Section Labels & Icons ── */
@@ -79,7 +80,7 @@ function isRichTextField(sectionKey: string, fieldKey: string): boolean {
 }
 
 /* ── Main Component ── */
-export default function WebsiteAdminIndex({ settings, sections, availableTemplates }: Props) {
+export default function WebsiteAdminIndex({ settings, sections, availableTemplates, customDomains }: Props) {
     const [expandedSection, setExpandedSection] = useState<number | null>(null)
 
     // Settings form
@@ -223,8 +224,128 @@ export default function WebsiteAdminIndex({ settings, sections, availableTemplat
                         )
                     })}
                 </div>
+
+                {/* Custom Domain */}
+                <CustomDomainManager domains={customDomains} />
             </div>
         </TenantLayout>
+    )
+}
+
+/* ── Custom Domain Manager ── */
+function CustomDomainManager({ domains }: { domains: string[] }) {
+    const [newDomain, setNewDomain] = useState('')
+    const [adding, setAdding] = useState(false)
+    const [removingDomain, setRemovingDomain] = useState<string | null>(null)
+
+    const serverIp = '187.124.157.50'
+
+    const addDomain = (e: FormEvent) => {
+        e.preventDefault()
+        if (!newDomain.trim()) return
+
+        setAdding(true)
+        router.post('/settings/website/domain', {
+            domain: newDomain.trim().toLowerCase(),
+        }, {
+            preserveScroll: true,
+            onFinish: () => {
+                setAdding(false)
+                setNewDomain('')
+            },
+        })
+    }
+
+    const removeDomain = (domain: string) => {
+        setRemovingDomain(domain)
+        router.delete('/settings/website/domain', {
+            data: { domain },
+            preserveScroll: true,
+            onFinish: () => setRemovingDomain(null),
+        })
+    }
+
+    return (
+        <Card>
+            <CardHeader className="pb-4">
+                <CardTitle className="flex items-center gap-2 text-navy text-base">
+                    <Link2 className="h-4 w-4 text-cyan" />
+                    Dominio Propio
+                </CardTitle>
+                <p className="text-sm text-muted-foreground">
+                    Conecta tu propio dominio para que tu sitio web sea accesible desde tu propia dirección.
+                </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+                {/* Existing domains */}
+                {domains.length > 0 && (
+                    <div className="space-y-2">
+                        {domains.map((d) => (
+                            <div key={d} className="flex items-center justify-between rounded-lg border bg-gray-50/50 px-4 py-3">
+                                <div className="flex items-center gap-2">
+                                    <Globe className="h-4 w-4 text-emerald-500" />
+                                    <span className="text-sm font-medium">{d}</span>
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => removeDomain(d)}
+                                    disabled={removingDomain === d}
+                                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                                >
+                                    {removingDomain === d ? (
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                    ) : (
+                                        <Trash2 className="h-3.5 w-3.5" />
+                                    )}
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* Add domain form */}
+                <form onSubmit={addDomain} className="flex gap-2">
+                    <Input
+                        placeholder="ejemplo: www.miiglesia.com"
+                        value={newDomain}
+                        onChange={(e) => setNewDomain(e.target.value)}
+                        className="flex-1"
+                    />
+                    <Button
+                        type="submit"
+                        disabled={adding || !newDomain.trim()}
+                        className="bg-navy hover:bg-navy/90"
+                    >
+                        {adding ? (
+                            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                        ) : (
+                            <Link2 className="mr-1.5 h-3.5 w-3.5" />
+                        )}
+                        Conectar
+                    </Button>
+                </form>
+
+                {/* DNS Instructions */}
+                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 space-y-2">
+                    <div className="flex items-center gap-2 text-sm font-medium text-amber-800">
+                        <AlertTriangle className="h-4 w-4" />
+                        Configuración DNS requerida
+                    </div>
+                    <p className="text-xs text-amber-700">
+                        Para que tu dominio funcione, configura los siguientes registros DNS en tu proveedor de dominio:
+                    </p>
+                    <div className="rounded-md bg-white/80 p-3 font-mono text-xs text-amber-900 space-y-1">
+                        <p><strong>Tipo:</strong> A &nbsp; <strong>Nombre:</strong> @ &nbsp; <strong>Valor:</strong> {serverIp}</p>
+                        <p><strong>Tipo:</strong> A &nbsp; <strong>Nombre:</strong> www &nbsp; <strong>Valor:</strong> {serverIp}</p>
+                    </div>
+                    <p className="text-[11px] text-amber-600">
+                        Los cambios DNS pueden tardar hasta 48 horas en propagarse.
+                    </p>
+                </div>
+            </CardContent>
+        </Card>
     )
 }
 

@@ -9,10 +9,12 @@ use App\Http\Controllers\Tenant\FamilyController;
 use App\Http\Controllers\Tenant\MemberController;
 use App\Http\Controllers\Tenant\MinistryAreaController;
 use App\Http\Controllers\Tenant\PublicWebsiteController;
+use App\Http\Controllers\Tenant\CustomDomainController;
 use App\Http\Controllers\Tenant\WebsiteSettingController;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Middleware\EnsurePoimanoSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,25 +29,25 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::middleware([
     'web',
-    InitializeTenancyBySubdomain::class,
+    InitializeTenancyByDomainOrSubdomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
 
     // --- Sitio web público ---
     Route::get('/', PublicWebsiteController::class);
 
-    // --- Auth (público) ---
-    Route::middleware('guest')->group(function () {
+    // --- Auth (público) --- Solo en subdominio poimano
+    Route::middleware(['guest', EnsurePoimanoSubdomain::class])->group(function () {
         Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
         Route::post('/login', [AuthController::class, 'login']);
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])
-        ->middleware('auth')
+        ->middleware(['auth', EnsurePoimanoSubdomain::class])
         ->name('logout');
 
-    // --- Rutas protegidas ---
-    Route::middleware('auth')->group(function () {
+    // --- Rutas protegidas --- Solo en subdominio poimano
+    Route::middleware(['auth', EnsurePoimanoSubdomain::class])->group(function () {
         Route::get('/dashboard', DashboardController::class);
 
         Route::resource('members', MemberController::class);
@@ -62,5 +64,9 @@ Route::middleware([
         Route::put('/settings/website/sections/{section}', [WebsiteSettingController::class, 'updateSection']);
         Route::post('/settings/website/sections/{section}/image', [WebsiteSettingController::class, 'uploadSectionImage']);
         Route::delete('/settings/website/sections/{section}/image', [WebsiteSettingController::class, 'removeSectionImage']);
+
+        // Dominio propio
+        Route::post('/settings/website/domain', [CustomDomainController::class, 'store']);
+        Route::delete('/settings/website/domain', [CustomDomainController::class, 'destroy']);
     });
 });
