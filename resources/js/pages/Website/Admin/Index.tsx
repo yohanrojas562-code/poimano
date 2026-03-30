@@ -10,8 +10,9 @@ import {
     Sparkles, GripVertical, ChevronDown, ChevronUp,
     Image as ImageIcon, Clock, Users, Phone, BookOpen,
     Check, Upload, Trash2, Info, Link2, AlertTriangle,
+    Code2, MonitorSmartphone,
 } from 'lucide-react'
-import { useState, useRef, useEffect, lazy, Suspense, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useCallback, lazy, Suspense, type FormEvent } from 'react'
 import type { PageProps } from '@/types'
 
 const RichTextEditor = lazy(() => import('@/components/ui/rich-text-editor'))
@@ -903,6 +904,138 @@ function MinistryManager({ ministries }: { ministries: WebsiteMinistryData[] }) 
     )
 }
 
+/* ── Content Editor (Visual + Code + Preview) ── */
+function ContentEditor({ content, onChange }: { content: string; onChange: (v: string) => void }) {
+    const [tab, setTab] = useState<'visual' | 'code' | 'preview'>('visual')
+    const [codeValue, setCodeValue] = useState(content)
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
+
+    // Sync codeValue when switching TO code tab
+    useEffect(() => {
+        if (tab === 'code') setCodeValue(content)
+    }, [tab])
+
+    const applyCode = useCallback(() => {
+        onChange(codeValue)
+    }, [codeValue, onChange])
+
+    // Auto-resize textarea
+    useEffect(() => {
+        if (tab === 'code' && textareaRef.current) {
+            const el = textareaRef.current
+            el.style.height = 'auto'
+            el.style.height = Math.max(300, el.scrollHeight) + 'px'
+        }
+    }, [tab, codeValue])
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        // Tab key inserts spaces
+        if (e.key === 'Tab') {
+            e.preventDefault()
+            const el = e.currentTarget
+            const start = el.selectionStart
+            const end = el.selectionEnd
+            const val = el.value
+            const newVal = val.substring(0, start) + '  ' + val.substring(end)
+            setCodeValue(newVal)
+            requestAnimationFrame(() => { el.selectionStart = el.selectionEnd = start + 2 })
+        }
+    }
+
+    const tabs = [
+        { key: 'visual' as const, label: 'Editor Visual', icon: ImageIcon },
+        { key: 'code' as const, label: 'Código HTML', icon: Code2 },
+        { key: 'preview' as const, label: 'Vista Previa', icon: MonitorSmartphone },
+    ]
+
+    return (
+        <div className="space-y-1.5">
+            <Label className="text-xs">Contenido de la página del ministerio</Label>
+            <p className="text-[11px] text-gray-400">Texto, imágenes y formato libre. Se muestra al entrar al ministerio.</p>
+
+            {/* Tab bar */}
+            <div className="flex items-center gap-1 rounded-lg border bg-gray-50 p-1">
+                {tabs.map(({ key, label, icon: TabIcon }) => (
+                    <button
+                        key={key}
+                        type="button"
+                        onClick={() => {
+                            // When leaving code tab, apply code changes
+                            if (tab === 'code' && key !== 'code') applyCode()
+                            setTab(key)
+                        }}
+                        className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-all ${
+                            tab === key
+                                ? 'bg-white text-navy shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700 hover:bg-white/50'
+                        }`}
+                    >
+                        <TabIcon className="h-3.5 w-3.5" />
+                        {label}
+                    </button>
+                ))}
+            </div>
+
+            {/* Visual editor */}
+            {tab === 'visual' && (
+                <Suspense fallback={<div className="h-32 rounded-md border bg-gray-50 animate-pulse" />}>
+                    <RichTextEditor value={content} onChange={onChange} />
+                </Suspense>
+            )}
+
+            {/* Code editor */}
+            {tab === 'code' && (
+                <div className="space-y-2">
+                    <div className="relative rounded-lg border border-gray-200 bg-[#1e1e2e] overflow-hidden">
+                        <div className="flex items-center justify-between bg-[#181825] px-3 py-1.5 border-b border-[#313244]">
+                            <span className="text-[10px] font-mono text-[#cdd6f4]/50">HTML</span>
+                            <button
+                                type="button"
+                                onClick={applyCode}
+                                className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-medium text-emerald-400 hover:bg-emerald-400/10 transition-colors"
+                            >
+                                <Check className="h-3 w-3" /> Aplicar
+                            </button>
+                        </div>
+                        <textarea
+                            ref={textareaRef}
+                            value={codeValue}
+                            onChange={(e) => setCodeValue(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            spellCheck={false}
+                            className="w-full min-h-[300px] resize-none bg-transparent p-4 font-mono text-sm leading-relaxed text-[#cdd6f4] placeholder-[#585b70] focus:outline-none"
+                            style={{ tabSize: 2 }}
+                            placeholder="<div>\n  <h2>Título del ministerio</h2>\n  <p>Escribe tu contenido aquí...</p>\n</div>"
+                        />
+                    </div>
+                    <p className="text-[10px] text-gray-400">
+                        Escribe HTML directamente. Presiona <kbd className="rounded bg-gray-100 px-1 py-0.5 text-[9px] font-mono">Tab</kbd> para indentar.
+                        Haz clic en <span className="text-emerald-600 font-medium">Aplicar</span> o cambia de pestaña para guardar los cambios.
+                    </p>
+                </div>
+            )}
+
+            {/* Live Preview */}
+            {tab === 'preview' && (
+                <div className="rounded-lg border bg-white">
+                    <div className="flex items-center gap-2 border-b bg-gray-50 px-3 py-2">
+                        <div className="flex gap-1">
+                            <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
+                            <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+                        </div>
+                        <span className="text-[10px] text-gray-400 font-mono">/ministerios/vista-previa</span>
+                    </div>
+                    <div
+                        className="prose prose-sm max-w-none p-6"
+                        dangerouslySetInnerHTML={{ __html: content || '<p class="text-gray-400 italic">Sin contenido aún...</p>' }}
+                    />
+                </div>
+            )}
+        </div>
+    )
+}
+
 /* ── Ministry Card ── */
 function MinistryCard({
     ministry,
@@ -1050,14 +1183,8 @@ function MinistryCard({
                         <input ref={mainImgRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; if (f) onUploadImage(f); e.target.value = '' }} />
                     </div>
 
-                    {/* Rich Content */}
-                    <div className="space-y-1.5">
-                        <Label className="text-xs">Contenido de la página del ministerio</Label>
-                        <p className="text-[11px] text-gray-400">Texto, imágenes y formato libre. Se muestra al entrar al ministerio.</p>
-                        <Suspense fallback={<div className="h-32 rounded-md border bg-gray-50 animate-pulse" />}>
-                            <RichTextEditor value={content} onChange={setContent} />
-                        </Suspense>
-                    </div>
+                    {/* Rich Content - Tabbed Editor */}
+                    <ContentEditor content={content} onChange={setContent} />
 
                     {/* Gallery */}
                     <div className="space-y-2">
