@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Modules\Website\Domain\Models\WebsiteMinistry;
 use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
+use App\Modules\Website\Domain\Models\WebsiteSocialNetwork;
+use App\Modules\Website\Domain\Models\WebsiteWhatsappConfig;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -36,6 +38,8 @@ class WebsiteSettingController extends Controller
                 'availableTemplates' => self::AVAILABLE_TEMPLATES,
                 'customDomains'      => [],
                 'websiteMinistries'  => [],
+                'socialNetworks'     => [],
+                'whatsappConfig'     => null,
             ]);
         }
 
@@ -58,12 +62,22 @@ class WebsiteSettingController extends Controller
             ? WebsiteMinistry::orderBy('sort_order')->get()
             : [];
 
+        $socials = Schema::hasTable('website_social_networks')
+            ? WebsiteSocialNetwork::orderBy('sort_order')->get()
+            : [];
+
+        $whatsapp = Schema::hasTable('website_whatsapp_config')
+            ? WebsiteWhatsappConfig::first()
+            : null;
+
         return Inertia::render('Website/Admin/Index', [
             'settings'           => $settings,
             'sections'           => $sections,
             'availableTemplates' => self::AVAILABLE_TEMPLATES,
             'customDomains'      => tenant()->domains()->where('domain', '!=', tenant()->id)->pluck('domain'),
             'websiteMinistries'  => $ministries,
+            'socialNetworks'     => $socials,
+            'whatsappConfig'     => $whatsapp,
         ]);
     }
 

@@ -12,6 +12,7 @@ use App\Http\Controllers\Tenant\PublicWebsiteController;
 use App\Http\Controllers\Tenant\CustomDomainController;
 use App\Http\Controllers\Tenant\WebsiteSettingController;
 use App\Http\Controllers\Tenant\WebsiteMinistryController;
+use App\Http\Controllers\Tenant\WebsiteSocialController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -80,5 +81,12 @@ Route::middleware([
         Route::delete('/settings/website/ministries/{ministry}/image', [WebsiteMinistryController::class, 'removeImage']);
         Route::post('/settings/website/ministries/{ministry}/gallery', [WebsiteMinistryController::class, 'uploadGalleryImage']);
         Route::delete('/settings/website/ministries/{ministry}/gallery', [WebsiteMinistryController::class, 'removeGalleryImage']);
+
+        // Redes sociales del sitio web
+        Route::post('/settings/website/social', [WebsiteSocialController::class, 'store']);
+        Route::put('/settings/website/social/{social}', [WebsiteSocialController::class, 'update']);
+        Route::delete('/settings/website/social/{social}', [WebsiteSocialController::class, 'destroy']);
+        Route::put('/settings/website/whatsapp', [WebsiteSocialController::class, 'updateWhatsapp']);
+        Route::delete('/settings/website/whatsapp', [WebsiteSocialController::class, 'removeWhatsapp']);
     });
 });

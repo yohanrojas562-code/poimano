@@ -9,6 +9,8 @@ use App\Modules\Church\Domain\Models\ChurchSetting;
 use App\Modules\Website\Domain\Models\WebsiteMinistry;
 use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
+use App\Modules\Website\Domain\Models\WebsiteSocialNetwork;
+use App\Modules\Website\Domain\Models\WebsiteWhatsappConfig;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
 use Illuminate\Support\Facades\Schema;
 use Inertia\Inertia;
@@ -69,11 +71,32 @@ class PublicWebsiteController extends Controller
                 ->values();
         }
 
+        $socials = Schema::hasTable('website_social_networks')
+            ? WebsiteSocialNetwork::visible()->orderBy('sort_order')->get()->map(fn ($s) => [
+                'platform' => $s->platform,
+                'icon'     => $s->icon,
+                'url'      => $s->url,
+            ])->values()
+            : [];
+
+        $whatsapp = null;
+        if (Schema::hasTable('website_whatsapp_config')) {
+            $wc = WebsiteWhatsappConfig::where('is_active', true)->first();
+            if ($wc) {
+                $whatsapp = [
+                    'phone'   => $wc->phone_number,
+                    'message' => $wc->default_message,
+                ];
+            }
+        }
+
         return Inertia::render('Website/Templates/' . ucfirst($settings->template), [
             'church'     => $this->getChurchData(),
             'sections'   => $sections,
             'template'   => $settings->template,
             'ministries' => $ministries,
+            'socials'    => $socials,
+            'whatsapp'   => $whatsapp,
         ]);
     }
 
@@ -86,6 +109,17 @@ class PublicWebsiteController extends Controller
         $ministry = WebsiteMinistry::where('slug', $slug)->where('is_visible', true)->firstOrFail();
 
         $settings = WebsiteSetting::first();
+
+        $whatsapp = null;
+        if (Schema::hasTable('website_whatsapp_config')) {
+            $wc = WebsiteWhatsappConfig::where('is_active', true)->first();
+            if ($wc) {
+                $whatsapp = [
+                    'phone'   => $wc->phone_number,
+                    'message' => $wc->default_message,
+                ];
+            }
+        }
 
         return Inertia::render('Website/Templates/MinistryDetail', [
             'church'   => $this->getChurchData(),
@@ -100,6 +134,7 @@ class PublicWebsiteController extends Controller
                 'gallery'     => collect($ministry->gallery ?? [])->map(fn ($g) => '/storage/' . $g)->values(),
             ],
             'template' => $settings?->template ?? 'esperanza',
+            'whatsapp' => $whatsapp,
         ]);
     }
 
