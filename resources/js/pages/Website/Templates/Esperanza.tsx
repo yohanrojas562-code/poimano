@@ -1,9 +1,10 @@
 import { Head, Link, router } from '@inertiajs/react'
 import {
     Church, Phone, Mail, MapPin, Clock, ChevronRight,
-    Facebook, Instagram, Youtube, Music, Baby, Users, Globe,
+    Facebook, Instagram, Youtube,
     Heart, ArrowUp, Menu, X,
 } from 'lucide-react'
+import { ICON_MAP } from '@/lib/ministry-icons'
 import { useState, useEffect, useMemo, useRef } from 'react'
 
 /**
@@ -117,14 +118,7 @@ interface Props {
 }
 
 /* ── Icon Map ── */
-const iconMap: Record<string, React.ElementType> = {
-    music: Music,
-    baby: Baby,
-    users: Users,
-    globe: Globe,
-    heart: Heart,
-    church: Church,
-}
+const iconMap = ICON_MAP
 
 /* ── Component ── */
 /* ── Social Icon SVGs (footer) ── */

@@ -13,6 +13,7 @@ import {
     Code2, MonitorSmartphone, Plus, MessageCircle, Share2,
 } from 'lucide-react'
 import { useState, useRef, useEffect, useCallback, lazy, Suspense, type FormEvent } from 'react'
+import IconPicker from '@/components/ui/icon-picker'
 import type { PageProps } from '@/types'
 
 const RichTextEditor = lazy(() => import('@/components/ui/rich-text-editor'))
@@ -1473,18 +1474,7 @@ function MinistryCard({
                         </div>
                         <div className="space-y-1.5">
                             <Label className="text-xs">Icono (cuando no hay imagen)</Label>
-                            <select
-                                value={icon}
-                                onChange={(e) => setIcon(e.target.value)}
-                                className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm"
-                            >
-                                <option value="heart">Corazón</option>
-                                <option value="music">Música</option>
-                                <option value="baby">Niños</option>
-                                <option value="users">Personas</option>
-                                <option value="globe">Mundo</option>
-                                <option value="church">Iglesia</option>
-                            </select>
+                            <IconPicker value={icon} onChange={setIcon} />
                         </div>
                     </div>
 

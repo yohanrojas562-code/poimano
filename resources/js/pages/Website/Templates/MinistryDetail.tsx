@@ -1,8 +1,8 @@
 import { Head, Link, router } from '@inertiajs/react'
 import {
-    Church, ArrowLeft, ArrowUp, Menu, X, ChevronRight,
-    Heart, Music, Baby, Users, Globe,
+    Church, ArrowLeft, ArrowUp, Menu, X, ChevronRight, Heart,
 } from 'lucide-react'
+import { ICON_MAP } from '@/lib/ministry-icons'
 import { useState, useEffect, useRef } from 'react'
 
 interface ChurchData {
@@ -43,10 +43,7 @@ interface Props {
     whatsapp?: WhatsappData | null
 }
 
-const iconMap: Record<string, React.ElementType> = {
-    music: Music, baby: Baby, users: Users, globe: Globe,
-    heart: Heart, church: Church,
-}
+const iconMap = ICON_MAP
 
 export default function MinistryDetail({ church, ministry, whatsapp }: Props) {
     const [scrolled, setScrolled] = useState(false)
