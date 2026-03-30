@@ -4,9 +4,7 @@ import {
     LayoutDashboard,
     Users,
     Calendar,
-    FolderKanban,
     HandCoins,
-    MessageSquare,
     BarChart3,
     UsersRound,
     Church,
@@ -36,9 +34,7 @@ const navigation: NavItem[] = [
     { label: 'Áreas Ministeriales', href: '/ministry-areas', icon: Layers },
     { label: 'Grupos', href: '/groups', icon: UsersRound },
     { label: 'Actividades', href: '/activities', icon: Calendar },
-    { label: 'Proyectos', href: '/projects', icon: FolderKanban },
     { label: 'Finanzas', href: '/finance', icon: HandCoins },
-    { label: 'Comunicación', href: '/communication', icon: MessageSquare },
     { label: 'Reportes', href: '/reports', icon: BarChart3 },
     { label: 'Sitio Web', href: '/settings/website', icon: Globe },
     { label: 'Configuración', href: '/settings/church', icon: Settings },
@@ -77,10 +73,10 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                         <img
                             src={churchSettings.logo}
                             alt="Logo"
-                            className="h-8 w-8 shrink-0 rounded object-contain"
+                            className="h-10 w-10 shrink-0 rounded-lg object-contain"
                         />
                     ) : (
-                        <Church className="h-7 w-7 shrink-0" style={{ color: churchSettings?.secondary_color ?? '#00E1FF' }} />
+                        <Church className="h-8 w-8 shrink-0" style={{ color: churchSettings?.secondary_color ?? '#00E1FF' }} />
                     )}
                     {!collapsed && (
                         <span className="truncate text-sm font-semibold" style={{ color: churchSettings?.text_color ?? '#FFFFFF' }}>
@@ -90,28 +86,27 @@ export default function TenantLayout({ children }: { children: React.ReactNode }
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-4">
+                <nav className="flex-1 space-y-1.5 overflow-y-auto px-3 py-5">
                     {navigation.map((item) => {
                         const isActive = window.location.pathname === item.href || window.location.pathname.startsWith(item.href + '/')
                         const textColor = churchSettings?.text_color ?? '#FFFFFF'
+                        const secondaryColor = churchSettings?.secondary_color ?? '#00E1FF'
                         return (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors',
+                                    'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200',
                                     isActive
-                                        ? 'bg-white/10'
-                                        : 'hover:bg-white/5'
+                                        ? 'bg-white/15 shadow-sm shadow-black/10'
+                                        : 'hover:bg-white/10 hover:translate-x-0.5'
                                 )}
                                 style={{
-                                    color: isActive
-                                        ? (churchSettings?.secondary_color ?? '#00E1FF')
-                                        : textColor,
+                                    color: isActive ? secondaryColor : textColor,
                                     opacity: isActive ? 1 : 0.7,
                                 }}
                             >
-                                <item.icon className="h-5 w-5 shrink-0" />
+                                <item.icon className={cn('h-[18px] w-[18px] shrink-0 transition-transform duration-200', !isActive && 'group-hover:scale-110')} />
                                 {!collapsed && <span>{item.label}</span>}
                             </Link>
                         )
