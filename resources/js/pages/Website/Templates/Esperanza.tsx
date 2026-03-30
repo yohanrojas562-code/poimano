@@ -1,10 +1,10 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import {
     Church, Phone, Mail, MapPin, Clock, ChevronRight,
     Facebook, Instagram, Youtube, Music, Baby, Users, Globe,
     Heart, ArrowUp, Menu, X,
 } from 'lucide-react'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 
 /**
  * Converts any Google Maps URL to its embeddable version.
@@ -154,6 +154,15 @@ export default function Esperanza({ church, sections, ministries, socials, whats
     const primary = church.primary_color
     const secondary = church.secondary_color
     const logoH = sections.hero?.logo_height ?? 40
+
+    /* ── Real-time polling: refresh props every 5s ── */
+    const pollRef = useRef<ReturnType<typeof setInterval>>()
+    useEffect(() => {
+        pollRef.current = setInterval(() => {
+            router.reload({ preserveScroll: true, preserveState: true })
+        }, 5000)
+        return () => clearInterval(pollRef.current)
+    }, [])
 
     useEffect(() => {
         const handler = () => setScrolled(window.scrollY > 50)

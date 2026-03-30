@@ -1,9 +1,9 @@
-import { Head, Link } from '@inertiajs/react'
+import { Head, Link, router } from '@inertiajs/react'
 import {
     Church, ArrowLeft, ArrowUp, Menu, X, ChevronRight,
     Heart, Music, Baby, Users, Globe,
 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 interface ChurchData {
     name: string
@@ -54,6 +54,15 @@ export default function MinistryDetail({ church, ministry, whatsapp }: Props) {
 
     const primary = church.primary_color
     const secondary = church.secondary_color
+
+    /* ── Real-time polling: refresh props every 5s ── */
+    const pollRef = useRef<ReturnType<typeof setInterval>>()
+    useEffect(() => {
+        pollRef.current = setInterval(() => {
+            router.reload({ preserveScroll: true, preserveState: true })
+        }, 5000)
+        return () => clearInterval(pollRef.current)
+    }, [])
 
     useEffect(() => {
         const handler = () => setScrolled(window.scrollY > 50)

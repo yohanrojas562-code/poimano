@@ -117,6 +117,15 @@ function isRichTextField(sectionKey: string, fieldKey: string): boolean {
 export default function WebsiteAdminIndex({ settings, sections, availableTemplates, customDomains, websiteMinistries, socialNetworks, whatsappConfig }: Props) {
     const [expandedSection, setExpandedSection] = useState<number | null>(null)
 
+    /* ── Real-time polling: refresh props every 10s ── */
+    const pollRef = useRef<ReturnType<typeof setInterval>>()
+    useEffect(() => {
+        pollRef.current = setInterval(() => {
+            router.reload({ preserveScroll: true, preserveState: true })
+        }, 10000)
+        return () => clearInterval(pollRef.current)
+    }, [])
+
     // Settings form
     const settingsForm = useForm({
         template: settings.template,
