@@ -440,7 +440,7 @@ export default function Esperanza({ church, sections, ministries }: Props) {
                                 <div className="overflow-hidden rounded-3xl shadow-2xl">
                                     {sections.services.image ? (
                                         <img
-                                            src={`/storage/${sections.services.image}`}
+                                            src={sections.services.image.startsWith('/') ? sections.services.image : `/storage/${sections.services.image}`}
                                             alt={sections.services.title}
                                             className="aspect-[3/4] w-full object-cover lg:aspect-auto lg:h-[560px]"
                                         />
