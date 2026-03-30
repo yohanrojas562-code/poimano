@@ -200,9 +200,22 @@ export default function MinistryDetail({ church, ministry }: Props) {
                             )}
                             <span className="font-bold text-white">{church.name}</span>
                         </div>
-                        <p className="text-xs text-white/25">
-                            © {new Date().getFullYear()} {church.name}. Todos los derechos reservados.
-                        </p>
+                        <div className="text-center sm:text-right">
+                            <p className="text-xs text-white/25">
+                                © {new Date().getFullYear()} {church.name}. Todos los derechos reservados.
+                            </p>
+                            <p className="mt-1.5 flex items-center justify-center gap-1.5 text-[10px] text-white/15 sm:justify-end">
+                                Creado con tecnología
+                                <a
+                                    href="https://poimano.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold tracking-wide text-white/25 transition-colors hover:text-white/40"
+                                >
+                                    Poimano
+                                </a>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </footer>

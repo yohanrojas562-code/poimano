@@ -462,6 +462,28 @@ function SectionEditor({
             {isExpanded && (
                 <CardContent className="border-t pt-6">
                     <div className="space-y-4">
+                        {/* Image uploaders for registered IMAGE_FIELDS not present in content */}
+                        {Object.keys(IMAGE_FIELDS)
+                            .filter(k => k.startsWith(section.section_key + '.'))
+                            .map(k => k.split('.')[1])
+                            .filter(fieldKey => !(fieldKey in (form.data.content as Record<string, unknown>)))
+                            .map(fieldKey => {
+                                const imgMeta = getImageMeta(section.section_key, fieldKey)
+                                const freshValue = (section.content as Record<string, unknown>)[fieldKey]
+                                return (
+                                    <ImageUploader
+                                        key={fieldKey}
+                                        sectionId={section.id}
+                                        fieldKey={fieldKey}
+                                        currentValue={(freshValue as string) ?? null}
+                                        label={imgMeta.label}
+                                        hint={imgMeta.hint}
+                                        dimensions={imgMeta.dimensions}
+                                    />
+                                )
+                            })
+                        }
+
                         {/* Dynamic fields based on section content */}
                         {Object.entries(form.data.content).map(([key, value]) => {
                             // Image fields → uploader (use section prop directly for fresh data)

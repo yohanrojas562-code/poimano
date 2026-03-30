@@ -736,9 +736,22 @@ export default function Esperanza({ church, sections, ministries }: Props) {
 
                         {/* Copyright */}
                         <div className="mt-14 border-t border-white/[0.06] pt-7 text-center text-xs text-white/25">
-                            {(sections.footer.copyright ?? '© {year} {church_name}')
-                                .replace('{year}', new Date().getFullYear().toString())
-                                .replace('{church_name}', church.name)}
+                            <p>
+                                {(sections.footer.copyright ?? '© {year} {church_name}')
+                                    .replace('{year}', new Date().getFullYear().toString())
+                                    .replace('{church_name}', church.name)}
+                            </p>
+                            <p className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-white/15">
+                                Creado con tecnología
+                                <a
+                                    href="https://poimano.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="font-semibold tracking-wide text-white/25 transition-colors hover:text-white/40"
+                                >
+                                    Poimano
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </footer>
