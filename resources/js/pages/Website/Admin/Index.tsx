@@ -117,12 +117,15 @@ function isRichTextField(sectionKey: string, fieldKey: string): boolean {
 /* ── Main Component ── */
 export default function WebsiteAdminIndex({ settings, sections, availableTemplates, customDomains, websiteMinistries, socialNetworks, whatsappConfig }: Props) {
     const [expandedSection, setExpandedSection] = useState<number | null>(null)
+    const uploadingRef = useRef(false)
 
-    /* ── Real-time polling: refresh props every 10s ── */
+    /* ── Real-time polling: refresh props every 10s (paused during uploads) ── */
     const pollRef = useRef<ReturnType<typeof setInterval>>()
     useEffect(() => {
         pollRef.current = setInterval(() => {
-            router.reload({ preserveScroll: true, preserveState: true })
+            if (!uploadingRef.current) {
+                router.reload({ preserveScroll: true, preserveState: true })
+            }
         }, 10000)
         return () => clearInterval(pollRef.current)
     }, [])
@@ -270,7 +273,7 @@ export default function WebsiteAdminIndex({ settings, sections, availableTemplat
                 </div>
 
                 {/* Ministry Manager */}
-                <MinistryManager ministries={websiteMinistries} />
+                <MinistryManager ministries={websiteMinistries} uploadingRef={uploadingRef} />
 
                 {/* Social Networks Manager */}
                 <SocialNetworkManager networks={socialNetworks} whatsapp={whatsappConfig} />
@@ -859,7 +862,7 @@ function ImageUploader({
 }
 
 /* ── Ministry Manager ── */
-function MinistryManager({ ministries }: { ministries: WebsiteMinistryData[] }) {
+function MinistryManager({ ministries, uploadingRef }: { ministries: WebsiteMinistryData[]; uploadingRef: React.MutableRefObject<boolean> }) {
     const [editing, setEditing] = useState<number | null>(null)
     const [syncing, setSyncing] = useState(false)
     const fileRefs = useRef<Record<number, HTMLInputElement | null>>({})
@@ -876,6 +879,7 @@ function MinistryManager({ ministries }: { ministries: WebsiteMinistryData[] }) 
     const updateMinistry = (id: number, data: Record<string, unknown>) => {
         router.put(`/settings/website/ministries/${id}`, data, {
             preserveScroll: true,
+            preserveState: true,
         })
     }
 
@@ -885,25 +889,28 @@ function MinistryManager({ ministries }: { ministries: WebsiteMinistryData[] }) 
     }
 
     const uploadImage = (id: number, file: File) => {
+        uploadingRef.current = true
         router.post(`/settings/website/ministries/${id}/image`, {
             image: file,
-        }, { preserveScroll: true, forceFormData: true })
+        }, { preserveScroll: true, preserveState: true, forceFormData: true, onFinish: () => { uploadingRef.current = false } })
     }
 
     const removeImage = (id: number) => {
-        router.delete(`/settings/website/ministries/${id}/image`, { preserveScroll: true })
+        router.delete(`/settings/website/ministries/${id}/image`, { preserveScroll: true, preserveState: true })
     }
 
     const uploadGalleryImage = (id: number, file: File) => {
+        uploadingRef.current = true
         router.post(`/settings/website/ministries/${id}/gallery`, {
             image: file,
-        }, { preserveScroll: true, forceFormData: true })
+        }, { preserveScroll: true, preserveState: true, forceFormData: true, onFinish: () => { uploadingRef.current = false } })
     }
 
     const removeGalleryImage = (id: number, index: number) => {
         router.delete(`/settings/website/ministries/${id}/gallery`, {
             data: { index },
             preserveScroll: true,
+            preserveState: true,
         })
     }
 
