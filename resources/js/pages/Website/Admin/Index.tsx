@@ -218,7 +218,7 @@ export default function WebsiteAdminIndex({ settings, sections, availableTemplat
                         Edita el contenido de cada sección. Los cambios se reflejan en tu sitio público.
                     </p>
 
-                    {sections.map((section) => {
+                    {sections.filter(s => s.section_key !== 'ministries').map((section) => {
                         const meta = sectionMeta[section.section_key] || {
                             label: section.section_key,
                             icon: Globe,
