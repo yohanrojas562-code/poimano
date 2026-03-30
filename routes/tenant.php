@@ -11,6 +11,7 @@ use App\Http\Controllers\Tenant\MinistryAreaController;
 use App\Http\Controllers\Tenant\PublicWebsiteController;
 use App\Http\Controllers\Tenant\CustomDomainController;
 use App\Http\Controllers\Tenant\WebsiteSettingController;
+use App\Http\Controllers\Tenant\WebsiteMinistryController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -35,6 +36,7 @@ Route::middleware([
 
     // --- Sitio web público ---
     Route::get('/', PublicWebsiteController::class);
+    Route::get('/ministerios/{slug}', [PublicWebsiteController::class, 'ministry']);
 
     // --- Auth (público) --- Solo en subdominio poimano
     Route::middleware(['guest', EnsurePoimanoSubdomain::class])->group(function () {
@@ -68,5 +70,15 @@ Route::middleware([
         // Dominio propio
         Route::post('/settings/website/domain', [CustomDomainController::class, 'store']);
         Route::delete('/settings/website/domain', [CustomDomainController::class, 'destroy']);
+
+        // Ministerios del sitio web
+        Route::post('/settings/website/ministries/sync', [WebsiteMinistryController::class, 'syncFromAreas']);
+        Route::post('/settings/website/ministries', [WebsiteMinistryController::class, 'store']);
+        Route::put('/settings/website/ministries/{ministry}', [WebsiteMinistryController::class, 'update']);
+        Route::delete('/settings/website/ministries/{ministry}', [WebsiteMinistryController::class, 'destroy']);
+        Route::post('/settings/website/ministries/{ministry}/image', [WebsiteMinistryController::class, 'uploadImage']);
+        Route::delete('/settings/website/ministries/{ministry}/image', [WebsiteMinistryController::class, 'removeImage']);
+        Route::post('/settings/website/ministries/{ministry}/gallery', [WebsiteMinistryController::class, 'uploadGalleryImage']);
+        Route::delete('/settings/website/ministries/{ministry}/gallery', [WebsiteMinistryController::class, 'removeGalleryImage']);
     });
 });

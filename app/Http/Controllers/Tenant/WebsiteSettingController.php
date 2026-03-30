@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Modules\Website\Domain\Models\WebsiteMinistry;
 use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
@@ -34,6 +35,7 @@ class WebsiteSettingController extends Controller
                 'sections'           => [],
                 'availableTemplates' => self::AVAILABLE_TEMPLATES,
                 'customDomains'      => [],
+                'websiteMinistries'  => [],
             ]);
         }
 
@@ -52,11 +54,16 @@ class WebsiteSettingController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $ministries = Schema::hasTable('website_ministries')
+            ? WebsiteMinistry::orderBy('sort_order')->get()
+            : [];
+
         return Inertia::render('Website/Admin/Index', [
             'settings'           => $settings,
             'sections'           => $sections,
             'availableTemplates' => self::AVAILABLE_TEMPLATES,
             'customDomains'      => tenant()->domains()->where('domain', '!=', tenant()->id)->pluck('domain'),
+            'websiteMinistries'  => $ministries,
         ]);
     }
 

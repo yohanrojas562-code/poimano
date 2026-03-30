@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
 use App\Modules\Church\Domain\Models\ChurchSetting;
+use App\Modules\Website\Domain\Models\WebsiteMinistry;
 use App\Modules\Website\Domain\Models\WebsiteSection;
 use App\Modules\Website\Domain\Models\WebsiteSetting;
 use App\Modules\Website\Domain\Services\TemplateSeeder;
@@ -51,10 +52,54 @@ class PublicWebsiteController extends Controller
                 return $content;
             });
 
+        // Load website ministries for the ministries section
+        $ministries = [];
+        if (Schema::hasTable('website_ministries')) {
+            $ministries = WebsiteMinistry::visible()
+                ->orderBy('sort_order')
+                ->get()
+                ->map(fn ($m) => [
+                    'id'          => $m->id,
+                    'name'        => $m->name,
+                    'slug'        => $m->slug,
+                    'icon'        => $m->icon,
+                    'image'       => $m->image ? '/storage/' . $m->image : null,
+                    'description' => $m->description,
+                ])
+                ->values();
+        }
+
         return Inertia::render('Website/Templates/' . ucfirst($settings->template), [
+            'church'     => $this->getChurchData(),
+            'sections'   => $sections,
+            'template'   => $settings->template,
+            'ministries' => $ministries,
+        ]);
+    }
+
+    public function ministry(string $slug): Response
+    {
+        if (! Schema::hasTable('website_ministries')) {
+            abort(404);
+        }
+
+        $ministry = WebsiteMinistry::where('slug', $slug)->where('is_visible', true)->firstOrFail();
+
+        $settings = WebsiteSetting::first();
+
+        return Inertia::render('Website/Templates/MinistryDetail', [
             'church'   => $this->getChurchData(),
-            'sections' => $sections,
-            'template' => $settings->template,
+            'ministry' => [
+                'id'          => $ministry->id,
+                'name'        => $ministry->name,
+                'slug'        => $ministry->slug,
+                'icon'        => $ministry->icon,
+                'image'       => $ministry->image ? '/storage/' . $ministry->image : null,
+                'description' => $ministry->description,
+                'content'     => $ministry->content,
+                'gallery'     => collect($ministry->gallery ?? [])->map(fn ($g) => '/storage/' . $g)->values(),
+            ],
+            'template' => $settings?->template ?? 'esperanza',
         ]);
     }
 

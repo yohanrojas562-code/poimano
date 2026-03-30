@@ -87,10 +87,20 @@ interface Sections {
     }
 }
 
+interface MinistryItem {
+    id: number
+    name: string
+    slug: string
+    icon: string
+    image: string | null
+    description: string | null
+}
+
 interface Props {
     church: ChurchData
     sections: Sections
     template: string
+    ministries: MinistryItem[]
 }
 
 /* ── Icon Map ── */
@@ -104,7 +114,7 @@ const iconMap: Record<string, React.ElementType> = {
 }
 
 /* ── Component ── */
-export default function Esperanza({ church, sections }: Props) {
+export default function Esperanza({ church, sections, ministries }: Props) {
     const [mobileMenu, setMobileMenu] = useState(false)
     const [scrolled, setScrolled] = useState(false)
 
@@ -480,41 +490,59 @@ export default function Esperanza({ church, sections }: Props) {
                             </h2>
                         </div>
 
-                        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                            {sections.ministries.items.map((item, i) => {
-                                const Icon = iconMap[item.icon] || Heart
-                                return (
+                        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {(ministries.length > 0 ? ministries : sections.ministries.items).map((item, i) => {
+                                const isNew = 'slug' in item
+                                const slug = isNew ? (item as MinistryItem).slug : ''
+                                const image = isNew ? (item as MinistryItem).image : null
+                                const iconKey = isNew ? (item as MinistryItem).icon : (item as { icon: string }).icon
+                                const Icon = iconMap[iconKey] || Heart
+
+                                const card = (
                                     <div
                                         key={i}
-                                        className="group relative overflow-hidden rounded-2xl bg-gradient-to-b from-gray-50 to-white p-7 text-center ring-1 ring-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-transparent"
+                                        className="group relative overflow-hidden rounded-2xl bg-white ring-1 ring-gray-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-transparent"
                                     >
-                                        {/* Hover background glow */}
-                                        <div
-                                            className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-                                            style={{ background: `linear-gradient(135deg, ${secondary}08, ${primary}05)` }}
-                                        />
-                                        <div className="relative">
-                                            <div
-                                                className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 group-hover:scale-110 group-hover:shadow-md"
-                                                style={{ backgroundColor: secondary + '12' }}
-                                            >
-                                                <Icon className="h-7 w-7" style={{ color: secondary }} />
+                                        {/* Image or icon placeholder */}
+                                        <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                                            {image ? (
+                                                <img src={image} alt={item.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                                            ) : (
+                                                <div className="flex h-full items-center justify-center" style={{ background: `linear-gradient(135deg, ${primary}10, ${secondary}10)` }}>
+                                                    <Icon className="h-14 w-14 opacity-30" style={{ color: secondary }} />
+                                                </div>
+                                            )}
+                                            {/* Gradient overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                                            {/* Name on image */}
+                                            <div className="absolute bottom-0 left-0 right-0 p-5">
+                                                <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                                                    {item.name}
+                                                </h3>
                                             </div>
-                                            <h3
-                                                className="mt-6 text-lg font-bold"
-                                                style={{ color: primary }}
-                                            >
-                                                {item.name}
-                                            </h3>
-                                            <p className="mt-2 text-sm leading-relaxed text-gray-500">{item.description}</p>
                                         </div>
-                                        {/* Bottom accent line */}
+                                        {/* Description */}
+                                        <div className="p-5">
+                                            <p className="text-sm leading-relaxed text-gray-500">
+                                                {item.description || ''}
+                                            </p>
+                                            {isNew && (
+                                                <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold" style={{ color: secondary }}>
+                                                    Ver más <ChevronRight className="h-3 w-3" />
+                                                </span>
+                                            )}
+                                        </div>
+                                        {/* Bottom accent */}
                                         <div
-                                            className="absolute bottom-0 left-1/2 h-0.5 w-0 -translate-x-1/2 transition-all duration-300 group-hover:w-1/2"
+                                            className="absolute bottom-0 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full"
                                             style={{ backgroundColor: secondary }}
                                         />
                                     </div>
                                 )
+
+                                return isNew ? (
+                                    <a key={i} href={`/ministerios/${slug}`} className="block">{card}</a>
+                                ) : card
                             })}
                         </div>
                     </div>
