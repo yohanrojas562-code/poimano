@@ -32,7 +32,7 @@ const navigation: NavItem[] = [
     { label: 'Miembros', href: '/members', icon: Users },
     { label: 'Familias', href: '/families', icon: Home },
     { label: 'Áreas Ministeriales', href: '/ministry-areas', icon: Layers },
-    { label: 'Grupos', href: '/groups', icon: UsersRound },
+    { label: 'Grupos Celulares', href: '/groups', icon: UsersRound },
     { label: 'Actividades', href: '/activities', icon: Calendar },
     { label: 'Finanzas', href: '/finance', icon: HandCoins },
     { label: 'Reportes', href: '/reports', icon: BarChart3 },

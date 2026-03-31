@@ -13,6 +13,7 @@ use App\Http\Controllers\Tenant\CustomDomainController;
 use App\Http\Controllers\Tenant\WebsiteSettingController;
 use App\Http\Controllers\Tenant\WebsiteMinistryController;
 use App\Http\Controllers\Tenant\WebsiteSocialController;
+use App\Http\Controllers\Tenant\CellGroupController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -56,6 +57,7 @@ Route::middleware([
         Route::resource('members', MemberController::class);
         Route::resource('families', FamilyController::class);
         Route::resource('ministry-areas', MinistryAreaController::class);
+        Route::resource('groups', CellGroupController::class);
 
         // Configuración de iglesia
         Route::get('/settings/church', [ChurchSettingController::class, 'edit']);
