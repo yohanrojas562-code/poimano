@@ -33,6 +33,7 @@ export interface MemberRef {
     first_name: string
     last_name: string
     full_name?: string
+    phone?: string | null
 }
 
 export interface CellGroupFilters {

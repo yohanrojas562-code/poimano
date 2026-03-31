@@ -50,7 +50,7 @@ class CellGroupController extends Controller
         return Inertia::render('Groups/Create', [
             'members' => Member::active()
                 ->orderBy('first_name')
-                ->get(['id', 'first_name', 'last_name']),
+                ->get(['id', 'first_name', 'last_name', 'phone']),
         ]);
     }
 
@@ -82,7 +82,7 @@ class CellGroupController extends Controller
             'group' => $group,
             'members' => Member::active()
                 ->orderBy('first_name')
-                ->get(['id', 'first_name', 'last_name']),
+                ->get(['id', 'first_name', 'last_name', 'phone']),
         ]);
     }
 

@@ -94,12 +94,18 @@ export default function GroupForm({ group, members }: GroupFormProps) {
 
     function selectHostMember(member: MemberRef) {
         updateField('host_member_id', member.id)
+        if (member.phone) {
+            updateField('host_phone', member.phone)
+        }
         setMemberSearch(`${member.first_name} ${member.last_name}`)
         setShowHostMemberDropdown(false)
     }
 
     function selectAttendeeMember(index: number, member: MemberRef) {
         updateAttendee(index, 'member_id', member.id)
+        if (member.phone) {
+            updateAttendee(index, 'phone', member.phone)
+        }
         setActiveAttendeeIndex(null)
         setAttendeeMemberSearch('')
     }
