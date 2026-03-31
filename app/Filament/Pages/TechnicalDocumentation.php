@@ -52,6 +52,8 @@ class TechnicalDocumentation extends Page
             'frontendStack' => $this->getFrontendStack(),
             'centralTables' => $this->getCentralTables(),
             'tenantTables' => $this->getTenantTables(),
+            'iaOptions' => $this->getIaOptions(),
+            'hoursBreakdown' => $this->getHoursBreakdown(),
         ];
     }
 
@@ -220,6 +222,59 @@ class TechnicalDocumentation extends Page
             ['name' => 'website_social_networks', 'desc' => 'Redes sociales', 'rows' => 'platform, url, is_active'],
             ['name' => 'user_roles', 'desc' => 'Roles de usuarios', 'rows' => 'user_id, role_id'],
             ['name' => 'activity_log', 'desc' => 'Auditoría (Spatie)', 'rows' => 'subject, causer, properties, event'],
+        ];
+    }
+
+    private function getIaOptions(): array
+    {
+        return [
+            [
+                'icon' => '💬',
+                'name' => 'System Prompt Personalizado',
+                'desc' => 'Cada iglesia configura el tono, doctrina y personalidad del asistente. Se inyecta como system prompt en cada llamada a la API.',
+                'cost' => '$0 adicional',
+                'hours' => '20',
+            ],
+            [
+                'icon' => '🧠',
+                'name' => 'RAG con pgvector',
+                'desc' => 'Retrieval-Augmented Generation usando la extensión pgvector del PostgreSQL existente. Permite al asistente responder con base en documentos, sermones y estudios bíblicos de la iglesia.',
+                'cost' => '$0 infra (pgvector incluido)',
+                'hours' => '40',
+            ],
+            [
+                'icon' => '⛪',
+                'name' => 'Contexto de la Iglesia',
+                'desc' => 'Inyectar datos estructurados del tenant (miembros, grupos, ministerios, actividades) como contexto en cada consulta. El asistente conoce la iglesia en tiempo real.',
+                'cost' => '$0 (datos locales)',
+                'hours' => '30',
+            ],
+            [
+                'icon' => '📝',
+                'name' => 'Historial de Conversación',
+                'desc' => 'Almacenar mensajes anteriores por usuario para mantener continuidad en las conversaciones con el asistente pastoral IA.',
+                'cost' => '~1 tabla por tenant',
+                'hours' => '15',
+            ],
+        ];
+    }
+
+    private function getHoursBreakdown(): array
+    {
+        return [
+            ['name' => 'Arquitectura Multi-tenant', 'hours' => 90],
+            ['name' => 'Panel Super Admin (Filament)', 'hours' => 80],
+            ['name' => 'Módulo Miembros', 'hours' => 85],
+            ['name' => 'Módulo Website', 'hours' => 80],
+            ['name' => 'Módulo Grupos Celulares', 'hours' => 55],
+            ['name' => 'Módulo Ministerios', 'hours' => 40],
+            ['name' => 'RBAC & Permisos', 'hours' => 45],
+            ['name' => 'Frontend React/TS', 'hours' => 70],
+            ['name' => 'Infraestructura & DevOps', 'hours' => 48],
+            ['name' => 'DDD Módulos Skeleton', 'hours' => 35],
+            ['name' => 'Testing & Debug', 'hours' => 55],
+            ['name' => 'Documentación', 'hours' => 25],
+            ['name' => 'UI/UX & Design System', 'hours' => 30],
         ];
     }
 }

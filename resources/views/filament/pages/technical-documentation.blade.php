@@ -75,6 +75,27 @@
         .td-plan-price { font-size: 11px; margin-top: 2px; }
         .td-plan-mods { font-size: 11px; margin-top: 4px; opacity: 0.8; }
         .td-sub-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 12px; display: block; }
+        .td-ia-option { border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; background: #fff; border-left: 4px solid #8b5cf6; }
+        .td-ia-option-title { font-size: 14px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 8px; }
+        .td-ia-option-desc { font-size: 12px; color: #64748b; margin-top: 6px; line-height: 1.5; }
+        .td-ia-option-cost { font-size: 11px; color: #8b5cf6; margin-top: 8px; padding: 6px 10px; background: #f5f3ff; border-radius: 6px; line-height: 1.4; }
+        .td-val-card { border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px; background: #fff; text-align: center; }
+        .td-val-amount { font-size: 20px; font-weight: 800; color: #00105E; line-height: 1.2; }
+        .td-val-label { font-size: 11px; color: #94a3b8; margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+        .td-val-desc { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .td-val-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (min-width: 768px) { .td-val-grid { grid-template-columns: repeat(4, 1fr); } }
+        .td-hours-bar { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: #f8fafc; border-radius: 8px; margin-bottom: 6px; }
+        .td-hours-name { font-size: 12px; color: #1e293b; font-weight: 600; flex: 1; }
+        .td-hours-val { font-size: 12px; color: #64748b; font-weight: 600; white-space: nowrap; }
+        .td-hours-fill-bg { flex: 2; height: 6px; background: #e2e8f0; border-radius: 999px; overflow: hidden; }
+        .td-hours-fill { height: 100%; background: linear-gradient(90deg, #00105E, #00E1FF); border-radius: 999px; }
+        .td-proj-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+        .td-proj-row:last-child { border-bottom: none; }
+        .td-proj-label { font-size: 13px; color: #64748b; }
+        .td-proj-val { font-size: 13px; font-weight: 700; color: #1e293b; }
+        .td-proj-val-green { color: #10b981; }
+        .td-proj-val-blue { color: #3b82f6; }
     </style>
 
     <div class="td-page" style="display: flex; flex-direction: column; gap: 20px;">
@@ -483,6 +504,160 @@
                         <div class="td-code-block">
                             <code>cd /var/www/poimano && git pull origin main && npm run build && php artisan optimize:clear && php artisan optimize</code>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ═══════════════════════════════════════ --}}
+        {{-- INTEGRACIÓN IA — OPCIONES PENDIENTES --}}
+        {{-- ═══════════════════════════════════════ --}}
+        <div class="td-card">
+            <div class="td-card-header" style="background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);">
+                <div class="td-section-title">
+                    <svg style="width:18px;height:18px;color:#8b5cf6;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"/></svg>
+                    Integración IA &mdash; Opciones de Implementación
+                </div>
+                <div class="td-section-desc">Funcionalidades de inteligencia artificial pendientes de desarrollo &middot; Diferenciador clave vs competencia</div>
+            </div>
+            <div class="td-card-body">
+                <div class="td-module-grid">
+                    @foreach ($iaOptions as $option)
+                        <div class="td-ia-option">
+                            <div class="td-ia-option-title">
+                                <span style="font-size: 18px;">{{ $option['icon'] }}</span>
+                                {{ $option['name'] }}
+                            </div>
+                            <div class="td-ia-option-desc">{{ $option['desc'] }}</div>
+                            <div class="td-ia-option-cost">{{ $option['cost'] }}</div>
+                            <div style="margin-top: 8px;">
+                                <span class="td-badge td-badge-skeleton">{{ $option['hours'] }}h estimadas</span>
+                                <span class="td-badge" style="background: #f5f3ff; color: #7c3aed;">Pendiente</span>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div style="margin-top: 16px; padding: 14px 16px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;">
+                    <div style="font-size: 13px; font-weight: 700; color: #92400e;">Recomendación</div>
+                    <div style="font-size: 12px; color: #a16207; margin-top: 4px; line-height: 1.5;">
+                        Iniciar con <strong>Gemini 2.0 Flash</strong> (1,500 requests/d&iacute;a gratis). Usar <strong>pgvector</strong> en el PostgreSQL existente para RAG. Construir un <strong>AiService</strong> agn&oacute;stico en Laravel que permita cambiar de proveedor (Gemini &harr; GPT) sin modificar la l&oacute;gica de negocio.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ═══════════════════════════════════════ --}}
+        {{-- VALORACIÓN DEL PROYECTO --}}
+        {{-- ═══════════════════════════════════════ --}}
+        <div class="td-card">
+            <div class="td-card-header" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
+                <div class="td-section-title">
+                    <svg style="width:18px;height:18px;color:#10b981;" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Valoraci&oacute;n del Proyecto
+                </div>
+                <div class="td-section-desc">Estimaci&oacute;n financiera basada en horas invertidas, tarifas del mercado colombiano y proyecci&oacute;n SaaS</div>
+            </div>
+            <div class="td-card-body">
+                {{-- Resumen de valoración --}}
+                <div class="td-val-grid">
+                    <div class="td-val-card">
+                        <div class="td-val-amount">738h</div>
+                        <div class="td-val-label">Horas Invertidas</div>
+                    </div>
+                    <div class="td-val-card">
+                        <div class="td-val-amount">$52.3M</div>
+                        <div class="td-val-label">Costo Desarrollo (COP)</div>
+                        <div class="td-val-desc">Tarifa promedio $70,500/h</div>
+                    </div>
+                    <div class="td-val-card">
+                        <div class="td-val-amount" style="color: #10b981;">$85M-100M</div>
+                        <div class="td-val-label">Valoraci&oacute;n Activo (COP)</div>
+                        <div class="td-val-desc">Pre-revenue, 45% completo</div>
+                    </div>
+                    <div class="td-val-card">
+                        <div class="td-val-amount" style="color: #7c3aed;">99%+</div>
+                        <div class="td-val-label">Margen Bruto SaaS</div>
+                        <div class="td-val-desc">Costo marginal ~$0/tenant</div>
+                    </div>
+                </div>
+
+                <div class="td-two-col" style="margin-top: 20px;">
+                    {{-- Horas por área --}}
+                    <div>
+                        <span class="td-sub-label">Horas de Trabajo por &Aacute;rea</span>
+                        @foreach ($hoursBreakdown as $area)
+                            <div class="td-hours-bar">
+                                <span class="td-hours-name">{{ $area['name'] }}</span>
+                                <div class="td-hours-fill-bg">
+                                    <div class="td-hours-fill" style="width: {{ round($area['hours'] / 90 * 100) }}%;"></div>
+                                </div>
+                                <span class="td-hours-val">{{ $area['hours'] }}h</span>
+                            </div>
+                        @endforeach
+                        <div style="margin-top: 8px; padding: 10px 12px; background: #f0f9ff; border-radius: 8px; display: flex; justify-content: space-between;">
+                            <span style="font-size: 12px; font-weight: 700; color: #1e293b;">Total</span>
+                            <span style="font-size: 12px; font-weight: 800; color: #00105E;">738 horas</span>
+                        </div>
+                    </div>
+
+                    {{-- Proyección financiera --}}
+                    <div>
+                        <span class="td-sub-label">Proyecci&oacute;n Primer A&ntilde;o</span>
+                        <div style="border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden;">
+                            <div class="td-proj-row" style="background: #f8fafc;">
+                                <span class="td-proj-label">Clientes pago (mes 12)</span>
+                                <span class="td-proj-val">121</span>
+                            </div>
+                            <div class="td-proj-row">
+                                <span class="td-proj-label">Precio promedio/mes</span>
+                                <span class="td-proj-val">$49.49 USD</span>
+                            </div>
+                            <div class="td-proj-row" style="background: #f8fafc;">
+                                <span class="td-proj-label">MRR mes 12</span>
+                                <span class="td-proj-val td-proj-val-green">$5,989 USD</span>
+                            </div>
+                            <div class="td-proj-row">
+                                <span class="td-proj-label">ARR proyectado</span>
+                                <span class="td-proj-val td-proj-val-green">$71,868 USD</span>
+                            </div>
+                            <div class="td-proj-row" style="background: #f8fafc;">
+                                <span class="td-proj-label">Ingresos A&ntilde;o 1</span>
+                                <span class="td-proj-val td-proj-val-blue">$27,320 USD</span>
+                            </div>
+                            <div class="td-proj-row">
+                                <span class="td-proj-label">ROI de inversi&oacute;n</span>
+                                <span class="td-proj-val" style="color: #7c3aed;">Mes 9-12</span>
+                            </div>
+                            <div class="td-proj-row" style="background: #f8fafc;">
+                                <span class="td-proj-label">Costos infra/mes</span>
+                                <span class="td-proj-val">~$11 USD</span>
+                            </div>
+                            <div class="td-proj-row">
+                                <span class="td-proj-label">Break-even operativo</span>
+                                <span class="td-proj-val td-proj-val-green">1 cliente pago</span>
+                            </div>
+                        </div>
+
+                        <span class="td-sub-label" style="margin-top: 16px;">Valoraci&oacute;n al Final A&ntilde;o 1 (3x-5x ARR)</span>
+                        <div class="td-val-grid" style="grid-template-columns: 1fr 1fr;">
+                            <div class="td-val-card" style="border-color: #bbf7d0;">
+                                <div class="td-val-amount" style="font-size: 16px; color: #059669;">$215K USD</div>
+                                <div class="td-val-label">Conservador (3x)</div>
+                            </div>
+                            <div class="td-val-card" style="border-color: #c4b5fd;">
+                                <div class="td-val-amount" style="font-size: 16px; color: #7c3aed;">$359K USD</div>
+                                <div class="td-val-label">Promedio SaaS (5x)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Mercado desatendido --}}
+                <div style="margin-top: 16px; padding: 14px 16px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px;">
+                    <div style="font-size: 13px; font-weight: 700; color: #065f46;">Mercado Desatendido</div>
+                    <div style="font-size: 12px; color: #047857; margin-top: 4px; line-height: 1.5;">
+                        ~15,000 iglesias evang&eacute;licas solo en Colombia. El 90%+ gestiona con Excel y WhatsApp. No hay l&iacute;der en espa&ntilde;ol. Poimano es 40-60% m&aacute;s barato que competidores en ingl&eacute;s y ofrece sitio web incluido + futuro asistente IA pastoral &mdash; ning&uacute;n competidor lo tiene.
                     </div>
                 </div>
             </div>

@@ -368,7 +368,7 @@ code {
 <h1 id="%F0%9F%93%98-poimano--documentaci%C3%B3n-t%C3%A9cnica">📘 Poimano — Documentación Técnica</h1>
 <blockquote>
 <p><strong>SaaS Multi-Tenant para Gestión de Iglesias</strong>
-Versión: 1.0.0-alpha · Última actualización: 14 de marzo de 2026</p>
+Versión: 1.0.0-alpha · Última actualización: 30 de marzo de 2026</p>
 </blockquote>
 <hr>
 <h2 id="%C3%ADndice">Índice</h2>
@@ -568,10 +568,10 @@ Versión: 1.0.0-alpha · Última actualización: 14 de marzo de 2026</p>
 │  │  │  SaaS    │  │  (DDD Lite por módulo)       │    │     │
 │  │  │          │  │                              │    │     │
 │  │  │ Tenants  │  │  Church    │ Members ✅      │    │     │
-│  │  │ Plans    │  │  Groups    │ Attendance      │    │     │
-│  │  │ Billing  │  │  Finance   │ Activities      │    │     │
-│  │  │ Settings │  │  Comms     │ Projects        │    │     │
-│  │  │          │  │  Reports   │                 │    │     │
+│  │  │ Plans    │  │  Groups ✅ │ Website ✅      │    │     │
+│  │  │ Billing  │  │  Finance   │ Ministry ✅     │    │     │
+│  │  │ Settings │  │  Comms     │ Attendance      │    │     │
+│  │  │          │  │  Reports   │ Activities      │    │     │
 │  │  └──────────┘  └──────────────────────────────┘    │     │
 │  │                                                    │     │
 │  │  ┌───────────────────────┐  ┌──────────────────┐   │     │
@@ -1496,8 +1496,8 @@ VPS (manual por SSH):
 <td>3</td>
 <td><strong>Groups</strong></td>
 <td><code>groups</code></td>
-<td>Células, ministerios, equipos de servicio</td>
-<td>📋 Esqueleto</td>
+<td>Grupos celulares, asistentes, anfitriones</td>
+<td>✅ Completo</td>
 </tr>
 <tr>
 <td>4</td>
@@ -1540,6 +1540,20 @@ VPS (manual por SSH):
 <td><code>reports</code></td>
 <td>Reportes y estadísticas</td>
 <td>📋 Esqueleto</td>
+</tr>
+<tr>
+<td>10</td>
+<td><strong>Website</strong></td>
+<td><code>website</code></td>
+<td>Sitio web público de cada iglesia (templates, ministerios, redes sociales)</td>
+<td>✅ Completo</td>
+</tr>
+<tr>
+<td>11</td>
+<td><strong>Ministry Areas</strong></td>
+<td><code>ministry</code></td>
+<td>Áreas ministeriales y equipos de servicio</td>
+<td>✅ Completo</td>
 </tr>
 </tbody>
 </table>
@@ -2057,6 +2071,132 @@ VPS (manual por SSH):
 <td><code>MemberController@destroy</code></td>
 <td>Eliminar miembro (soft)</td>
 </tr>
+<tr>
+<td>GET</td>
+<td><code>/families</code></td>
+<td><code>FamilyController@index</code></td>
+<td>Listar familias</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/families</code></td>
+<td><code>FamilyController@store</code></td>
+<td>Crear familia</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/families/{family}</code></td>
+<td><code>FamilyController@update</code></td>
+<td>Actualizar familia</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/families/{family}</code></td>
+<td><code>FamilyController@destroy</code></td>
+<td>Eliminar familia</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/ministry-areas</code></td>
+<td><code>MinistryAreaController@index</code></td>
+<td>Listar áreas ministeriales</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/ministry-areas</code></td>
+<td><code>MinistryAreaController@store</code></td>
+<td>Crear área</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/ministry-areas/{area}</code></td>
+<td><code>MinistryAreaController@update</code></td>
+<td>Actualizar área</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/ministry-areas/{area}</code></td>
+<td><code>MinistryAreaController@destroy</code></td>
+<td>Eliminar área</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/groups</code></td>
+<td><code>CellGroupController@index</code></td>
+<td>Listar grupos celulares</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/groups/create</code></td>
+<td><code>CellGroupController@create</code></td>
+<td>Form crear grupo</td>
+</tr>
+<tr>
+<td>POST</td>
+<td><code>/groups</code></td>
+<td><code>CellGroupController@store</code></td>
+<td>Guardar grupo</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/groups/{group}</code></td>
+<td><code>CellGroupController@show</code></td>
+<td>Ver detalle grupo</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/groups/{group}/edit</code></td>
+<td><code>CellGroupController@edit</code></td>
+<td>Form editar grupo</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/groups/{group}</code></td>
+<td><code>CellGroupController@update</code></td>
+<td>Actualizar grupo</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td><code>/groups/{group}</code></td>
+<td><code>CellGroupController@destroy</code></td>
+<td>Eliminar grupo</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/settings/church</code></td>
+<td><code>ChurchSettingController@edit</code></td>
+<td>Config de iglesia</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/settings/church</code></td>
+<td><code>ChurchSettingController@update</code></td>
+<td>Actualizar config</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/settings/website</code></td>
+<td><code>WebsiteSettingController@index</code></td>
+<td>Admin sitio web</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td><code>/settings/website</code></td>
+<td><code>WebsiteSettingController@updateSettings</code></td>
+<td>Actualizar settings web</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/</code></td>
+<td><code>PublicWebsiteController</code></td>
+<td>Sitio web público</td>
+</tr>
+<tr>
+<td>GET</td>
+<td><code>/ministerios/{slug}</code></td>
+<td><code>PublicWebsiteController@ministry</code></td>
+<td>Página de ministerio</td>
+</tr>
 </tbody>
 </table>
 <hr>
@@ -2117,7 +2257,7 @@ VPS (manual por SSH):
 <hr>
 <h2 id="15-estado-actual-por-m%C3%B3dulo">15. Estado Actual por Módulo</h2>
 <h3 id="resumen-de-progreso">Resumen de Progreso</h3>
-<pre class="hljs"><code><div>██████████████████████░░░░░░░░░░  ~25% completado (2/9 módulos + plataforma)
+<pre class="hljs"><code><div>████████████████████████████░░░░  ~45% completado (5/11 módulos + plataforma)
 </div></code></pre>
 <table>
 <thead>
@@ -2141,7 +2281,7 @@ VPS (manual por SSH):
 <tr>
 <td><strong>Panel Super Admin</strong></td>
 <td>✅ Completo</td>
-<td>CRUD Iglesias, CRUD Planes, Widgets dashboard, Login custom</td>
+<td>CRUD Iglesias, CRUD Planes, Widgets dashboard, Login custom, Documentación Técnica</td>
 </tr>
 <tr>
 <td><strong>Auth Tenant</strong></td>
@@ -2156,7 +2296,7 @@ VPS (manual por SSH):
 <tr>
 <td><strong>Módulo Church</strong></td>
 <td>✅ Básico</td>
-<td>Modelo + seeder + migración (falta UI de settings)</td>
+<td>Modelo + seeder + migración + UI configuración</td>
 </tr>
 <tr>
 <td><strong>Módulo Members</strong></td>
@@ -2165,8 +2305,18 @@ VPS (manual por SSH):
 </tr>
 <tr>
 <td><strong>Módulo Groups</strong></td>
-<td>📋 Esqueleto</td>
-<td>Estructura DDD + migración vacía</td>
+<td>✅ Completo</td>
+<td>CRUD grupos celulares + asistentes + anfitriones + Google Maps</td>
+</tr>
+<tr>
+<td><strong>Módulo Website</strong></td>
+<td>✅ Completo</td>
+<td>Sitio público + admin templates + ministerios + galería + redes sociales + WhatsApp</td>
+</tr>
+<tr>
+<td><strong>Módulo Ministry Areas</strong></td>
+<td>✅ Completo</td>
+<td>CRUD áreas ministeriales + asignación miembros + Icon Picker (120+ iconos)</td>
 </tr>
 <tr>
 <td><strong>Módulo Attendance</strong></td>
@@ -2295,7 +2445,17 @@ VPS (manual por SSH):
 │   ├── Http/
 │   │   ├── Controllers/Tenant/
 │   │   │   ├── AuthController.php
-│   │   │   └── MemberController.php
+│   │   │   ├── MemberController.php
+│   │   │   ├── FamilyController.php
+│   │   │   ├── CellGroupController.php
+│   │   │   ├── MinistryAreaController.php
+│   │   │   ├── ChurchSettingController.php
+│   │   │   ├── DashboardController.php
+│   │   │   ├── PublicWebsiteController.php
+│   │   │   ├── WebsiteSettingController.php
+│   │   │   ├── WebsiteMinistryController.php
+│   │   │   ├── WebsiteSocialController.php
+│   │   │   └── CustomDomainController.php
 │   │   └── Middleware/
 │   │       ├── HandleInertiaRequests.php
 │   │       └── CheckModuleAccess.php
@@ -2303,6 +2463,8 @@ VPS (manual por SSH):
 │   ├── Filament/                             # ── PANEL SUPER ADMIN ──
 │   │   ├── Pages/
 │   │   │   ├── Auth/Login.php
+│   │   │   ├── PlatformSettings.php
+│   │   │   └── TechnicalDocumentation.php
 │   │   │   └── PlatformSettings.php
 │   │   ├── Resources/
 │   │   │   ├── TenantResource.php
@@ -2542,7 +2704,7 @@ POST /login → AuthController@login
 </table>
 <hr>
 <blockquote>
-<p><strong>Documento generado automáticamente — Estado al 14 de marzo de 2026</strong>
+<p><strong>Documento generado automáticamente — Estado al 30 de marzo de 2026</strong>
 Repositorio: https://github.com/yohanrojas562-code/poimano</p>
 </blockquote>
 

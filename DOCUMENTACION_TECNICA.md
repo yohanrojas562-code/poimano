@@ -1076,6 +1076,15 @@ POST /login → AuthController@login
 | Redis/Horizon | Colas asíncronas para comunicaciones masivas |
 | Observability | Laravel Pulse / Telescope para monitoreo |
 
+### Integración IA — Opciones de Implementación (Pendiente)
+
+| Opción | Descripción | Costo Estimado |
+|---|---|---|
+| **System Prompt personalizado** | Definir al modelo quién es, qué sabe y cómo debe responder. Ejemplo: "Eres un asistente pastoral experto en teología cristiana evangélica, conoces la estructura de la iglesia, sus ministerios, sus miembros..." Se envía en cada request como contexto base. | Sin costo adicional (incluido en el request al modelo). Gemini 2.0 Flash: ~1,500 requests/día gratis. GPT-4o-mini: $0.15/1M tokens input, $0.60/1M tokens output. |
+| **RAG (Retrieval Augmented Generation)** | El verdadero "cerebro". Guardar documentos (biblias, sermones anteriores, doctrina de la iglesia, manuales) en una base de datos vectorial usando **pgvector** (extensión del PostgreSQL 16 actual). Cuando el usuario pregunta algo, el sistema busca los documentos relevantes y se los pasa al modelo como contexto. Así la IA responde basándose en contenido específico de cada iglesia. | pgvector: gratis (extensión PostgreSQL). Embeddings: Gemini gratis / OpenAI $0.02/1M tokens. Almacenamiento vectorial en el mismo servidor PostgreSQL existente. |
+| **Contexto de la iglesia** | Alimentar automáticamente datos del tenant al modelo: "Esta iglesia tiene 150 miembros, 8 grupos celulares, su pastor es X, sus áreas ministeriales son Y..." para que las respuestas sean personalizadas por tenant. Se construye dinámicamente desde las tablas del tenant. | Sin costo adicional (datos ya existen en la BD tenant). Solo agrega tokens al input del request. |
+| **Historial de conversación** | Guardar en la BD las últimas conversaciones del usuario para que la IA recuerde lo anterior. Tabla `ai_conversations` en BD tenant con campos: user_id, role (user/assistant), content, timestamps. Se envían los últimos N mensajes como contexto en cada request. | Sin costo adicional de infraestructura. Incrementa tokens por request (~500-2000 tokens extra por historial). |
+
 ---
 
 > **Documento generado automáticamente — Estado al 30 de marzo de 2026**
