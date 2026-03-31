@@ -21,6 +21,7 @@ class CellGroup extends Model
         'name',
         'opening_date',
         'address',
+        'map_url',
         'host_type',
         'host_member_id',
         'host_name',

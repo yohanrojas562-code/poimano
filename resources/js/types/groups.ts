@@ -3,6 +3,7 @@ export interface CellGroup {
     name: string
     opening_date: string
     address: string
+    map_url: string | null
     host_type: 'member' | 'external'
     host_member_id: number | null
     host_name: string | null

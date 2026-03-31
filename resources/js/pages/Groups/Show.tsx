@@ -127,6 +127,22 @@ export default function Show({ group }: ShowProps) {
                             value={formatDate(group.opening_date)}
                         />
                         <InfoRow icon={MapPin} label="Dirección" value={group.address} />
+                        {group.map_url && (
+                            <div className="flex items-start gap-3 py-2">
+                                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Google Maps</p>
+                                    <a
+                                        href={group.map_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-sm font-medium text-cyan hover:underline"
+                                    >
+                                        Ver ubicación en mapa
+                                    </a>
+                                </div>
+                            </div>
+                        )}
                         {group.notes && (
                             <>
                                 <Separator className="my-2" />

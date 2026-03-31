@@ -36,6 +36,7 @@ export default function GroupForm({ group, members }: GroupFormProps) {
         name: group?.name ?? '',
         opening_date: group?.opening_date?.split('T')[0] ?? '',
         address: group?.address ?? '',
+        map_url: group?.map_url ?? '',
         host_type: group?.host_type ?? 'external',
         host_member_id: group?.host_member_id ?? '',
         host_name: group?.host_name ?? '',
@@ -143,6 +144,7 @@ export default function GroupForm({ group, members }: GroupFormProps) {
             ...form,
             host_member_id: form.host_type === 'member' ? form.host_member_id || null : null,
             host_name: form.host_type === 'external' ? form.host_name : null,
+            map_url: form.map_url || null,
             host_phone: form.host_phone || null,
             attendees: attendees.filter(
                 (a) => (a.type === 'member' && a.member_id) || (a.type === 'external' && a.name)
@@ -234,6 +236,20 @@ export default function GroupForm({ group, members }: GroupFormProps) {
                             />
                             {errors.address && (
                                 <p className="mt-1 text-xs text-red-500">{errors.address}</p>
+                            )}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="map_url">Enlace de Google Maps</Label>
+                            <Input
+                                id="map_url"
+                                value={form.map_url}
+                                onChange={(e) => updateField('map_url', e.target.value)}
+                                placeholder="https://maps.google.com/..."
+                            />
+                            <p className="mt-1 text-xs text-gray-400">Pega aquí la URL de Google Maps para mostrar la ubicación</p>
+                            {errors.map_url && (
+                                <p className="mt-1 text-xs text-red-500">{errors.map_url}</p>
                             )}
                         </div>
 

@@ -110,6 +110,7 @@ class CellGroupController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'opening_date' => ['required', 'date'],
             'address' => ['required', 'string'],
+            'map_url' => ['nullable', 'string', 'max:2048', 'url'],
             'host_type' => ['required', 'in:member,external'],
             'host_member_id' => ['nullable', 'required_if:host_type,member', 'integer', 'exists:members,id'],
             'host_name' => ['nullable', 'required_if:host_type,external', 'string', 'max:255'],
