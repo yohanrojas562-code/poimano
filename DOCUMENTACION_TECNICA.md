@@ -1,7 +1,7 @@
 # 📘 Poimano — Documentación Técnica
 
 > **SaaS Multi-Tenant para Gestión de Iglesias**
-> Versión: 1.0.0-alpha · Última actualización: 14 de marzo de 2026
+> Versión: 1.0.0-alpha · Última actualización: 30 de marzo de 2026
 
 ---
 
@@ -108,10 +108,10 @@
 │  │  │  SaaS    │  │  (DDD Lite por módulo)       │    │     │
 │  │  │          │  │                              │    │     │
 │  │  │ Tenants  │  │  Church    │ Members ✅      │    │     │
-│  │  │ Plans    │  │  Groups    │ Attendance      │    │     │
-│  │  │ Billing  │  │  Finance   │ Activities      │    │     │
-│  │  │ Settings │  │  Comms     │ Projects        │    │     │
-│  │  │          │  │  Reports   │                 │    │     │
+│  │  │ Plans    │  │  Groups ✅ │ Website ✅      │    │     │
+│  │  │ Billing  │  │  Finance   │ Ministry ✅     │    │     │
+│  │  │ Settings │  │  Comms     │ Attendance      │    │     │
+│  │  │          │  │  Reports   │ Activities      │    │     │
 │  │  └──────────┘  └──────────────────────────────┘    │     │
 │  │                                                    │     │
 │  │  ┌───────────────────────┐  ┌──────────────────┐   │     │
@@ -473,13 +473,15 @@ Módulo/
 |---|---|---|---|---|
 | 1 | **Church** | `church` | Configuración y datos de la iglesia | ✅ Básico |
 | 2 | **Members** | `members` | Gestión de miembros y familias | ✅ Completo |
-| 3 | **Groups** | `groups` | Células, ministerios, equipos de servicio | 📋 Esqueleto |
+| 3 | **Groups** | `groups` | Grupos celulares, asistentes, anfitriones | ✅ Completo |
 | 4 | **Attendance** | `attendance` | Registro de asistencia a servicios y eventos | 📋 Esqueleto |
 | 5 | **Activities** | `activities` | Calendario de eventos y actividades | 📋 Esqueleto |
 | 6 | **Finance** | `finance` | Diezmos, ofrendas, gastos, presupuestos | 📋 Esqueleto |
 | 7 | **Communication** | `communication` | Envío de emails y notificaciones masivas | 📋 Esqueleto |
 | 8 | **Projects** | `projects` | Gestión de proyectos de la iglesia | 📋 Esqueleto |
 | 9 | **Reports** | `reports` | Reportes y estadísticas | 📋 Esqueleto |
+| 10 | **Website** | `website` | Sitio web público de cada iglesia (templates, ministerios, redes sociales) | ✅ Completo |
+| 11 | **Ministry Areas** | `ministry` | Áreas ministeriales y equipos de servicio | ✅ Completo |
 
 ### Control de Acceso por Módulo
 
@@ -728,6 +730,27 @@ Independiente del RBAC. Controla qué módulos puede ver cada iglesia según su 
 | GET | `/members/{member}/edit` | `MemberController@edit` | Form editar miembro |
 | PUT | `/members/{member}` | `MemberController@update` | Actualizar miembro |
 | DELETE | `/members/{member}` | `MemberController@destroy` | Eliminar miembro (soft) |
+| GET | `/families` | `FamilyController@index` | Listar familias |
+| POST | `/families` | `FamilyController@store` | Crear familia |
+| PUT | `/families/{family}` | `FamilyController@update` | Actualizar familia |
+| DELETE | `/families/{family}` | `FamilyController@destroy` | Eliminar familia |
+| GET | `/ministry-areas` | `MinistryAreaController@index` | Listar áreas ministeriales |
+| POST | `/ministry-areas` | `MinistryAreaController@store` | Crear área |
+| PUT | `/ministry-areas/{area}` | `MinistryAreaController@update` | Actualizar área |
+| DELETE | `/ministry-areas/{area}` | `MinistryAreaController@destroy` | Eliminar área |
+| GET | `/groups` | `CellGroupController@index` | Listar grupos celulares |
+| GET | `/groups/create` | `CellGroupController@create` | Form crear grupo |
+| POST | `/groups` | `CellGroupController@store` | Guardar grupo |
+| GET | `/groups/{group}` | `CellGroupController@show` | Ver detalle grupo |
+| GET | `/groups/{group}/edit` | `CellGroupController@edit` | Form editar grupo |
+| PUT | `/groups/{group}` | `CellGroupController@update` | Actualizar grupo |
+| DELETE | `/groups/{group}` | `CellGroupController@destroy` | Eliminar grupo |
+| GET | `/settings/church` | `ChurchSettingController@edit` | Config de iglesia |
+| PUT | `/settings/church` | `ChurchSettingController@update` | Actualizar config |
+| GET | `/settings/website` | `WebsiteSettingController@index` | Admin sitio web |
+| PUT | `/settings/website` | `WebsiteSettingController@updateSettings` | Actualizar settings web |
+| GET | `/` | `PublicWebsiteController` | Sitio web público |
+| GET | `/ministerios/{slug}` | `PublicWebsiteController@ministry` | Página de ministerio |
 
 ---
 
@@ -758,19 +781,21 @@ Independiente del RBAC. Controla qué módulos puede ver cada iglesia según su 
 ### Resumen de Progreso
 
 ```
-██████████████████████░░░░░░░░░░  ~25% completado (2/9 módulos + plataforma)
+████████████████████████████░░░░  ~45% completado (5/11 módulos + plataforma)
 ```
 
 | Área | Estado | Detalle |
 |---|---|---|
 | **Infraestructura** | ✅ Completo | VPS, dominio, SSL wildcard, Nginx, PostgreSQL, deploy |
 | **Multi-Tenancy** | ✅ Completo | DB-per-tenant, subdomain identification, auto-migrate/seed |
-| **Panel Super Admin** | ✅ Completo | CRUD Iglesias, CRUD Planes, Widgets dashboard, Login custom |
+| **Panel Super Admin** | ✅ Completo | CRUD Iglesias, CRUD Planes, Widgets dashboard, Login custom, Documentación Técnica |
 | **Auth Tenant** | ✅ Completo | Login/logout, sesiones, flash messages |
 | **Frontend Base** | ✅ Completo | Layout, shadcn/ui (15 components), tipos, tema |
-| **Módulo Church** | ✅ Básico | Modelo + seeder + migración (falta UI de settings) |
+| **Módulo Church** | ✅ Básico | Modelo + seeder + migración + UI configuración |
 | **Módulo Members** | ✅ Completo | Backend + Frontend CRUD completo + auditoría |
-| **Módulo Groups** | 📋 Esqueleto | Estructura DDD + migración vacía |
+| **Módulo Groups** | ✅ Completo | CRUD grupos celulares + asistentes + anfitriones + Google Maps |
+| **Módulo Website** | ✅ Completo | Sitio público + admin templates + ministerios + galería + redes sociales + WhatsApp |
+| **Módulo Ministry Areas** | ✅ Completo | CRUD áreas ministeriales + asignación miembros + Icon Picker (120+ iconos) |
 | **Módulo Attendance** | 📋 Esqueleto | Estructura DDD + migración vacía |
 | **Módulo Activities** | 📋 Esqueleto | Estructura DDD + migración vacía |
 | **Módulo Finance** | 📋 Esqueleto | Estructura DDD + migración vacía |
@@ -843,7 +868,17 @@ poimano/
 │   ├── Http/
 │   │   ├── Controllers/Tenant/
 │   │   │   ├── AuthController.php
-│   │   │   └── MemberController.php
+│   │   │   ├── MemberController.php
+│   │   │   ├── FamilyController.php
+│   │   │   ├── CellGroupController.php
+│   │   │   ├── MinistryAreaController.php
+│   │   │   ├── ChurchSettingController.php
+│   │   │   ├── DashboardController.php
+│   │   │   ├── PublicWebsiteController.php
+│   │   │   ├── WebsiteSettingController.php
+│   │   │   ├── WebsiteMinistryController.php
+│   │   │   ├── WebsiteSocialController.php
+│   │   │   └── CustomDomainController.php
 │   │   └── Middleware/
 │   │       ├── HandleInertiaRequests.php
 │   │       └── CheckModuleAccess.php
@@ -851,6 +886,8 @@ poimano/
 │   ├── Filament/                             # ── PANEL SUPER ADMIN ──
 │   │   ├── Pages/
 │   │   │   ├── Auth/Login.php
+│   │   │   ├── PlatformSettings.php
+│   │   │   └── TechnicalDocumentation.php
 │   │   │   └── PlatformSettings.php
 │   │   ├── Resources/
 │   │   │   ├── TenantResource.php
@@ -1041,5 +1078,5 @@ POST /login → AuthController@login
 
 ---
 
-> **Documento generado automáticamente — Estado al 14 de marzo de 2026**
+> **Documento generado automáticamente — Estado al 30 de marzo de 2026**
 > Repositorio: https://github.com/yohanrojas562-code/poimano
